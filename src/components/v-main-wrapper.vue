@@ -20,7 +20,6 @@
     props:{},
     data() {
       return {
-        title: 'Main wrapper'
       }
     },
     computed: {},
@@ -28,15 +27,13 @@
 
     },
     watch: {},
-    mounted() {
-      console.log('Hi im wrapper')
-    }
+    mounted(){}
   }
 </script>
 
 <style lang="scss">
   .v-main-wrapper{
-    max-width: 900px;
+    max-width: 1200px;
     margin: 0 auto;
   }
 </style>

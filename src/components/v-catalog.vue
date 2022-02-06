@@ -2,16 +2,41 @@
   <div class="v-catalog">
     <h1>Catalog</h1>
     <div class="v-catalog__list">
-      <v-catalog-item/>
+      <v-catalog-item
+          v-for="product in PRODUCTS"
+          :key="product.article"
+          v-bind:product_data="product"
+          @sendArticle="show"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import VCatalogItem from "./v-catalog-item";
+import {mapActions, mapGetters} from 'vuex';
 export default {
   name: "v-catalog",
-  components: {VCatalogItem}
+  components: {VCatalogItem},
+  data(){
+    return {
+
+    }
+  },
+  methods:{
+    ...mapActions(['GET_PRODUCTS_FROM_API']),
+    show(data){
+      console.log(data)
+    }
+  },
+  mounted() {
+    this.GET_PRODUCTS_FROM_API()
+  },
+  computed:{
+    ...mapGetters([
+        'PRODUCTS'
+    ])
+  }
 }
 </script>
 
