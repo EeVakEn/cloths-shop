@@ -1,32 +1,32 @@
 <template>
   <div class="v-cart-item">
-    <img class="v-cart-item__image" :src=" require('../../assets/images/' + cart_item_data.image)" :alt="cart_item_data.artcle">
+    <div class="v-cart-item__image-wrapper">
+      <img class="v-cart-item__image" :src=" require('../../assets/images/products/' + cart_item_data.image)"
+           :alt="cart_item_data.artcle">
+    </div>
     <div class="v-cart-item__info">
-      <p>{{cart_item_data.name}}</p>
-      <p>{{cart_item_data.price}} ₽</p>
+      <p><b>{{ cart_item_data.name }}</b></p>
+      <p>{{ cart_item_data.description }}</p>
     </div>
     <div class="v-cart-item__quantity">
-      <p>Количество: </p>
-      <form class ="v-cart-item__quantity_form">
-        <b-input-group>
-          <b-button @click="decrement">-</b-button>
-          <b-form-input
-              class="v-cart-item__quantity_input"
-              type="text"
-              disabled
-              :value="cart_item_data.quantity"/>
-          <b-button @click="increment">+</b-button>
+      <form class="v-cart-item__quantity-form">
+        <b-input-group class="v-cart-item__btn-grp">
+          <b-button @click="decrement" class="v-cart-item__btn-grp__btn"><b>-</b></b-button>
+          <b-input disabled class="v-cart-item__quantity__input" :value="cart_item_data.quantity"/>
+          <b-button @click="increment" class="v-cart-item__btn-grp__btn"><b>+</b></b-button>
         </b-input-group>
       </form>
-
-
     </div>
-    <b-button
-      variant="danger"
-      @click ="deleteFromCart"
-    >
-      Удалить
-    </b-button>
+    <div class="v-cart-item__price">
+      <span>{{ getPrice }} ₽</span>
+      <br/>
+      <span
+          class="v-cart-item__delete"
+          @click="deleteFromCart"
+      >
+        <b-icon icon="trash"></b-icon> Удалить
+      </span>
+    </div>
   </div>
 </template>
 
@@ -34,52 +34,90 @@
 
 export default {
   name: "v-cart-item",
-  props:{
-    cart_item_data:{
+  props: {
+    cart_item_data: {
       type: Object,
-      default(){
+      default() {
         return {}
       }
     }
   },
-  methods:{
-    deleteFromCart(){
+  methods: {
+    deleteFromCart() {
       this.$emit('deleteFromCart')
     },
-    increment(){
+    increment() {
       this.$emit('increment')
     },
-    decrement(){
+    decrement() {
       this.$emit('decrement')
     }
   },
-  mounted() {
-  }
+  computed: {
+    getPrice: function () {
+      return this.cart_item_data.price * this.cart_item_data.quantity
+    }
+  },
 }
 </script>
 
 <style lang="scss">
-  .v-cart-item{
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
+.v-cart-item {
+  width: 100%;
+  height: 120px;
+  grid-template-columns: 1fr 4fr 1fr 1fr;
+  display: grid;
+  background-color: $second-color;
+  text-align: center;
+  //padding: $padding;
 
-    box-shadow: 0 0 10px 0 $main-color;
-    padding: $padding*2;
-    margin-bottom: $margin*2;
-    background-color: $second-color;
-    border-radius: $radius*4;
-    &__image {
-      max-width: 100px;
+  &__image-wrapper{
+    height: 120px;
+  }
+
+  &__image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  &__info {
+    padding: $padding;
+    text-align: left;
+    overflow: hidden;
+  }
+
+  &__quantity {
+    align-self: center;
+    &_form {
+      width: 120px;
     }
-    &__quantity{
-      &_form{
-        width: 120px;
-      }
-      &_input{
-        text-align: center;
-      }
+
+    &__input {
+      border-radius: 0;
+      text-align: center;
+      font-weight: bold;
+      line-height: 1.5;
     }
   }
+  &__btn-grp {
+    width: 150px;
+    &__btn {
+      background-color: $dark-color !important;
+      border-radius: 0 !important;
+    }
+  }
+
+  &__price {
+    align-self: center;
+    margin: 0 auto;
+    font-weight: bold;
+  }
+
+  &__delete {
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+}
 </style>

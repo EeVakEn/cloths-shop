@@ -1,15 +1,26 @@
 <template>
   <div class="v-catalog">
-    <router-link :to="{name:'cart', params:{cart_data: CART}}">
-      <div class="v-catalog__link_to_cart">Cart: {{CART.length}}</div>
-    </router-link>
-    <h1>Catalog</h1>
+    <div class="cart_favorites">
+      <router-link class="cart_favorites__link" :to="{name:'favorites', params:{favorites_data: FAVORITES}}">
+        <b-icon icon="heart"/>
+        <span class="cart_favorites__count">{{ FAVORITES.length }}</span>
+      </router-link>
+      <router-link class="cart_favorites__link" :to="{name:'cart', params:{cart_data: CART}}">
+        <b-icon icon="basket"/>
+        <span class="cart_favorites__count">{{ getCartQuantity }}</span>
+      </router-link>
+    </div>
+
+
+    <h1>Каталог</h1>
     <div class="v-catalog__list">
       <v-catalog-item
           v-for="product in PRODUCTS"
           :key="product.article"
-          v-bind:product_data="product"
+          :product_data="product"
+          :favorites_data="FAVORITES"
           @addToCart="addToCart"
+          @addToFavorites="addToFavorites"
       />
     </div>
   </div>
@@ -18,49 +29,90 @@
 <script>
 import VCatalogItem from "./v-catalog-item";
 import {mapActions, mapGetters} from 'vuex';
+
 export default {
   name: "v-catalog",
   components: {VCatalogItem},
-  data(){
-    return {
-
-    }
+  data() {
+    return {}
   },
-  methods:{
+  methods: {
     ...mapActions([
-        'GET_PRODUCTS_FROM_API',
-        'ADD_TO_CART'
+      'GET_PRODUCTS_FROM_API',
+      'ADD_TO_CART',
+      'ADD_TO_FAVORITES'
     ]),
-    addToCart(data){
+    addToCart(data) {
       this.ADD_TO_CART(data);
+    },
+    addToFavorites(data) {
+      this.ADD_TO_FAVORITES(data)
     }
   },
   mounted() {
     this.GET_PRODUCTS_FROM_API()
   },
-  computed:{
+  computed: {
     ...mapGetters([
-        'PRODUCTS',
-        'CART'
-    ])
+      'PRODUCTS',
+      'CART',
+      'FAVORITES'
+    ]),
+    getCartQuantity: function () {
+      let res = 0;
+      for (let i = 0; i < this.CART.length; i++) {
+        res += this.CART[i].quantity;
+      }
+      return res;
+    }
   }
 }
 </script>
 
 <style lang="scss">
-  .v-catalog{
-    &__list{
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-     }
-    &__link_to_cart{
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      padding: $padding*2;
-      border: solid 1px #333333;
-    }
+.v-catalog {
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: center;
   }
+
+}
+
+.cart_favorites {
+  position: fixed;
+  display: flex;
+  flex-wrap: wrap;
+  top: 10px;
+  right: 10px;
+
+  &__link {
+    font-size: 24px;
+    text-decoration: none;
+    color: $dark-color;
+    padding: $padding;
+  }
+
+  &__link:hover {
+    color: $dark-color;
+  }
+
+  &__count {
+    display: inline-block;
+    position: relative;
+    top: -15px;
+    right: 0;
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    line-height: 15px;
+    background: $dark-color;
+    color: $second-color;
+    border-radius: 50%;
+    font-size: 11px;
+  }
+
+
+}
 </style>

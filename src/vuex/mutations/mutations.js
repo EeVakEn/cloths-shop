@@ -16,8 +16,33 @@ export default {
             }
         } else state.cart.push(product)
     },
+    SET_FAVORITE:(state, product) => {
+        let isExist = false;
+        let exIndex = 0;
+        state.favorites.map(function (item,index){
+            if (item.article === product.article){
+                product.isFavorite = false;
+                isExist = true;
+                exIndex = index
+            }else product.isFavorite = true
+        })
+        if (isExist){
+            state.favorites[exIndex].isFavorite = false;
+            state.favorites.splice(exIndex,1);
+        }else {
+            state.favorites.push(product);
+            state.favorites[exIndex].isFavorite = true;
+        }
+    },
     DEL_FROM_CART:(state, index) => {
+        state.cart[index].quantity = 1;
         state.cart.splice(index,1)
+    },
+    DEL_ALL_FROM_CART:(state) => {
+        state.cart.map(function (){
+            state.cart[0].quantity = 1;
+        })
+        state.cart.splice(0);
     },
     INCREMENT_CART:(state, index) => {
         if (state.cart[index].quantity < 50)
@@ -26,5 +51,7 @@ export default {
     DECREMENT_CART:(state, index) => {
         if (state.cart[index].quantity > 1)
             state.cart[index].quantity--
+        else
+            state.cart.pop(index);
     }
 }

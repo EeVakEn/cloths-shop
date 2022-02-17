@@ -21,7 +21,8 @@
 
 <style lang="scss">
   .v-main-wrapper{
-    max-width: 1200px;
+    max-width: calc(100% - 100px);
+    padding-left: 80px;
     margin: 0 auto;
   }
 </style>
