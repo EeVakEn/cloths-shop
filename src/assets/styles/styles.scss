@@ -33,3 +33,114 @@ body {
   font-weight: bold;
   font-size: 22px;
 }
+
+.color-wrapper {
+  position: relative;
+  &__color{
+    color: $dark-color;
+    &__radio {
+      -webkit-appearance: none;
+      position: absolute;
+      appearance: none;
+    }
+    &__label{
+      font-size: $font-size22;
+      width: 55px;
+      height: 36px;
+    }
+    &__label:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      border: 1px solid gray;
+      cursor: pointer;
+      transition: .2s;
+      width: 55px;
+      height: 36px;
+
+    }
+
+    &__label:after{
+      content: '✔';
+      position: absolute;
+      display: block;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      z-index: 2;
+      width: 55px;
+      height: 36px;
+    }
+
+    &__radio:checked + &__label:before{
+      border: 2px solid $dark-color;
+    }
+    &__radio:checked + &__label:after{
+      opacity: 1;
+    }
+  }
+}
+
+.white{
+  background: $p-color-white;
+}
+
+.haki {
+  background: $p-color-haki;
+}
+.black{
+ background: $p-color-black;
+  color: white;
+}
+.bejeviy{
+  background: $p-color-bejeviy;
+}
+.pink {
+   background: $p-color-pink;
+ }
+.gray{
+  background: $p-color-gray;
+  color: white;
+}
+.light-blue{
+  background: $p-color-light-blue;
+}
+.yellow{
+  background: $p-color-yellow;
+}
+.liloviy{
+  background: $p-color-liloviy;
+}
+.salad{
+  background: $p-color-salad;
+}
+.blue{
+  background: $p-color-blue;
+  color: white;
+}
+.dark-blue{
+  background: $p-color-dark-blue;
+  color: white;
+}
+.bordoviy{
+  background: $p-color-bordoviy;
+  color: white;
+}
+.red{
+  background: $p-color-red;
+  color: white;
+}
+.green{
+  background: $p-color-green;
+  color: white;
+}
+.vishneviy{
+  background: $p-color-vishneviy;
+  color: white;
+}
+.coffee{
+  background: $p-color-coffee;
+}

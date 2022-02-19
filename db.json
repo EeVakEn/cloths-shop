@@ -7,7 +7,8 @@
       "price": 2100,
       "article": "T1",
       "available": true,
-      "category": "Мужские"
+      "category": "Мужские",
+      "color": ["white", "black"]
     },
     {
       "image": "2.jpg",
@@ -16,7 +17,8 @@
       "price": 3150,
       "article": "T2",
       "available": true,
-      "category": "Женские"
+      "category": "Женские",
+      "color": ["white", "black"]
     },
     {
       "image": "3.jpg",
@@ -25,7 +27,8 @@
       "price": 4200,
       "article": "T3",
       "available": false,
-      "category": "Женские"
+      "category": "Женские",
+      "color": ["white", "black"]
     },
     {
       "image": "4.jpg",
@@ -34,7 +37,8 @@
       "price": 5300,
       "article": "T4",
       "available": true,
-      "category": "Мужские"
+      "category": "Мужские",
+      "color": ["bejeviy", "vishneviy", "coffee"]
     },
     {
       "image": "5.jpg",
@@ -43,7 +47,8 @@
       "price": 6500,
       "article": "T5",
       "available": false,
-      "category": "Женские"
+      "category": "Женские",
+      "color": ["white", "black", "coffee"]
     },
     {
       "image": "6.jpg",
@@ -52,7 +57,8 @@
       "price": 8700,
       "article": "T6",
       "available": true,
-      "category": "Женские"
+      "category": "Женские",
+      "color": ["haki", "black"]
     },
     {
       "image": "7.jpg",
@@ -61,7 +67,8 @@
       "price": 700,
       "article": "T7",
       "available": true,
-      "category": "Женские"
+      "category": "Женские",
+      "color": ["dark-blue", "white", "black", "coffee"]
     },
     {
       "image": "8.jpg",
@@ -70,7 +77,8 @@
       "price": 1700,
       "article": "T8",
       "available": true,
-      "category": "Женские"
+      "category": "Женские",
+      "color": ["salad", "light-blue", "black", "yellow"]
     },
     {
       "image": "9.jpg",
@@ -79,7 +87,8 @@
       "price": 8700,
       "article": "T9",
       "available": true,
-      "category": "Женские"
+      "category": "Женские",
+      "color": ["pink", "white", "black", "coffee"]
     },
     {
       "image": "10.jpg",
@@ -88,7 +97,8 @@
       "price": 8700,
       "article": "T10",
       "available": true,
-      "category": "Женские"
+      "category": "Женские",
+      "color": ["pink", "yellow", "light-blue", "coffee"]
     },
     {
       "image": "11.jpg",
@@ -97,7 +107,8 @@
       "price": 8700,
       "article": "T11",
       "available": true,
-      "category": "Женские"
+      "category": "Женские",
+      "color": ["white", "black"]
     }
   ]
 }

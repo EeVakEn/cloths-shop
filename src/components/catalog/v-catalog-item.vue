@@ -22,7 +22,16 @@
           </div>
           <div class="v-modal__color">
             <p>Цвет:</p>
+            <div class="v-modal__color-check">
+              <v-product-color
+                  v-for="color in product_data.color"
+                  :key="color"
+                  :color="color"
+              />
+
+            </div>
           </div>
+
           <span class="v-modal__price">{{ getFormattedPrice }} ₽</span>
           <div class="v-modal__buttons">
             <div class="v-modal__quantity">
@@ -76,10 +85,11 @@
 
 <script>
 import VModal from "../v-modal";
+import VProductColor from "../v-product-color";
 
 export default {
   name: "v-catalog-item",
-  components: {VModal},
+  components: {VProductColor, VModal},
   data() {
     return {
       isInfoModalVisible: false,
@@ -128,6 +138,7 @@ export default {
   mounted() {
     this.$set(this.product_data, 'quantity', 1)
     this.$set(this.product_data, 'isFavorite', false)
+    console.log(this.product_data.color)
   },
   computed: {
     getFormattedPrice: function () {
@@ -146,6 +157,16 @@ export default {
 }
 
 .v-modal {
+  &__color{
+    display: block;
+    align-self: flex-start;
+    justify-self: flex-start;
+  }
+  &__color-check {
+    display: flex;
+    flex-flow: row wrap;
+    gap: $padding/2;
+  }
 
   &__image {
     width: 100%;
@@ -164,10 +185,12 @@ export default {
     padding: 20px;
     width: 480px;
   }
+
   &__price {
     font-size: $font-size30;
     font-weight: bold;
   }
+
   &__input {
     display: inline-block;
     width: 45px;
@@ -200,6 +223,7 @@ export default {
     align-self: flex-end;
     padding: $padding*2 0;
   }
+
   &__quantity {
     display: block;
     font-size: 22px;
