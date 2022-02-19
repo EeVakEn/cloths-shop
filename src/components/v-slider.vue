@@ -42,11 +42,9 @@
 export default {
   name: "v-slider",
   data() {
-    return {
-    }
+    return {}
   },
-  methods: {
-  }
+  methods: {}
 }
 
 </script>

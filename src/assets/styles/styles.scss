@@ -1,8 +1,11 @@
 
-.body{
-  font: $font;
+body {
+  font-family: $font-family;
+  font-size: $font-size18;
+  color: #1f1f1f;
 }
-.dark-button{
+
+.dark-button {
   display: inline-block;
   font-weight: 400;
   line-height: 1.5;
@@ -14,7 +17,19 @@
   border-radius: 0;
   color: white;
   padding: 0.375rem 0.75rem;
+  outline: none;
 }
-.dark-button:hover{
+
+.dark-button:active {
+  outline: none;
+}
+
+.dark-button:hover {
   background-color: black;
+  outline: none;
+}
+
+.total-price {
+  font-weight: bold;
+  font-size: 22px;
 }

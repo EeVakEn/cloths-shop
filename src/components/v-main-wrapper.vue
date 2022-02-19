@@ -8,21 +8,22 @@
 </template>
 
 <script>
-  import {mapGetters} from "vuex";
-  export default {
-    name: 'v-main-wrapper',
-    computed: {
-      ...mapGetters([
-          'CART'
-      ])
-    }
+import {mapGetters} from "vuex";
+
+export default {
+  name: 'v-main-wrapper',
+  computed: {
+    ...mapGetters([
+      'CART'
+    ])
   }
+}
 </script>
 
 <style lang="scss">
-  .v-main-wrapper{
-    max-width: calc(100% - 100px);
-    padding-left: 80px;
-    margin: 0 auto;
-  }
+.v-main-wrapper {
+  max-width: calc(100% - 100px);
+  //padding-left: 80px;
+  margin: 0 auto;
+}
 </style>

@@ -12,8 +12,8 @@ Vue.use(Vuex)
 // json-server --watch file.json
 
 let store = new Vuex.Store({ //Центральное хранилище наших данных
-    state:{
-        products:[], // записываем пустой массив
+    state: {
+        products: [], // записываем пустой массив
         cart: [],
         favorites: []
     },//состоение, здесь хранятся коллекции объекты

@@ -7,7 +7,7 @@ export default {
         }).then((products) => { // если запрос прошел (статус 200)
             commit('SET_PRODUCTS_TO_STATE', products.data); // вызываем мутацию
             return products;
-        }).catch((error)=>{ // иначе
+        }).catch((error) => { // иначе
             console.log(error);
             return error;
         })

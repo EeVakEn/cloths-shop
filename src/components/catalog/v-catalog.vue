@@ -1,5 +1,6 @@
 <template>
   <div class="v-catalog">
+
     <div class="cart_favorites">
       <router-link class="cart_favorites__link" :to="{name:'favorites', params:{favorites_data: FAVORITES}}">
         <b-icon icon="heart"/>
@@ -42,8 +43,8 @@ export default {
       'ADD_TO_CART',
       'ADD_TO_FAVORITES'
     ]),
-    addToCart(data) {
-      this.ADD_TO_CART(data);
+    addToCart(product, quantity) {
+      this.ADD_TO_CART({product, quantity});
     },
     addToFavorites(data) {
       this.ADD_TO_FAVORITES(data)
@@ -72,10 +73,10 @@ export default {
 <style lang="scss">
 .v-catalog {
   &__list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: start;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 300px);
+    justify-content: center;
+    grid-gap: 10px;
   }
 
 }

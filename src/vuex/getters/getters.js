@@ -1,11 +1,11 @@
 export default {
-    PRODUCTS(state){
+    PRODUCTS(state) {
         return state.products;
     },
-    CART(state){
+    CART(state) {
         return state.cart;
     },
-    FAVORITES(state){
+    FAVORITES(state) {
         return state.favorites;
     }
 }

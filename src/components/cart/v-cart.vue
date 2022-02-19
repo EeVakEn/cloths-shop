@@ -118,6 +118,7 @@ export default {
     padding: $padding $padding*3;
 
     &__price {
+      font-weight: bold;
       font-size: 22px;
     }
   }

@@ -1,54 +1,55 @@
 export default {
-    SET_PRODUCTS_TO_STATE:(state,products) =>{ // заполняем state данными
+    SET_PRODUCTS_TO_STATE: (state, products) => { // заполняем state данными
         state.products = products;
     },
-    SET_CART:(state, product) => {
-        if(state.cart.length){
-            let isExist = false;
-            state.cart.map(function (item){
-                if (item.article === product.article){
-                    isExist = true;
-                    item.quantity++;
-                }
-            })
-            if(!isExist){
-                state.cart.push(product)
+    SET_CART: (state, {product, quantity}) => {
+
+        console.log(product, quantity)
+        let isExist = false;
+        state.cart.map(function (item) {
+            if (item.article === product.article) {
+                isExist = true;
+                item.quantity += quantity; // update state CART
             }
-        } else state.cart.push(product)
+        })
+        if (!isExist) {
+            state.cart.push(product)
+            state.cart[state.cart.length - 1].quantity = quantity
+        }
     },
-    SET_FAVORITE:(state, product) => {
+    SET_FAVORITE: (state, product) => {
         let isExist = false;
         let exIndex = 0;
-        state.favorites.map(function (item,index){
-            if (item.article === product.article){
+        state.favorites.map(function (item, index) {
+            if (item.article === product.article) {
                 product.isFavorite = false;
                 isExist = true;
                 exIndex = index
-            }else product.isFavorite = true
+            } else product.isFavorite = true
         })
-        if (isExist){
+        if (isExist) {
             state.favorites[exIndex].isFavorite = false;
-            state.favorites.splice(exIndex,1);
-        }else {
+            state.favorites.splice(exIndex, 1);
+        } else {
             state.favorites.push(product);
             state.favorites[exIndex].isFavorite = true;
         }
     },
-    DEL_FROM_CART:(state, index) => {
+    DEL_FROM_CART: (state, index) => {
         state.cart[index].quantity = 1;
-        state.cart.splice(index,1)
+        state.cart.splice(index, 1)
     },
-    DEL_ALL_FROM_CART:(state) => {
-        state.cart.map(function (){
+    DEL_ALL_FROM_CART: (state) => {
+        state.cart.map(function () {
             state.cart[0].quantity = 1;
         })
         state.cart.splice(0);
     },
-    INCREMENT_CART:(state, index) => {
+    INCREMENT_CART: (state, index) => {
         if (state.cart[index].quantity < 50)
             state.cart[index].quantity++
     },
-    DECREMENT_CART:(state, index) => {
+    DECREMENT_CART: (state, index) => {
         if (state.cart[index].quantity > 1)
             state.cart[index].quantity--
         else

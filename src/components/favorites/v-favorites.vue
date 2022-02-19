@@ -62,12 +62,4 @@ export default {
 </script>
 
 <style lang="scss">
-.v-catalog {
-  &__list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: center;
-  }
-}
 </style>

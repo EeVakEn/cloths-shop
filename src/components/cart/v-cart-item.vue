@@ -71,7 +71,7 @@ export default {
   text-align: center;
   //padding: $padding;
 
-  &__image-wrapper{
+  &__image-wrapper {
     height: 120px;
   }
 
@@ -89,6 +89,7 @@ export default {
 
   &__quantity {
     align-self: center;
+
     &_form {
       width: 120px;
     }
@@ -100,8 +101,10 @@ export default {
       line-height: 1.5;
     }
   }
+
   &__btn-grp {
     width: 150px;
+
     &__btn {
       background-color: $dark-color !important;
       border-radius: 0 !important;
