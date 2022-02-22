@@ -85,6 +85,7 @@ export default {
     color: $dark-color;
     width: 30px;
     height: 30px;
+    transition: .5s;
   }
 
   &__content {

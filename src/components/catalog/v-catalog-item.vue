@@ -17,19 +17,31 @@
         <div class="v-modal__info">
           <h1 class="v-modal__name">{{ product_data.name }}</h1>
           <p class="v-modal__article">Артикул: {{ product_data.article }}</p>
+          <p style="margin-bottom: 10px">Размер: {{selectedSize}}</p>
           <div class="v-modal__size">
-            <p>Размер:</p>
+            <div class="v-modal__size-check">
+              <v-product-size
+                  v-for="size in product_data.size"
+                  :key="size"
+                  :size="size"
+                  :selected-size="selectedSize"
+                  @selectSize="selectSize"
+              />
+            </div>
+            <span class="v-modal__select" v-if="isSizeNotSelected">Выберите размер</span>
           </div>
+          <p style="margin-bottom: 10px">Цвет: {{selectedColorToRussian}}</p>
           <div class="v-modal__color">
-            <p>Цвет:</p>
             <div class="v-modal__color-check">
               <v-product-color
                   v-for="color in product_data.color"
                   :key="color"
                   :color="color"
+                  :selected-color="selectedColor"
+                  @selectColor="selectColor"
               />
-
             </div>
+            <span class="v-modal__select" v-if="isColorNotSelected">Выберите цвет</span>
           </div>
 
           <span class="v-modal__price">{{ getFormattedPrice }} ₽</span>
@@ -65,6 +77,18 @@
     </div>
 
     <p class="v-catalog-item__name">{{ product_data.name }}</p>
+
+    <div class="v-catalog-item__colors-wrapper">
+      <b>Цвет: </b>
+      <div
+          v-for="(color,index) in product_data.color"
+          :key="index"
+          :class="[color, 'v-catalog-item__color']"
+          :data-microtip="colorToRu(color)"
+      />
+    </div>
+
+
     <p class="v-catalog-item__description">{{ product_data.description }}</p>
     <div class="v-catalog-item__bottom">
       <span class="v-catalog-item__price">{{ getFormattedPrice }} ₽</span>
@@ -86,14 +110,19 @@
 <script>
 import VModal from "../v-modal";
 import VProductColor from "../v-product-color";
+import VProductSize from "../v-product-size";
 
 export default {
   name: "v-catalog-item",
-  components: {VProductColor, VModal},
+  components: {VProductColor, VProductSize, VModal},
   data() {
     return {
+      isColorNotSelected: false,
+      isSizeNotSelected: false,
       isInfoModalVisible: false,
       quantity: 1,
+      selectedSize: "",
+      selectedColor: ""
     }
   },
   props: {
@@ -112,7 +141,9 @@ export default {
   },
   methods: {
     addToCart() {
-      this.$emit('addToCart', this.product_data, this.quantity)
+      this.$emit('addToCart', this.product_data, this.quantity, this.selectedColor, this.selectedSize)
+      this.isColorNotSelected = this.selectedColor === ""
+      this.isSizeNotSelected = this.selectedSize === ""
     },
     addToFavorites() {
       this.$emit('addToFavorites', this.product_data)
@@ -133,17 +164,69 @@ export default {
         this.quantity--
       }
     },
+    selectSize(size){
+      this.selectedSize=size
+      this.isSizeNotSelected=false
+    },
+    selectColor(color){
+      this.selectedColor= color
+      this.isColorNotSelected=false
+    },
+    colorToRu(c){
+      switch(c){
+        case 'white': return 'Белый';
+        case 'black': return 'Черный';
+        case 'bejeviy': return 'Бежевый';
+        case 'pink': return 'Розовый';
+        case 'gray': return 'Серый';
+        case 'light-blue': return 'Голубой';
+        case 'yellow': return 'Желтый';
+        case 'liloviy': return 'Лиловый';
+        case 'salad': return 'Салатовый';
+        case 'blue': return 'Синий';
+        case 'dark-blue': return 'Темно-синий';
+        case 'bordoviy': return 'Бордовый';
+        case 'red': return 'Красный';
+        case 'green': return 'Зеленый';
+        case 'vishneviy': return 'Вишневый';
+        case 'haki': return 'Хаки';
+        case 'coffee': return 'Кофейный';
+        default : return '';
+      }
+    }
 
   },
   mounted() {
     this.$set(this.product_data, 'quantity', 1)
     this.$set(this.product_data, 'isFavorite', false)
-    console.log(this.product_data.color)
   },
   computed: {
-    getFormattedPrice: function () {
+    getFormattedPrice() {
       return this.product_data.price.toLocaleString()
     },
+    selectedColorToRussian(){
+      switch(this.selectedColor){
+        case 'white': return 'Белый'.toLowerCase();
+        case 'black': return 'Черный'.toLowerCase();
+        case 'bejeviy': return 'Бежевый'.toLowerCase();
+        case 'pink': return 'Розовый'.toLowerCase();
+        case 'gray': return 'Серый'.toLowerCase();
+        case 'light-blue': return 'Голубой'.toLowerCase();
+        case 'yellow': return 'Желтый'.toLowerCase();
+        case 'liloviy': return 'Лиловый'.toLowerCase();
+        case 'salad': return 'Салатовый'.toLowerCase();
+        case 'blue': return 'Синий'.toLowerCase();
+        case 'dark-blue': return 'Темно-синий'.toLowerCase();
+        case 'bordoviy': return 'Бордовый'.toLowerCase();
+        case 'red': return 'Красный'.toLowerCase();
+        case 'green': return 'Зеленый'.toLowerCase();
+        case 'vishneviy': return 'Вишневый'.toLowerCase();
+        case 'haki': return 'Хаки'.toLowerCase();
+        case 'coffee': return 'Кофейный'.toLowerCase();
+        default : return '';
+      }
+    }
+
   }
 }
 </script>
@@ -157,10 +240,31 @@ export default {
 }
 
 .v-modal {
-  &__color{
+  &__select{
+    color: red;
     display: block;
+    font-size: 12px;
+    position: absolute;
+    top: 36px;
+  }
+  &__size{
+    display: block;
+    position: relative;
     align-self: flex-start;
     justify-self: flex-start;
+    margin-bottom: 14px;
+  }
+  &__size-check {
+    display: flex;
+    flex-flow: row wrap;
+    gap: $padding/2;
+  }
+  &__color{
+    display: block;
+    position: relative;
+    align-self: flex-start;
+    justify-self: flex-start;
+    margin-bottom: 14px;
   }
   &__color-check {
     display: flex;
@@ -268,6 +372,18 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  &__colors-wrapper{
+    display: flex;
+    flex-flow: wrap row;
+    align-items: center;
+    padding: 0 $padding;
+  }
+  &__color {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin: 0 $margin/3;
   }
 
   &__bottom {

@@ -8,7 +8,8 @@
       "article": "T1",
       "available": true,
       "category": "Мужские",
-      "color": ["white", "black"]
+      "color": ["white", "black"],
+      "size": ["XS","S","M","L","XL","XXL"]
     },
     {
       "image": "2.jpg",
@@ -18,7 +19,8 @@
       "article": "T2",
       "available": true,
       "category": "Женские",
-      "color": ["white", "black"]
+      "color": ["white", "black"],
+      "size": ["XS","S","M","L","XL","XXL"]
     },
     {
       "image": "3.jpg",
@@ -28,7 +30,8 @@
       "article": "T3",
       "available": false,
       "category": "Женские",
-      "color": ["white", "black"]
+      "color": ["white", "black"],
+      "size": ["XS","S","M","L","XL","XXL"]
     },
     {
       "image": "4.jpg",
@@ -38,7 +41,8 @@
       "article": "T4",
       "available": true,
       "category": "Мужские",
-      "color": ["bejeviy", "vishneviy", "coffee"]
+      "color": ["bejeviy", "vishneviy", "coffee"],
+      "size": ["XS","S","M","L","XL","XXL"]
     },
     {
       "image": "5.jpg",
@@ -48,7 +52,8 @@
       "article": "T5",
       "available": false,
       "category": "Женские",
-      "color": ["white", "black", "coffee"]
+      "color": ["white", "black", "coffee"],
+      "size": ["XS","S","M","L","XL","XXL"]
     },
     {
       "image": "6.jpg",
@@ -58,7 +63,8 @@
       "article": "T6",
       "available": true,
       "category": "Женские",
-      "color": ["haki", "black"]
+      "color": ["haki", "black"],
+      "size": ["XS","S","M","L","XL","XXL"]
     },
     {
       "image": "7.jpg",
@@ -68,7 +74,9 @@
       "article": "T7",
       "available": true,
       "category": "Женские",
-      "color": ["dark-blue", "white", "black", "coffee"]
+      "color": ["dark-blue", "white", "black", "coffee"],
+      "size": ["XS","S","M","L","XL","XXL"]
+
     },
     {
       "image": "8.jpg",
@@ -78,7 +86,8 @@
       "article": "T8",
       "available": true,
       "category": "Женские",
-      "color": ["salad", "light-blue", "black", "yellow"]
+      "color": ["salad", "light-blue", "black", "yellow"],
+      "size": ["XS","S","M","L","XL","XXL"]
     },
     {
       "image": "9.jpg",
@@ -88,7 +97,8 @@
       "article": "T9",
       "available": true,
       "category": "Женские",
-      "color": ["pink", "white", "black", "coffee"]
+      "color": ["pink", "white", "black", "coffee"],
+      "size": ["XS","S","M","L","XL","XXL"]
     },
     {
       "image": "10.jpg",
@@ -98,17 +108,19 @@
       "article": "T10",
       "available": true,
       "category": "Женские",
-      "color": ["pink", "yellow", "light-blue", "coffee"]
+      "color": ["pink", "yellow", "light-blue", "coffee"],
+      "size": ["XS","S","M","L","XL","XXL"]
     },
     {
       "image": "11.jpg",
-      "name": "Одежда 11",
+      "name": "Обувь 11",
       "description": "Благодаря своей теплой ткани и свободному крою, она является невероятно удобной. Длинный рукав ветровки в клетку пользуется большим спросом в прохладную погоду, поскольку модели из шерстяной ткани сохраняют тепло**.** ",
       "price": 8700,
       "article": "T11",
       "available": true,
       "category": "Женские",
-      "color": ["white", "black"]
+      "color": ["white", "black"],
+      "size": ["37","38","39","40","41","42","43","44","45"]
     }
   ]
 }

@@ -2,19 +2,23 @@ export default {
     SET_PRODUCTS_TO_STATE: (state, products) => { // заполняем state данными
         state.products = products;
     },
-    SET_CART: (state, {product, quantity}) => {
-
-        console.log(product, quantity)
-        let isExist = false;
-        state.cart.map(function (item) {
-            if (item.article === product.article) {
-                isExist = true;
-                item.quantity += quantity; // update state CART
+    SET_CART: (state, {product, quantity, selectedColor, selectedSize}) => {
+        if (!(selectedColor === "" || selectedSize === "")){
+            let isExist = false;
+            state.cart.map(function (item) {
+                if (item.article === product.article) {
+                    if(item.selectedColor === selectedColor && item.selectedSize === selectedSize){
+                        isExist = true;
+                        item.quantity += quantity; // update state CART
+                    }
+                }
+            })
+            if (!isExist) {
+                state.cart.push(product)
+                state.cart[state.cart.length - 1].quantity = quantity
+                state.cart[state.cart.length - 1].selectedColor = selectedColor
+                state.cart[state.cart.length - 1].selectedSize = selectedSize
             }
-        })
-        if (!isExist) {
-            state.cart.push(product)
-            state.cart[state.cart.length - 1].quantity = quantity
         }
     },
     SET_FAVORITE: (state, product) => {

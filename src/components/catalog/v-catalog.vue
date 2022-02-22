@@ -43,8 +43,8 @@ export default {
       'ADD_TO_CART',
       'ADD_TO_FAVORITES'
     ]),
-    addToCart(product, quantity) {
-      this.ADD_TO_CART({product, quantity});
+    addToCart(product, quantity, selectedColor, selectedSize) {
+      this.ADD_TO_CART({product, quantity, selectedColor, selectedSize});
     },
     addToFavorites(data) {
       this.ADD_TO_FAVORITES(data)

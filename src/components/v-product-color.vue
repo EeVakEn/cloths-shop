@@ -5,6 +5,8 @@
         name="color"
         :id="color"
         :class="['color-wrapper__color__radio', color]"
+        @change="selectColor"
+        :checked="isSelectedColor"
     />
     <label :for="color" :class="['color-wrapper__color__label', color]"/>
   </div>
@@ -15,13 +17,28 @@
 export default {
   name: "v-product-color",
   props:{
-    color: String,
-    default(){
-      return {}
+    color:{
+      type: String,
+      default() {
+        return "";
+      }
+    },
+    selectedColor:{
+      type: String,
+      default() {
+        return "";
+      }
     }
   },
-  mounted() {
-    console.log(this.color)
+  methods:{
+    selectColor(){
+      this.$emit('selectColor', this.color)
+    }
+  },
+  computed:{
+    isSelectedColor() {
+      return this.color === this.selectedColor;
+    }
   }
 }
 </script>

@@ -1,6 +1,6 @@
 export default {
-    ADD_TO_CART({commit}, {product, quantity}) {
-        commit('SET_CART', {product, quantity});
+    ADD_TO_CART({commit}, {product, quantity, selectedColor, selectedSize}) {
+        commit('SET_CART', {product, quantity, selectedColor, selectedSize});
     },
     DELETE_FROM_CART({commit}, index) {
         commit('DEL_FROM_CART', index)
