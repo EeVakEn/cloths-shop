@@ -12,4 +12,16 @@ export default {
             return error;
         })
     },
+    GET_CATEGORIES_FROM_API({commit}) { // метод для получение данных с API
+
+        return axios('http://localhost:3000/categories', { // axios запрос
+            method: "GET"
+        }).then((categories) => { // если запрос прошел (статус 200)
+            commit('SET_CATEGORIES_TO_STATE', categories.data); // вызываем мутацию
+            return categories;
+        }).catch((error) => { // иначе
+            console.log(error);
+            return error;
+        })
+    },
 }

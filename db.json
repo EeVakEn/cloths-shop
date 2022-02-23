@@ -122,5 +122,120 @@
       "color": ["white", "black"],
       "size": ["37","38","39","40","41","42","43","44","45"]
     }
+  ],
+  "categories": [
+    {
+      "name": "Мужское",
+      "children": [
+        {
+          "name": "Одежда",
+          "children": [
+            {
+              "name": "Толстовки",
+              "children": []
+            },
+            {
+              "name": "Футболки",
+              "children": []
+            },
+            {
+              "name": "Брюки",
+              "children": []
+            },
+            {
+              "name": "Шорты",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Обувь",
+          "children": [
+            {
+              "name": "Кроссовки",
+              "children": []
+            },
+            {
+              "name": "Ботинки",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Аксессуары",
+          "children": [
+            {
+              "name": "Носки",
+              "children": []
+            },
+            {
+              "name": "Головные уборы",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Женское",
+      "children": [
+        {
+          "name": "Одежда",
+          "children": [
+            {
+              "name": "Толстовки",
+              "children": []
+            },
+            {
+              "name": "Топы",
+              "children": []
+            },
+            {
+              "name": "Футболки",
+              "children": []
+            },
+            {
+              "name": "Брюки",
+              "children": []
+            },
+            {
+              "name": "Шорты",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Обувь",
+          "children": [
+            {
+              "name": "Кроссовки",
+              "children": []
+            },
+            {
+              "name": "Ботинки",
+              "children": []
+            },
+            {
+              "name": "Полуботинки",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "Аксессуары",
+          "children": [
+            {
+              "name": "Носки",
+              "children": []
+            },
+            {
+              "name": "Головные уборы",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+
   ]
 }

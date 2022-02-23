@@ -70,7 +70,6 @@ export default {
   padding: $padding;
   width: 900px;
   background-color: white;
-  background-clip: padding-box;
   z-index: 20030;
 
   &__close {

@@ -1,5 +1,6 @@
 <template>
-  <div class="v-main-wrapper">
+  <div class="v-main-wrapper" :class="{'sidebar__open': isSidebarOpen}">
+    <v-sidebar @isOpenSidebar="isOpenSidebar" />
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
@@ -9,14 +10,26 @@
 
 <script>
 import {mapGetters} from "vuex";
+import VSidebar from "./v-sidebar";
 
 export default {
   name: 'v-main-wrapper',
+  components: {VSidebar},
+  data(){
+    return{
+      isSidebarOpen: false,
+    };
+  },
   computed: {
     ...mapGetters([
-      'CART'
+      'CART',
     ])
-  }
+  },
+  methods:{
+    isOpenSidebar(a){
+      this.isSidebarOpen = a;
+    }
+  },
 }
 </script>
 
@@ -24,6 +37,12 @@ export default {
 .v-main-wrapper {
   max-width: calc(100% - 100px);
   //padding-left: 80px;
-  margin: 0 auto;
+
+  margin-left: 70px;
+  transition: .4s;
+
+}
+.sidebar__open{
+  margin-left: 350px;
 }
 </style>

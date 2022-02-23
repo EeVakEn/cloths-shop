@@ -1,6 +1,5 @@
 <template>
   <div class="v-catalog">
-
     <div class="cart_favorites">
       <router-link class="cart_favorites__link" :to="{name:'favorites', params:{favorites_data: FAVORITES}}">
         <b-icon icon="heart"/>

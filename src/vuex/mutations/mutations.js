@@ -2,6 +2,9 @@ export default {
     SET_PRODUCTS_TO_STATE: (state, products) => { // заполняем state данными
         state.products = products;
     },
+    SET_CATEGORIES_TO_STATE: (state, categories) => {
+        state.categories = categories;
+    },
     SET_CART: (state, {product, quantity, selectedColor, selectedSize}) => {
         if (!(selectedColor === "" || selectedSize === "")){
             let isExist = false;
