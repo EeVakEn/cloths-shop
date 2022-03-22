@@ -1,12 +1,13 @@
 from rest_framework import serializers
-from models import Product, Color, Size, Category
+from .models import *
 
-class ProductSerializer(serializers.ModelSerializer):
+
+class ProductDetailSerializer(serializers.ModelSerializer):
+    color = serializers.SlugRelatedField(read_only=True, many=True, slug_field='name')
+    size = serializers.SlugRelatedField(read_only=True, many=True, slug_field='name')
+    category = serializers.SlugRelatedField(read_only=True, slug_field='slug')
+
     class Meta:
         model = Product
-        fields = "__all__"
-
-class ColorSerial(serializers.ModelSerializer):
-    class Meta:
-        model = Color
-        fields = "__all__"
+        fields = '__all__'
+        ordering = ['-created_at']

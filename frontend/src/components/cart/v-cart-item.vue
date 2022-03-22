@@ -1,13 +1,13 @@
 <template>
   <div class="v-cart-item">
     <div class="v-cart-item__image-wrapper">
-      <img class="v-cart-item__image" :src=" require('../../assets/images/products/' + cart_item_data.image)"
+      <img class="v-cart-item__image" :src="cart_item_data.image"
            :alt="cart_item_data.artcle">
     </div>
     <div class="v-cart-item__info">
       <p><b>{{ cart_item_data.name }}</b></p>
-      <div>Размер: {{cart_item_data.selectedSize}}</div>
-      <div>Цвет: {{selectedColorToRussian}}</div>
+      <div>Размер: {{ cart_item_data.selectedSize }}</div>
+      <div>Цвет: {{ selectedColorToRussian }}</div>
     </div>
     <div class="v-cart-item__quantity">
       <form class="v-cart-item__quantity-form">
@@ -58,26 +58,44 @@ export default {
     getPrice: function () {
       return this.cart_item_data.price * this.cart_item_data.quantity
     },
-    selectedColorToRussian(){
-      switch(this.cart_item_data.selectedColor){
-        case 'white': return 'Белый'.toLowerCase();
-        case 'black': return 'Черный'.toLowerCase();
-        case 'bejeviy': return 'Бежевый'.toLowerCase();
-        case 'pink': return 'Розовый'.toLowerCase();
-        case 'gray': return 'Серый'.toLowerCase();
-        case 'light-blue': return 'Голубой'.toLowerCase();
-        case 'yellow': return 'Желтый'.toLowerCase();
-        case 'liloviy': return 'Лиловый'.toLowerCase();
-        case 'salad': return 'Салатовый'.toLowerCase();
-        case 'blue': return 'Синий'.toLowerCase();
-        case 'dark-blue': return 'Темно-синий'.toLowerCase();
-        case 'bordoviy': return 'Бордовый'.toLowerCase();
-        case 'red': return 'Красный'.toLowerCase();
-        case 'green': return 'Зеленый'.toLowerCase();
-        case 'vishneviy': return 'Вишневый'.toLowerCase();
-        case 'haki': return 'Хаки'.toLowerCase();
-        case 'coffee': return 'Кофейный'.toLowerCase();
-        default : return '';
+    selectedColorToRussian() {
+      switch (this.cart_item_data.selectedColor) {
+        case 'white':
+          return 'Белый'.toLowerCase();
+        case 'black':
+          return 'Черный'.toLowerCase();
+        case 'bejeviy':
+          return 'Бежевый'.toLowerCase();
+        case 'pink':
+          return 'Розовый'.toLowerCase();
+        case 'gray':
+          return 'Серый'.toLowerCase();
+        case 'light-blue':
+          return 'Голубой'.toLowerCase();
+        case 'yellow':
+          return 'Желтый'.toLowerCase();
+        case 'liloviy':
+          return 'Лиловый'.toLowerCase();
+        case 'salad':
+          return 'Салатовый'.toLowerCase();
+        case 'blue':
+          return 'Синий'.toLowerCase();
+        case 'dark-blue':
+          return 'Темно-синий'.toLowerCase();
+        case 'bordoviy':
+          return 'Бордовый'.toLowerCase();
+        case 'red':
+          return 'Красный'.toLowerCase();
+        case 'green':
+          return 'Зеленый'.toLowerCase();
+        case 'vishneviy':
+          return 'Вишневый'.toLowerCase();
+        case 'haki':
+          return 'Хаки'.toLowerCase();
+        case 'coffee':
+          return 'Кофейный'.toLowerCase();
+        default :
+          return '';
       }
     }
   },

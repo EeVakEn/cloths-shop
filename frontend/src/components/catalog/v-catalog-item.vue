@@ -11,13 +11,15 @@
     >
       <div class="v-modal__slot">
         <div class="v-modal__image-wrapper">
-          <img class="v-modal__image" :src=" require('../../assets/images/products/' + product_data.image)"
+          <img class="v-modal__image"
+               :src="product_data.image"
+               style="width:100%;"
                :alt="product_data.image">
         </div>
         <div class="v-modal__info">
           <h1 class="v-modal__name">{{ product_data.name }}</h1>
           <p class="v-modal__article">Артикул: {{ product_data.article }}</p>
-          <p style="margin-bottom: 10px">Размер: {{selectedSize}}</p>
+          <p style="margin-bottom: 10px">Размер: {{ selectedSize }}</p>
           <div class="v-modal__size">
             <div class="v-modal__size-check">
               <v-product-size
@@ -30,7 +32,7 @@
             </div>
             <span class="v-modal__select" v-if="isSizeNotSelected">Выберите размер</span>
           </div>
-          <p style="margin-bottom: 10px">Цвет: {{selectedColorToRussian}}</p>
+          <p style="margin-bottom: 10px">Цвет: {{ selectedColorToRussian }}</p>
           <div class="v-modal__color">
             <div class="v-modal__color-check">
               <v-product-color
@@ -72,7 +74,7 @@
 
 
     <div class="v-catalog-item__image-wrapper">
-      <img class="v-catalog-item__image" :src=" require('../../assets/images/products/' + product_data.image)"
+      <img class="v-catalog-item__image" :src="product_data.image"
            :alt="product_data.image">
     </div>
 
@@ -164,34 +166,52 @@ export default {
         this.quantity--
       }
     },
-    selectSize(size){
-      this.selectedSize=size
-      this.isSizeNotSelected=false
+    selectSize(size) {
+      this.selectedSize = size
+      this.isSizeNotSelected = false
     },
-    selectColor(color){
-      this.selectedColor= color
-      this.isColorNotSelected=false
+    selectColor(color) {
+      this.selectedColor = color
+      this.isColorNotSelected = false
     },
-    colorToRu(c){
-      switch(c){
-        case 'white': return 'Белый';
-        case 'black': return 'Черный';
-        case 'bejeviy': return 'Бежевый';
-        case 'pink': return 'Розовый';
-        case 'gray': return 'Серый';
-        case 'light-blue': return 'Голубой';
-        case 'yellow': return 'Желтый';
-        case 'liloviy': return 'Лиловый';
-        case 'salad': return 'Салатовый';
-        case 'blue': return 'Синий';
-        case 'dark-blue': return 'Темно-синий';
-        case 'bordoviy': return 'Бордовый';
-        case 'red': return 'Красный';
-        case 'green': return 'Зеленый';
-        case 'vishneviy': return 'Вишневый';
-        case 'haki': return 'Хаки';
-        case 'coffee': return 'Кофейный';
-        default : return '';
+    colorToRu(c) {
+      switch (c) {
+        case 'white':
+          return 'Белый';
+        case 'black':
+          return 'Черный';
+        case 'bejeviy':
+          return 'Бежевый';
+        case 'pink':
+          return 'Розовый';
+        case 'gray':
+          return 'Серый';
+        case 'light-blue':
+          return 'Голубой';
+        case 'yellow':
+          return 'Желтый';
+        case 'liloviy':
+          return 'Лиловый';
+        case 'salad':
+          return 'Салатовый';
+        case 'blue':
+          return 'Синий';
+        case 'dark-blue':
+          return 'Темно-синий';
+        case 'bordoviy':
+          return 'Бордовый';
+        case 'red':
+          return 'Красный';
+        case 'green':
+          return 'Зеленый';
+        case 'vishneviy':
+          return 'Вишневый';
+        case 'haki':
+          return 'Хаки';
+        case 'coffee':
+          return 'Кофейный';
+        default :
+          return '';
       }
     }
 
@@ -204,26 +224,44 @@ export default {
     getFormattedPrice() {
       return this.product_data.price.toLocaleString()
     },
-    selectedColorToRussian(){
-      switch(this.selectedColor){
-        case 'white': return 'Белый'.toLowerCase();
-        case 'black': return 'Черный'.toLowerCase();
-        case 'bejeviy': return 'Бежевый'.toLowerCase();
-        case 'pink': return 'Розовый'.toLowerCase();
-        case 'gray': return 'Серый'.toLowerCase();
-        case 'light-blue': return 'Голубой'.toLowerCase();
-        case 'yellow': return 'Желтый'.toLowerCase();
-        case 'liloviy': return 'Лиловый'.toLowerCase();
-        case 'salad': return 'Салатовый'.toLowerCase();
-        case 'blue': return 'Синий'.toLowerCase();
-        case 'dark-blue': return 'Темно-синий'.toLowerCase();
-        case 'bordoviy': return 'Бордовый'.toLowerCase();
-        case 'red': return 'Красный'.toLowerCase();
-        case 'green': return 'Зеленый'.toLowerCase();
-        case 'vishneviy': return 'Вишневый'.toLowerCase();
-        case 'haki': return 'Хаки'.toLowerCase();
-        case 'coffee': return 'Кофейный'.toLowerCase();
-        default : return '';
+    selectedColorToRussian() {
+      switch (this.selectedColor) {
+        case 'white':
+          return 'Белый'.toLowerCase();
+        case 'black':
+          return 'Черный'.toLowerCase();
+        case 'bejeviy':
+          return 'Бежевый'.toLowerCase();
+        case 'pink':
+          return 'Розовый'.toLowerCase();
+        case 'gray':
+          return 'Серый'.toLowerCase();
+        case 'light-blue':
+          return 'Голубой'.toLowerCase();
+        case 'yellow':
+          return 'Желтый'.toLowerCase();
+        case 'liloviy':
+          return 'Лиловый'.toLowerCase();
+        case 'salad':
+          return 'Салатовый'.toLowerCase();
+        case 'blue':
+          return 'Синий'.toLowerCase();
+        case 'dark-blue':
+          return 'Темно-синий'.toLowerCase();
+        case 'bordoviy':
+          return 'Бордовый'.toLowerCase();
+        case 'red':
+          return 'Красный'.toLowerCase();
+        case 'green':
+          return 'Зеленый'.toLowerCase();
+        case 'vishneviy':
+          return 'Вишневый'.toLowerCase();
+        case 'haki':
+          return 'Хаки'.toLowerCase();
+        case 'coffee':
+          return 'Кофейный'.toLowerCase();
+        default :
+          return '';
       }
     }
 
@@ -240,32 +278,36 @@ export default {
 }
 
 .v-modal {
-  &__select{
+  &__select {
     color: red;
     display: block;
     font-size: 12px;
     position: absolute;
     top: 36px;
   }
-  &__size{
+
+  &__size {
     display: block;
     position: relative;
     align-self: flex-start;
     justify-self: flex-start;
     margin-bottom: 14px;
   }
+
   &__size-check {
     display: flex;
     flex-flow: row wrap;
     gap: $padding/2;
   }
-  &__color{
+
+  &__color {
     display: block;
     position: relative;
     align-self: flex-start;
     justify-self: flex-start;
     margin-bottom: 14px;
   }
+
   &__color-check {
     display: flex;
     flex-flow: row wrap;
@@ -373,12 +415,14 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  &__colors-wrapper{
+
+  &__colors-wrapper {
     display: flex;
     flex-flow: wrap row;
     align-items: center;
     padding: 0 $padding;
   }
+
   &__color {
     width: 20px;
     height: 20px;

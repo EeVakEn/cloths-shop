@@ -1,7 +1,7 @@
 <template>
   <div class="v-catalog-item">
     <div class="v-catalog-item__image-wrapper">
-      <img class="v-catalog-item__image" :src=" require('../../assets/images/products/' + favorite_item_data.image)"
+      <img class="v-catalog-item__image" :src="favorite_item_data.image"
            :alt="favorite_item_data.image">
     </div>
 
