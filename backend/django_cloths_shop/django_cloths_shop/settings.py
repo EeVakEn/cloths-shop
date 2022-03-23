@@ -25,7 +25,6 @@ SECRET_KEY = 'django-insecure-52gd8^=)$#9p0!ls_+3joyj%v7(f5&%vyeyqcuwjj_(sk=9&^p
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
@@ -43,7 +42,8 @@ INSTALLED_APPS = [
     'djoser',
     'corsheaders',
     'mptt',
-    'PIL'
+    'PIL',
+    'cart.apps.CartConfig'
 ]
 
 MIDDLEWARE = [
@@ -143,3 +143,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+CART_SESSION_ID = 'cart'

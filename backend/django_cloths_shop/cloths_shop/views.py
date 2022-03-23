@@ -10,4 +10,5 @@ class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 class ProductsListView(generics.ListAPIView):
     serializer_class = ProductDetailSerializer
-    queryset = Product.objects.all()
+    queryset = Product.objects.filter(is_available=True)
+    

@@ -20,6 +20,10 @@ class Category(MPTTModel):
         order_insertion_by = ['name']
         parent_attr = 'parent'
 
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
     def __str__(self):
         return self.get_level() * ' ' + self.name
 
@@ -33,6 +37,10 @@ class Color(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta():
+        verbose_name = 'Цвет'
+        verbose_name_plural = 'Цвета'
+
 
 class Size(models.Model):
     name = models.CharField(max_length=30)
@@ -40,23 +48,32 @@ class Size(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta():
+        verbose_name = 'Размер'
+        verbose_name_plural = 'Размеры'
+
 
 alphanumeric = RegexValidator(r'^[0-9a-zA-Z]{6,6}$', '6 символов. Цифры или буквы латинского алфавита.')
 
 
 class Product(models.Model):
-    article = models.CharField(max_length=6, verbose_name='Артикул', db_index=True, unique=True, primary_key=True, validators=[alphanumeric])
+    article = models.CharField(max_length=6, verbose_name='Артикул', db_index=True, unique=True, primary_key=True,
+                               validators=[alphanumeric])
     name = models.CharField(max_length=255, verbose_name='Название товара')
-    description = models.TextField(verbose_name='Описание товара')
+    description = models.TextField(verbose_name='Описание товара', blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
     image = models.ImageField(verbose_name='Картинка', upload_to='img/products/')
     price = models.FloatField(verbose_name='Цена')
     color = models.ManyToManyField(Color, verbose_name='Цвет')
     size = models.ManyToManyField(Size, verbose_name='Размер')
-    created_at = models.DateTimeField(auto_now=True)
+    is_available = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-created_at']
+        verbose_name = 'Продукт'
+        verbose_name_plural = 'Продукты'
 
     def __str__(self):
         return '{} {}'.format(self.article, self.name)
