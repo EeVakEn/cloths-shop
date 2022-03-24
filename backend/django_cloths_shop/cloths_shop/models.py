@@ -78,6 +78,8 @@ class Product(models.Model):
     def __str__(self):
         return '{} {}'.format(self.article, self.name)
 
+
+
 # class ProductColorSize(models.Model):
 #     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар')
 #     color_id = models.ForeignKey(Color, on_delete=models.CASCADE, verbose_name='Цвет')
