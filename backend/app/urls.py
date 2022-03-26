@@ -7,5 +7,8 @@ from . import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/cloths_shop/', include('cloths_shop.urls'))
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('api/catalog/', include('catalog.urls'))
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
