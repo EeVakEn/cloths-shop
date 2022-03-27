@@ -9,12 +9,13 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import datetime
 import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR.parent, 'media/')
 MEDIA_URL = '/media/'
 
 # Quick-start development settings - unsuitable for production
@@ -27,7 +28,6 @@ SECRET_KEY = 'django-insecure-52gd8^=)$#9p0!ls_+3joyj%v7(f5&%vyeyqcuwjj_(sk=9&^p
 DEBUG = True
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,13 +37,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'catalog',
     'rest_framework',
+    'rest_framework_json_api',
+    'rest_framework_jwt',
+    'rest_framework_simplejwt',
     'djoser',
     'corsheaders',
     'mptt',
     'PIL',
-    'cart.apps.CartConfig'
+
+    # apps
+    'customer',
+    'cart',
+    'catalog',
 ]
 
 MIDDLEWARE = [
@@ -78,7 +84,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
@@ -96,20 +101,20 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
-# AUTH_PASSWORD_VALIDATORS = [
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-#     },
-# ]
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
@@ -133,7 +138,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
@@ -143,4 +147,38 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CART_SESSION_ID = 'cart'
+# CART_SESSION_ID = 'cart'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        # 'rest_framework.permissions.IsAdminUser',
+        'rest_framework.permissions.AllowAny',
+    ),
+    'PAGE_SIZE': 10,  # количество элементов на странице
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework_json_api.pagination.PageNumberPagination',
+}
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),  # время жизни токена
+    'JWT_ALLOW_REFRESH': True,  # продляем время жизни токена, если пользователь посещает сайт
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=30)  # если своевременно обновлять токен, он может
+    # прожить N дней
+}
+
+DJOSER = {
+    'SEND_ACTIVATION_EMAIL': True,  # пользователь должен будет нажать ссылку активации, отправленную по электронной
+    # почте
+    'SEND_CONFIRMATION_EMAIL': True,  # подтверждать email?
+    'ACTIVATION_URL': 'auth/activate/{uid}/{token}/',
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
+    'PASSWORD_RESET_CONFIRM_URL': 'auth/reset/confirm/{uid}/{token}/',  # URL-адрес страницы сброса пароля интерфейса
+    'TOKEN_MODEL': None  # какая модель токена должна использоваться для аутентификации
+}
+

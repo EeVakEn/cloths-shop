@@ -1,9 +1,9 @@
 export default {
     SET_PRODUCTS_TO_STATE: (state, products) => { // заполняем state данными
-        state.products = products;
+        state.products = products.products;
     },
     SET_CATEGORIES_TO_STATE: (state, categories) => {
-        state.categories = categories;
+        state.categories = categories.results;
     },
     SET_CART: (state, {product, quantity, selectedColor, selectedSize}) => {
         if (!(selectedColor === "" || selectedSize === "")){

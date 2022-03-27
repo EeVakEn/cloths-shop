@@ -32,6 +32,7 @@ class Cart(object):
         if cart_id in self.cart:
             del self.cart[cart_id]
             self.save()
+
     #
     # # Перебор всех товаров
     # # Нужно т.к. цена на товары за время сессии может измениться

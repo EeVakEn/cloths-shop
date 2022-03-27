@@ -10,6 +10,7 @@ class VariantInline(admin.TabularInline):
     list_editable = ['color', 'size', 'quantity', ]
     extra = 0
 
+
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('article', 'get_img', 'name', 'category',
                     'price', 'is_available', 'created_at')
@@ -21,7 +22,9 @@ class ProductAdmin(admin.ModelAdmin):
     def get_img(self, obj):
         if obj.image:
             return mark_safe(f'<img src="{obj.image.url}" height="75" />')
+
     get_img.short_description = 'Фото'
+
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'slug', 'parent')

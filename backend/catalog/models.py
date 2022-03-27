@@ -5,8 +5,6 @@ from mptt.models import MPTTModel, TreeForeignKey
 from django.core.validators import RegexValidator
 
 
-# mptt for requrcieve tree
-
 class Category(MPTTModel):
     name = models.CharField(max_length=255, db_index=True, verbose_name='Название категррии')
     slug = models.SlugField(verbose_name='Слаг категории (отображается в URL)', unique=True, db_index=True)
@@ -45,7 +43,7 @@ class Color(models.Model):
 
 
 class Size(models.Model):
-    name = models.CharField(max_length=30,  unique=True, verbose_name='Размер')
+    name = models.CharField(max_length=30, unique=True, verbose_name='Размер')
 
     def __str__(self):
         return self.name
@@ -56,22 +54,16 @@ class Size(models.Model):
         verbose_name_plural = 'Размеры'
 
 
-alphanumeric = RegexValidator(r'^[0-9a-zA-Z]{6,6}$', '6 символов. Цифры или буквы латинского алфавита.')
-
-
 class Product(models.Model):
-    article = models.CharField(max_length=6, verbose_name='Артикул', db_index=True, unique=True, primary_key=True,
-                               validators=[alphanumeric])
-    name = models.CharField(max_length=255, verbose_name='Название товара')
+    article = models.AutoField(verbose_name='Артикул', primary_key=True)
+    name = models.CharField(max_length=255, db_index=True, verbose_name='Название товара')
     description = models.TextField(verbose_name='Описание товара', blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
     image = models.ImageField(verbose_name='Картинка', upload_to='img/products/')
     price = models.DecimalField(verbose_name='Цена', max_digits=8, decimal_places=2)
-    # color = models.ManyToManyField(Color, verbose_name='Цвет', through="ProductColorSize")
-    # size = models.ManyToManyField(Size, verbose_name='Размер', through="ProductColorSize")
-    is_available = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    is_available = models.BooleanField(default=True, verbose_name='Опубликовано')
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Создано')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Редактировано')
 
     class Meta:
         db_table = 'products'
