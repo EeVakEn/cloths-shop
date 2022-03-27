@@ -78,33 +78,35 @@
            :alt="product_data.image">
     </div>
 
-    <p class="v-catalog-item__name">{{ product_data.name }}</p>
+    <div class="v-catalog-item__info">
+      <div class="v-catalog-item__name">{{ product_data.name }}</div>
 
-    <div class="v-catalog-item__colors-wrapper">
-      <b>Цвет: </b>
-      <div
-          v-for="(color,index) in product_data.color"
-          :key="index"
-          :class="[color, 'v-catalog-item__color']"
-          :data-microtip="colorToRu(color)"
-      />
+      <div class="v-catalog-item__colors-wrapper">
+        <b>Цвет: </b>
+        <div
+            v-for="(color,index) in product_data.color"
+            :key="index"
+            :class="[color, 'v-catalog-item__color']"
+            :data-microtip="colorToRu(color)"
+        />
+      </div>
+
+      <div class="v-catalog-item__description">{{ product_data.description }}</div>
+      <div class="v-catalog-item__bottom">
+        <div class="v-catalog-item__price">{{ getFormattedPrice }} ₽</div>
+        <b-button-group class="v-catalog-item__btn-grp">
+          <b-button class="v-catalog-item__btn-grp__btn" @click="showModal">
+            В корзину
+            <b-icon icon="basket" scale="1"/>
+          </b-button>
+          <b-button class="v-catalog-item__btn-grp__btn" @click="addToFavorites">
+            <b-icon v-if="isFavorite" icon="heart-fill" scale="1"/>
+            <b-icon v-else icon="heart" scale="1"/>
+          </b-button>
+        </b-button-group>
+      </div>
     </div>
 
-
-    <p class="v-catalog-item__description">{{ product_data.description }}</p>
-    <div class="v-catalog-item__bottom">
-      <span class="v-catalog-item__price">{{ getFormattedPrice }} ₽</span>
-      <b-button-group class="v-catalog-item__btn-grp">
-        <b-button class="v-catalog-item__btn-grp__btn" @click="showModal">
-          В корзину
-          <b-icon icon="basket" scale="1"/>
-        </b-button>
-        <b-button class="v-catalog-item__btn-grp__btn" @click="addToFavorites">
-          <b-icon v-if="product_data.isFavorite" icon="heart-fill" scale="1"/>
-          <b-icon v-else icon="heart" scale="1"/>
-        </b-button>
-      </b-button-group>
-    </div>
 
   </div>
 </template>
@@ -117,16 +119,6 @@ import VProductSize from "../v-product-size";
 export default {
   name: "v-catalog-item",
   components: {VProductColor, VProductSize, VModal},
-  data() {
-    return {
-      isColorNotSelected: false,
-      isSizeNotSelected: false,
-      isInfoModalVisible: false,
-      quantity: 1,
-      selectedSize: "",
-      selectedColor: ""
-    }
-  },
   props: {
     product_data: {
       type: Object,
@@ -141,6 +133,18 @@ export default {
       }
     }
   },
+  data() {
+    return {
+      isColorNotSelected: false,
+      isSizeNotSelected: false,
+      isInfoModalVisible: false,
+      quantity: 1,
+      selectedSize: "",
+      selectedColor: "",
+      isFavorite: false,
+    }
+  },
+
   methods: {
     addToCart() {
       this.$emit('addToCart', this.product_data, this.quantity, this.selectedColor, this.selectedSize)
@@ -149,6 +153,7 @@ export default {
     },
     addToFavorites() {
       this.$emit('addToFavorites', this.product_data)
+      this.isFavorite = this.product_data.isFavorite
     },
     showModal() {
       this.isInfoModalVisible = true;
@@ -216,9 +221,11 @@ export default {
     }
 
   },
+  activated() {
+    this.isFavorite = this.product_data.isFavorite
+  },
   mounted() {
     this.$set(this.product_data, 'quantity', 1)
-    this.$set(this.product_data, 'isFavorite', false)
   },
   computed: {
     getFormattedPrice() {
@@ -328,7 +335,7 @@ export default {
     display: flex;
     flex-flow: column;
     align-items: flex-start;
-    padding: 20px;
+    padding: $padding !important;
     width: 480px;
   }
 
@@ -394,21 +401,22 @@ export default {
   background-color: $second-color;
   width: 300px;
   height: 500px;
-
+  &__info{
+    padding: $padding;
+  }
   &__image-wrapper {
     width: 100%;
     height: 350px;
   }
 
   &__name {
-    padding: $padding;
     text-align: left;
     font-weight: bold;
     margin-bottom: 0;
   }
 
   &__description {
-    padding: 0 $padding;
+    padding: $padding/2 0;
     text-align: left;
     height: 50px;
     white-space: nowrap;
@@ -420,7 +428,6 @@ export default {
     display: flex;
     flex-flow: wrap row;
     align-items: center;
-    padding: 0 $padding;
   }
 
   &__color {
@@ -432,15 +439,16 @@ export default {
 
   &__bottom {
     position: relative;
-    display: block;
-    bottom: $padding;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
   }
 
   &__price {
-    line-height: 20px;
-    font-size: 20px;
+    line-height: 22px;
+    font-size: 22px;
     font-weight: bold;
-    padding-right: $padding*2;
   }
 
   &__btn-grp {

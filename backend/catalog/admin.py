@@ -27,7 +27,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'parent')
+    list_display = ('id', 'name', 'slug', 'parent')
     list_editable = ('slug', 'parent')
     prepopulated_fields = {"slug": ("name",)}
 

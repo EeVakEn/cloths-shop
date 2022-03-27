@@ -5,7 +5,7 @@ from .models import Category
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('name', 'slug')
+        fields = ('name', 'slug', 'get_full_url')
 
     def get_fields(self):
         fields = super(CategorySerializer, self).get_fields()

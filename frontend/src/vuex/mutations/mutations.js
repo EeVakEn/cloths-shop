@@ -1,6 +1,13 @@
 export default {
+    // INITIALIZE_CART: (state, cart) => {
+    //
+    // },
     SET_PRODUCTS_TO_STATE: (state, products) => { // заполняем state данными
         state.products = products.products;
+        //TODO: при заходе на сервер ставим isFavorite false
+        state.products.map(item=>{
+            item.isFavorite = false
+        })
     },
     SET_CATEGORIES_TO_STATE: (state, categories) => {
         state.categories = categories.results;
@@ -25,21 +32,12 @@ export default {
         }
     },
     SET_FAVORITE: (state, product) => {
-        let isExist = false;
-        let exIndex = 0;
-        state.favorites.map(function (item, index) {
-            if (item.article === product.article) {
-                product.isFavorite = false;
-                isExist = true;
-                exIndex = index
-            } else product.isFavorite = true
-        })
-        if (isExist) {
-            state.favorites[exIndex].isFavorite = false;
-            state.favorites.splice(exIndex, 1);
-        } else {
+        if (state.favorites.includes(product)) {
+            state.favorites.splice(state.favorites.indexOf(product),1)
+            product.isFavorite = false
+        }else {
+            product.isFavorite = true
             state.favorites.push(product);
-            state.favorites[exIndex].isFavorite = true;
         }
     },
     DEL_FROM_CART: (state, index) => {

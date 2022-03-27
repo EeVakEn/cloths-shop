@@ -1,32 +1,31 @@
 <template>
   <div class="v-cart-item">
-    <div class="v-cart-item__image-wrapper">
+    <div class="col-3 v-cart-item__image-wrapper">
       <img class="v-cart-item__image" :src="cart_item_data.image"
-           :alt="cart_item_data.artcle">
+           :alt="cart_item_data.article">
     </div>
-    <div class="v-cart-item__info">
+    <div class="col-6 v-cart-item__info">
       <p><b>{{ cart_item_data.name }}</b></p>
       <div>Размер: {{ cart_item_data.selectedSize }}</div>
       <div>Цвет: {{ selectedColorToRussian }}</div>
     </div>
-    <div class="v-cart-item__quantity">
-      <form class="v-cart-item__quantity-form">
-        <b-input-group class="v-cart-item__btn-grp">
-          <b-button @click="decrement" class="v-cart-item__btn-grp__btn"><b>-</b></b-button>
-          <b-input disabled class="v-cart-item__quantity__input" :value="cart_item_data.quantity"/>
-          <b-button @click="increment" class="v-cart-item__btn-grp__btn"><b>+</b></b-button>
-        </b-input-group>
-      </form>
-    </div>
-    <div class="v-cart-item__price">
-      <span>{{ getPrice }} ₽</span>
-      <br/>
-      <span
-          class="v-cart-item__delete"
-          @click="deleteFromCart"
-      >
-        <b-icon icon="trash"></b-icon> Удалить
-      </span>
+    <div class="col-md-3 v-cart-item__end">
+      <div class="v-cart-item__price">
+        {{ getPrice }} ₽
+      </div>
+      <div class="v-cart-item__quantity">
+        <form class="v-cart-item__quantity-form">
+          <b-input-group class="v-cart-item__btn-grp">
+            <b-button @click="decrement" class="v-cart-item__btn-grp__btn"><b>-</b></b-button>
+            <b-input disabled class="v-cart-item__quantity__input" :value="cart_item_data.quantity"/>
+            <b-button @click="increment" class="v-cart-item__btn-grp__btn"><b>+</b></b-button>
+          </b-input-group>
+        </form>
+      </div>
+      <div class="v-cart-item__delete" @click="deleteFromCart">
+        <b-icon icon="trash"></b-icon>
+        Удалить
+      </div>
     </div>
   </div>
 </template>
@@ -104,16 +103,16 @@ export default {
 
 <style lang="scss">
 .v-cart-item {
-  width: 100%;
-  height: 120px;
-  grid-template-columns: 1fr 4fr 1fr 1fr;
-  display: grid;
+  display: flex;
+  flex-flow: row nowrap;
+  height: 150px;
   background-color: $second-color;
   text-align: center;
-  //padding: $padding;
 
   &__image-wrapper {
-    height: 120px;
+    display: block;
+    padding: 0 !important;
+    height: 100%;
   }
 
   &__image {
@@ -123,18 +122,22 @@ export default {
   }
 
   &__info {
-    padding: $padding;
+    display: block;
+    padding: $padding*2;
     text-align: left;
     overflow: hidden;
   }
 
+  &__end {
+    padding: $padding*2;
+    display: flex;
+    flex-flow: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: $padding*2
+  }
+
   &__quantity {
-    align-self: center;
-
-    &_form {
-      width: 120px;
-    }
-
     &__input {
       border-radius: 0;
       text-align: center;
@@ -144,7 +147,9 @@ export default {
   }
 
   &__btn-grp {
-    width: 150px;
+    width: 110px !important;
+    display: flex !important;
+    flex-flow: nowrap !important;
 
     &__btn {
       background-color: $dark-color !important;
@@ -153,9 +158,10 @@ export default {
   }
 
   &__price {
-    align-self: center;
-    margin: 0 auto;
+    align-self: flex-end;
+    text-align: end;
     font-weight: bold;
+    font-size: 20px;
   }
 
   &__delete {

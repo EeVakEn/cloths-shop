@@ -4,10 +4,10 @@
     <h1>Избранное</h1>
     <div v-if="FAVORITES.length">
       <div class="v-catalog__list">
-        <v-favorite-item
-            v-for="(item) in favorites_data"
-            :key="item.article"
-            :favorite_item_data="item"
+        <v-catalog-item
+            v-for="product in FAVORITES"
+            :key="product.article"
+            :product_data="product"
             @addToCart="addToCart"
             @addToFavorites="addToFavorites"
         />
@@ -26,19 +26,11 @@
 
 <script>
 import {mapGetters, mapActions} from "vuex";
-import VFavoriteItem from "./v-favorite-item";
+import VCatalogItem from "@/components/catalog/v-catalog-item";
 
 export default {
   name: "v-favorites",
-  components: {VFavoriteItem},
-  props: {
-    favorites_data: {
-      type: Array,
-      default() {
-        return []
-      }
-    }
-  },
+  components: {VCatalogItem},
   methods: {
     ...mapActions([
       'GET_PRODUCTS_FROM_API',

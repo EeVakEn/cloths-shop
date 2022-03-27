@@ -18,7 +18,6 @@
           v-for="product in PRODUCTS"
           :key="product.article"
           :product_data="product"
-          :favorites_data="FAVORITES"
           @addToCart="addToCart"
           @addToFavorites="addToFavorites"
       />

@@ -1,15 +1,14 @@
 <template>
   <div class="v-cart">
     <div v-if="cart_data.length">
-      <router-link :to="{name:'catalog'}">
-        <div class="v-catalog__link_to_cart">Back</div>
-      </router-link>
       <h1>Корзина</h1>
-      <div class="v-cart__wrapper">
-        <div class="v-cart__delivery">
-
+      <div class="v-cart__wrapper row">
+        <div class="v-cart__delivery col-lg-6">
+          <img
+              src="https://mykaleidoscope.ru/uploads/posts/2021-10/1634164062_50-mykaleidoscope-ru-p-rizhii-tsvet-volos-krasivaya-pricheska-dev-54.jpg"
+              style="width: 100%"/>
         </div>
-        <div class="v-cart__cart">
+        <div class="v-cart__cart col-lg-6">
           <v-cart-item
               v-for="(item,index) in cart_data"
               :key="item.article"
@@ -19,14 +18,14 @@
               @decrement="decrement(index)"
           />
           <div class="v-cart__total">
-            <div>Total</div>
-            <div class="v-cart__total__price"><b>{{ getFormattedPrice }} ₽</b></div>
-            <div
-                class="v-cart__delete"
+            <div>Итого</div>
+            <div><b>{{ getFormattedPrice }} ₽</b></div>
+            <a
+                class="v-cart__total__delete"
                 @click="deleteAllFromCart"
             >
               Очистить корзину
-            </div>
+            </a>
           </div>
         </div>
 
@@ -103,30 +102,30 @@ export default {
 <style lang="scss">
 .v-cart {
   &__wrapper {
-    display: grid;
+  }
 
-    grid-template-columns: 1fr 1fr;
+  &__cart, &__delivery {
+    padding: $padding;
   }
 
   &__total {
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-    width: 100%;
+    display: block;
+    justify-content: end;
     background-color: $dark-color;
     color: white;
-    padding: $padding $padding*3;
-
-    &__price {
+    padding: $padding*2;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: right;
+    &__delete {
+      color: white !important;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 16px;
       font-weight: bold;
-      font-size: 22px;
     }
   }
 
-  &__delete {
-    font-weight: bold;
-    cursor: pointer;
-  }
 
 }
 </style>

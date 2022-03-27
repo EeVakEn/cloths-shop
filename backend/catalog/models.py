@@ -11,6 +11,18 @@ class Category(MPTTModel):
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children',
                             verbose_name='Родительская категория')
 
+    def get_full_url(self):
+        url = list()
+        url_str = str()
+        url.append(self.slug)
+        cat = self
+        while cat.parent:
+            cat = cat.parent
+            url.append(cat.slug)
+        for item in list(reversed(url)):
+            url_str += item + '/'
+        return url_str
+
     def __unicode__(self):
         return self.name
 
@@ -60,10 +72,13 @@ class Product(models.Model):
     description = models.TextField(verbose_name='Описание товара', blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
     image = models.ImageField(verbose_name='Картинка', upload_to='img/products/')
-    price = models.DecimalField(verbose_name='Цена', max_digits=8, decimal_places=2)
+    price = models.PositiveIntegerField(verbose_name='Цена')
     is_available = models.BooleanField(default=True, verbose_name='Опубликовано')
     created_at = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Создано')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Редактировано')
+
+    def get_full_url(self):
+        return self.category.get_full_url() + str(self.article) + '/'
 
     class Meta:
         db_table = 'products'
