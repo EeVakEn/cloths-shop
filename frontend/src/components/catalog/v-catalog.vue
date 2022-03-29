@@ -84,9 +84,9 @@ export default {
   display: flex;
   flex-wrap: wrap;
   top: 10px;
-  right: 10px;
-
+  right: 20px;
   &__link {
+
     font-size: 24px;
     text-decoration: none;
     color: $dark-color;

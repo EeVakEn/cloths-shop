@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-
+from mptt.admin import MPTTModelAdmin
 from .models import Product, Color, Size, Category, ProductVariant
 
 
@@ -26,10 +26,12 @@ class ProductAdmin(admin.ModelAdmin):
     get_img.short_description = 'Фото'
 
 
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'slug', 'parent')
+class CategoryAdmin(MPTTModelAdmin):
+    list_display = ('name', 'id', 'slug', 'parent')
     list_editable = ('slug', 'parent')
-    prepopulated_fields = {"slug": ("name",)}
+    prepopulated_fields = {"slug": ("name",)}  # эта штука генерит слаг
+    mptt_level_ident = 20  # эта штука рисует табы
+    mpt_indent_field = 'name'  # эта штука задает поле где рисовать табы
 
 
 admin.site.register(Category, CategoryAdmin)

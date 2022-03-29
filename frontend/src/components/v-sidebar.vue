@@ -1,11 +1,10 @@
 <template>
   <div>
-    <div :class="{'v-sidebar__visible':isOpen, 'v-sidebar__invisible':!isOpen}" class="v-sidebar">
-      <div class="hamburger-button" @click="close">
+    <div @mouseleave="close" :class="{'v-sidebar__visible':isOpen, 'v-sidebar__invisible':!isOpen}" class="v-sidebar">
+      <div class="hamburger-button"  @mouseover="close">
         <b-icon v-if="!isOpen" icon="arrow-bar-right"/>
         <b-icon v-else icon="arrow-bar-left"/>
       </div>
-
       <div v-if="isOpen">
         <h2>Каталог</h2>
         <v-categories-tree

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'mptt',
     'PIL',
+    'simplejson',
 
     # apps
     'customer',
@@ -182,3 +183,4 @@ DJOSER = {
     'TOKEN_MODEL': None  # какая модель токена должна использоваться для аутентификации
 }
 
+MPTT_ADMIN_LEVEL_IDENT = 20

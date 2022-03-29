@@ -1,5 +1,6 @@
-from django.http import JsonResponse, Http404
-from rest_framework import generics, viewsets
+from django.http import JsonResponse, Http404, HttpResponse
+from rest_framework import generics
+from django.core import serializers
 from .serializers import CategorySerializer
 from .models import Product, ProductVariant, Category
 from rest_framework.views import APIView
@@ -71,3 +72,20 @@ class ProductDetailView(APIView):
             return JsonResponse(data, status=200)
         except:
             raise Http404()
+
+
+class ProductCategoryListView(APIView):
+    def get(self, request, cat_id):
+        breadcrumb = Category.objects.get(pk=cat_id).get_ancestors(ascending=False, include_self=True)
+        products = Product.objects.none()
+        # дочерние категории
+        for category in Category.objects.get(pk=1).get_children_id_list():
+            products |= (Product.objects.filter(category_id=category))
+        products_json = serializers.serialize('json', products)
+        breadcrumb_json = serializers.serialize('json', breadcrumb)
+        context = {
+            'breadcrumb': breadcrumb_json,
+            'products': products_json,
+        }
+        return JsonResponse(context, status=200)
+

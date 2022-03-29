@@ -6,6 +6,16 @@ from django.core.validators import RegexValidator
 
 
 class Category(MPTTModel):
+    class MPTTMeta:
+        order_insertion_by = ['name']
+        parent_attr = 'parent'
+
+    class Meta:
+        db_table = 'categories'
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+        ordering = ('tree_id', 'level')
+
     name = models.CharField(max_length=255, db_index=True, verbose_name='Название категррии')
     slug = models.SlugField(verbose_name='Слаг категории (отображается в URL)', unique=True, db_index=True)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children',
@@ -23,17 +33,14 @@ class Category(MPTTModel):
             url_str += item + '/'
         return url_str
 
+    def get_children_slug_list(self):
+        return list(item.slug for item in list(self.get_descendants(include_self=True)))
+
+    def get_children_id_list(self):
+        return list(item.id for item in list(self.get_descendants(include_self=True)))
+
     def __unicode__(self):
         return self.name
-
-    class MPTTMeta:
-        order_insertion_by = ['name']
-        parent_attr = 'parent'
-
-    class Meta:
-        db_table = 'categories'
-        verbose_name = 'Категория'
-        verbose_name_plural = 'Категории'
 
     def __str__(self):
         return self.get_level() * ' ' + self.name
@@ -76,6 +83,9 @@ class Product(models.Model):
     is_available = models.BooleanField(default=True, verbose_name='Опубликовано')
     created_at = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Создано')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Редактировано')
+
+    def get_category_url(self):
+        return self.category.get_full_url()
 
     def get_full_url(self):
         return self.category.get_full_url() + str(self.article) + '/'
