@@ -112,9 +112,9 @@
 </template>
 
 <script>
-import VModal from "../v-modal";
-import VProductColor from "../v-product-color";
-import VProductSize from "../v-product-size";
+import VModal from "../product/v-modal";
+import VProductColor from "../product/v-product-color";
+import VProductSize from "../product/v-product-size";
 
 export default {
   name: "v-catalog-item",

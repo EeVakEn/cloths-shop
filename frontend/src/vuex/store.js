@@ -17,6 +17,7 @@ let store = new Vuex.Store({ //Центральное хранилище наш�
         cart: [],
         favorites: [],
         categories: [],
+        breadcrumb: [],
         isAutenticated: false,
         token: '',
         isLoading: false,

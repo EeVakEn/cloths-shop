@@ -10,7 +10,7 @@
 
 <script>
 import {mapGetters} from "vuex";
-import VSidebar from "./v-sidebar";
+import VSidebar from "./sidebar/v-sidebar";
 
 export default {
   name: 'v-main-wrapper',

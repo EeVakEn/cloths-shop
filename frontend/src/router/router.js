@@ -8,12 +8,8 @@ Vue.use(Router)
 
 let router = new Router(
     {
+        mode: 'history',
         routes: [
-            {
-                path: '/',
-                name: 'catalog',
-                component: VCatalog
-            },
             {
                 path: '/cart',
                 name: 'cart',
@@ -25,10 +21,19 @@ let router = new Router(
                 name: 'favorites',
                 component: VFavorites,
                 props: true,
+            },
+            {
+                path: '/',
+                name: 'catalog',
+                component: VCatalog,
+            },
+            {
+                path: '/:cat_id',
+                name: 'category',
+                component: VCatalog,
             }
         ]
     }
 )
-
 
 export default router;

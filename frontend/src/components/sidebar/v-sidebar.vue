@@ -1,12 +1,15 @@
 <template>
   <div>
-    <div @mouseleave="close" :class="{'v-sidebar__visible':isOpen, 'v-sidebar__invisible':!isOpen}" class="v-sidebar">
-      <div class="hamburger-button"  @mouseover="close">
+    <div :class="{'v-sidebar__visible':isOpen, 'v-sidebar__invisible':!isOpen}" class="v-sidebar">
+      <div class="hamburger-button" @click="close_open_sidebar">
         <b-icon v-if="!isOpen" icon="arrow-bar-right"/>
         <b-icon v-else icon="arrow-bar-left"/>
       </div>
       <div v-if="isOpen">
-        <h2>Каталог</h2>
+        <div class="v-sidebar_catalog_link"
+             @click="$router.push({name: 'catalog'}), $router.go()">
+          Каталог
+        </div>
         <v-categories-tree
             v-for="node in CATEGORIES"
             :key="node.name"
@@ -35,7 +38,7 @@ export default {
     ...mapActions([
       'GET_CATEGORIES_FROM_API'
     ]),
-    close() {
+    close_open_sidebar() {
       this.isOpen = !this.isOpen
       this.$emit('isOpenSidebar', this.isOpen)
     }
@@ -70,7 +73,8 @@ export default {
   cursor: pointer;
   transition: .5s;
 }
-.hamburger-button:hover{
+
+.hamburger-button:hover {
   background-color: $black
 }
 
@@ -94,5 +98,13 @@ export default {
 
 .v-sidebar__invisible {
   width: 70px;
+}
+
+.v-sidebar_catalog_link {
+  text-align: left;
+  margin-left: 100px;
+  font-size: 24px;
+  color: white !important;
+  cursor: pointer;
 }
 </style>

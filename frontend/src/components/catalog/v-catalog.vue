@@ -12,7 +12,8 @@
     </div>
 
 
-    <h1>Каталог</h1>
+    <h2>Каталог</h2>
+    <v-breadcrumb :categories_array='this.BREADCRUMB'/>
     <div class="v-catalog__list">
       <v-catalog-item
           v-for="product in PRODUCTS"
@@ -28,16 +29,18 @@
 <script>
 import VCatalogItem from "./v-catalog-item";
 import {mapActions, mapGetters} from 'vuex';
+import VBreadcrumb from "@/components/catalog/v-breadcrumb";
 
 export default {
   name: "v-catalog",
-  components: {VCatalogItem},
+  components: {VBreadcrumb, VCatalogItem},
   data() {
     return {}
   },
   methods: {
     ...mapActions([
       'GET_PRODUCTS_FROM_API',
+      'GET_PRODUCTS_WITH_CATEGORY',
       'ADD_TO_CART',
       'ADD_TO_FAVORITES'
     ]),
@@ -46,16 +49,26 @@ export default {
     },
     addToFavorites(data) {
       this.ADD_TO_FAVORITES(data)
+    },
+    getProducts() {
+      if (this.$route.params.cat_id) {
+        this.GET_PRODUCTS_WITH_CATEGORY(this.$route.params.cat_id)
+        this.products = this.PRODUCTS
+      } else {
+        this.GET_PRODUCTS_FROM_API()
+        this.products = this.PRODUCTS
+      }
     }
   },
-  mounted() {
-    this.GET_PRODUCTS_FROM_API()
+  async created() {
+    await this.getProducts();
   },
   computed: {
     ...mapGetters([
       'PRODUCTS',
       'CART',
-      'FAVORITES'
+      'FAVORITES',
+      'BREADCRUMB',
     ]),
     getCartQuantity: function () {
       let res = 0;
@@ -85,6 +98,7 @@ export default {
   flex-wrap: wrap;
   top: 10px;
   right: 20px;
+
   &__link {
 
     font-size: 24px;

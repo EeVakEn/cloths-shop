@@ -1,13 +1,10 @@
 export default {
-    // INITIALIZE_CART: (state, cart) => {
-    //
-    // },
+    SET_PRODUCTS_TO_STATE_WITH_CATEGORY: (state, products) => { // заполняем state данными
+        state.products = products.products;
+        state.breadcrumb = products.breadcrumb;
+    },
     SET_PRODUCTS_TO_STATE: (state, products) => { // заполняем state данными
         state.products = products.products;
-        //TODO: при заходе на сервер ставим isFavorite false
-        state.products.map(item=>{
-            item.isFavorite = false
-        })
     },
     SET_CATEGORIES_TO_STATE: (state, categories) => {
         state.categories = categories.results;

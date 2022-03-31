@@ -14,9 +14,10 @@ class ProductSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('name', 'slug', 'get_full_url')
+        fields = ('id', 'name', 'slug', 'get_full_url')
 
     def get_fields(self):
         fields = super(CategorySerializer, self).get_fields()
         fields['children'] = CategorySerializer(many=True, required=False)
         return fields
+
