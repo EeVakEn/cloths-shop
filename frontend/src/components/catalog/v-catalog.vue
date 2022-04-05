@@ -11,9 +11,10 @@
       </router-link>
     </div>
 
-
     <h2>Каталог</h2>
-    <v-breadcrumb :categories_array='this.BREADCRUMB'/>
+
+    <v-breadcrumb :categories_array='BREADCRUMB'/>
+
     <div class="v-catalog__list">
       <v-catalog-item
           v-for="product in PRODUCTS"
@@ -35,12 +36,14 @@ export default {
   name: "v-catalog",
   components: {VBreadcrumb, VCatalogItem},
   data() {
-    return {}
+    return {
+    }
   },
   methods: {
     ...mapActions([
       'GET_PRODUCTS_FROM_API',
       'GET_PRODUCTS_WITH_CATEGORY',
+      'GET_CATEGORY_BREADCRUMB',
       'ADD_TO_CART',
       'ADD_TO_FAVORITES'
     ]),
@@ -51,17 +54,16 @@ export default {
       this.ADD_TO_FAVORITES(data)
     },
     getProducts() {
-      if (this.$route.params.cat_id) {
-        this.GET_PRODUCTS_WITH_CATEGORY(this.$route.params.cat_id)
-        this.products = this.PRODUCTS
+      if (this.$route.params.cat_slug) {
+        this.GET_PRODUCTS_WITH_CATEGORY(this.$route.params.cat_slug)
+        this.GET_CATEGORY_BREADCRUMB(this.$route.params.cat_slug)
       } else {
         this.GET_PRODUCTS_FROM_API()
-        this.products = this.PRODUCTS
       }
     }
   },
-  async created() {
-    await this.getProducts();
+  mounted() {
+    this.getProducts()
   },
   computed: {
     ...mapGetters([
@@ -83,6 +85,7 @@ export default {
 
 <style lang="scss">
 .v-catalog {
+  margin: 30px;
   &__list {
     display: grid;
     grid-template-columns: repeat(auto-fill, 300px);

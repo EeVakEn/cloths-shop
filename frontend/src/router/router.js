@@ -28,7 +28,7 @@ let router = new Router(
                 component: VCatalog,
             },
             {
-                path: '/:cat_id',
+                path: '/:cat_slug',
                 name: 'category',
                 component: VCatalog,
             }

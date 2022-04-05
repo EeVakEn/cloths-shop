@@ -9,7 +9,7 @@
         <b-icon v-else icon="dash"></b-icon>
       </span>
       <div
-          @click="$router.push({name: 'category', params:{cat_id:node.id}}),$router.go()"
+          @click=" $router.push({name: 'category', params:{cat_slug:node.slug}}),$router.go()"
           class="link">
         {{ node.name }}
       </div>

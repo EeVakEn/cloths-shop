@@ -1,10 +1,13 @@
 export default {
-    SET_PRODUCTS_TO_STATE_WITH_CATEGORY: (state, products) => { // заполняем state данными
-        state.products = products.products;
-        state.breadcrumb = products.breadcrumb;
-    },
     SET_PRODUCTS_TO_STATE: (state, products) => { // заполняем state данными
-        state.products = products.products;
+        state.products = products.results;
+        state.breadcrumb = []
+    },
+    SET_PRODUCTS_TO_STATE_WITH_CATEGORY: (state, products) => { // заполняем state данными
+        state.products = products.results;
+    },
+    SET_BREADCRUMB: (state, breadcrumb) => {
+        state.breadcrumb = breadcrumb.results;
     },
     SET_CATEGORIES_TO_STATE: (state, categories) => {
         state.categories = categories.results;

@@ -1,5 +1,7 @@
 from django.conf import settings
 
+from catalog.models import ProductVariant
+
 
 class Cart(object):
 
@@ -11,37 +13,39 @@ class Cart(object):
             cart = self.session[settings.CART_SESSION_ID] = {}  # get empty cart
         self.cart = cart
 
-    def add(self, product, selected_color, selected_size, quantity=1):
-        cart_id = product.article + selected_color + selected_size
-        if cart_id not in self.cart:
-            self.cart[cart_id] = {
-                'product_article': product.article,
-                'selected_size': selected_size,
-                'selected_color': selected_color,
-                'quantity': quantity,
+    def add(self, product_variant, quantity=1, update_quantity=False):
+        product_variant_id = str(product_variant.id)
+        if product_variant_id not in self.cart:
+            self.cart[product_variant_id] = {
+                'quantity': 0,
             }
+        if update_quantity:
+            self.cart[product_variant_id]['quantity'] = quantity
         else:
-            self.cart[cart_id]['quantity'] += quantity
+            self.cart[product_variant_id]['quantity'] += quantity
+
         self.save()
 
     def save(self):
         self.session[settings.CART_SESSION_ID] = self.cart
         self.session.modified = True
 
-    def remove(self, cart_id):
-        if cart_id in self.cart:
-            del self.cart[cart_id]
+    def remove(self, product_variant):
+        if product_variant in self.cart:
+            del self.cart[product_variant]
             self.save()
 
-    #
-    # # Перебор всех товаров
-    # # Нужно т.к. цена на товары за время сессии может измениться
-    # def __iter__(self):
-    #     cart = self.cart.copy()
-    #     cart_id = self.cart.keys()
-    #
-    #     for item in cart.values():
-    #         item['product'] = Product.objects.get(article__in=item['products']['article'])
+    # Перебор всех товаров
+    # Нужно т.к. цена на товары за время сессии может измениться
+    def __iter__(self):
+        product_variant_ids = self.cart.keys()
+        product_variants = ProductVariant.objects.filter(id__in=product_variant_ids)
+        cart = self.cart.copy()
+        for product_variant in product_variants:
+            cart[str(product_variant.id)]['product_variant'] = product_variant
+
+        for item in cart.values():
+            item['product_variant'] = ProductVariant.objects.get(article__in=item['products']['article'])
 
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())

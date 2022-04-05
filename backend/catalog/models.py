@@ -2,8 +2,8 @@ import mptt
 from django.db import models
 from django.contrib.auth.models import User
 from mptt.models import MPTTModel, TreeForeignKey
-from django.core.validators import RegexValidator
-
+from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
+from django.contrib.auth.models import User
 
 class Category(MPTTModel):
     class MPTTMeta:
@@ -101,7 +101,7 @@ class Product(models.Model):
 
 
 class ProductVariant(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар', related_name='variants')
     color = models.ForeignKey(Color, on_delete=models.CASCADE, verbose_name='Цвет')
     size = models.ForeignKey(Size, on_delete=models.CASCADE, verbose_name='Размер')
     quantity = models.PositiveIntegerField(verbose_name='Количество')
@@ -111,3 +111,19 @@ class ProductVariant(models.Model):
         verbose_name = 'Вариант'
         verbose_name_plural = 'Варианты'
         unique_together = ('product_id', 'color_id', 'size_id')
+
+
+class Review(models.Model):
+    class Meta:
+        db_table = 'review'
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    review_author = models.ForeignKey(User, on_delete=models.CASCADE)
+    review = models.TextField(blank=True, null=True)
+    raiting = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+
+    def __str__(self):
+        return str(self.raiting)

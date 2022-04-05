@@ -1,8 +1,9 @@
 <template>
   <div class="color-wrapper">
     <input
+        :disabled="isActive"
         type="radio"
-        name="color"
+        :name="color"
         :id="color"
         :class="['color-wrapper__color__radio', color]"
         @change="selectColor"
@@ -17,6 +18,12 @@
 export default {
   name: "v-product-color",
   props:{
+    isActive: {
+      type: Boolean,
+      default(){
+        return true
+      }
+    },
     color:{
       type: String,
       default() {

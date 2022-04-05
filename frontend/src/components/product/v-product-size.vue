@@ -4,7 +4,7 @@
         :id="size"
         :checked="isSelectedSize"
         class="size-wrapper__size__radio"
-        name="size"
+        :name="size"
         type="radio"
         @change="selectSize"
     />

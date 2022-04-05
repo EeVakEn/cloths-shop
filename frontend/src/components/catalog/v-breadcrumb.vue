@@ -4,7 +4,7 @@
     <span
         v-if="categories_array.length > 0"
         class="v-breadcrumb__link"
-        @click="$router.push({name: 'catalog'}), $router.go()"
+        @click="$router.push({name: 'catalog'})"
     >
       Главная
     </span>
@@ -14,7 +14,7 @@
       >
       <span
           class="v-breadcrumb__link"
-          @click="$router.push({name:'category', params: {cat_id:item.id}}, $router.go())"
+          @click="$router.push({name:'category', params: {cat_slug:item.slug}}, $router.go())"
       >
         {{ item.name }}
       </span>
@@ -35,6 +35,9 @@ export default {
         return {}
       },
     },
+  },
+  created() {
+    console.log(this.categories_array)
   }
 }
 </script>
