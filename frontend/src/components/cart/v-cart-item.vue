@@ -1,29 +1,27 @@
 <template>
   <div class="v-cart-item">
     <div class="col-3 v-cart-item__image-wrapper">
-      <img class="v-cart-item__image" :src="cart_item_data.image"
-           :alt="cart_item_data.article">
+      <img class="v-cart-item__image" :src="this.variant.product.image"
+           :alt="this.variant.product.article">
     </div>
-    <div class="col-6 v-cart-item__info">
-      <p><b>{{ cart_item_data.name }}</b></p>
-      <div>Размер: {{ cart_item_data.selectedSize }}</div>
+    <div class="col-5 v-cart-item__info">
+      <p><b>{{ this.variant.name }}</b></p>
+      <div>Размер: {{ this.variant.size }}</div>
       <div>Цвет: {{ selectedColorToRussian }}</div>
     </div>
-    <div class="col-md-3 v-cart-item__end">
+    <div class="col-4 v-cart-item__end">
       <div class="v-cart-item__price">
         {{ getPrice }} ₽
       </div>
       <div class="v-cart-item__quantity">
-        <form class="v-cart-item__quantity-form">
-          <b-input-group class="v-cart-item__btn-grp">
-            <b-button @click="decrement" class="v-cart-item__btn-grp__btn"><b>-</b></b-button>
-            <b-input disabled class="v-cart-item__quantity__input" :value="cart_item_data.quantity"/>
-            <b-button @click="increment" class="v-cart-item__btn-grp__btn"><b>+</b></b-button>
-          </b-input-group>
-        </form>
+          <div class="input-group v-cart-item__btn-grp">
+            <button @click="decrement" class="btn dark-button"><b>−</b></button>
+            <span class="v-cart-item__quantity__input"  size="2" maxlength="2">{{cart_item_data.quantity}}</span>
+            <button @click="increment" class="btn dark-button" ><b>+</b></button>
+          </div>
       </div>
       <div class="v-cart-item__delete" @click="deleteFromCart">
-        <b-icon icon="trash"></b-icon>
+        <i class="bi bi-trash"></i>
         Удалить
       </div>
     </div>
@@ -32,8 +30,16 @@
 
 <script>
 
+import {mapActions} from "vuex";
+import axios from "axios";
+
 export default {
   name: "v-cart-item",
+  data(){
+    return{
+      variant: {}
+    }
+  },
   props: {
     cart_item_data: {
       type: Object,
@@ -43,6 +49,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+        'GET_VARIANT'
+    ]),
     deleteFromCart() {
       this.$emit('deleteFromCart')
     },
@@ -51,14 +60,20 @@ export default {
     },
     decrement() {
       this.$emit('decrement')
-    }
+    },
+  },
+  mounted() {
+    axios.get(`http://localhost:8000/api/catalog/variants/${this.cart_item_data.variant_id}/`)
+        .then(response  => {this.variant = response.data})
+        .catch(error => error)
+
   },
   computed: {
     getPrice: function () {
-      return this.cart_item_data.price * this.cart_item_data.quantity
+      return this.variant.product.price * this.cart_item_data.quantity
     },
     selectedColorToRussian() {
-      switch (this.cart_item_data.selectedColor) {
+      switch (this.variant.color) {
         case 'white':
           return 'Белый'.toLowerCase();
         case 'black':
@@ -140,6 +155,8 @@ export default {
   &__quantity {
     &__input {
       border-radius: 0;
+      padding: 0 $padding*2;
+      display: block;
       text-align: center;
       font-weight: bold;
       line-height: 1.5;
@@ -147,13 +164,11 @@ export default {
   }
 
   &__btn-grp {
-    width: 110px !important;
-    display: flex !important;
-    flex-flow: nowrap !important;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
     &__btn {
       background-color: $dark-color !important;
-      border-radius: 0 !important;
     }
   }
 

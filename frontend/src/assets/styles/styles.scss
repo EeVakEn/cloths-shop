@@ -1,17 +1,17 @@
 a {
-    color: $dark-color !important;
-    text-decoration: none;
-//    background-image: linear-gradient(currentColor, currentColor);
-//    background-position: 0%  90% ;
-//    background-repeat: no-repeat;
-//    background-size: 100% 1px;
-//    transition: background-size .5s;
+  color: $dark-color !important;
+  text-decoration: none;
+  //    background-image: linear-gradient(currentColor, currentColor);
+  //    background-position: 0%  90% ;
+  //    background-repeat: no-repeat;
+  //    background-size: 100% 1px;
+  //    transition: background-size .5s;
 }
 
 //a:hover {
 //    background-size: 0% 1px;
 //}
-.row{
+.row {
   padding-right: 0 !important;
   padding-left: 0 !important;
 }
@@ -52,116 +52,68 @@ body {
 }
 
 .size-wrapper {
-  position: relative;
 
   &__size {
     color: $dark-color;
 
     &__radio {
-      -webkit-appearance: none;
+      // убрать стандартные рамки чек-бокс
+
       position: absolute;
-      appearance: none;
+      z-index: -1;
+      opacity: 0;
     }
 
     &__label {
+      border: 1px solid $dark-color;
+      text-align: center;
       cursor: pointer;
-      align-items: center;
       padding-top: 4px;
       font-size: $font-size18;
       width: 55px;
       height: 36px;
     }
 
-    &__label:before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      border: 1px solid gray;
-      cursor: pointer;
-      transition: .1s;
-      width: 55px;
-      height: 36px;
 
-    }
-
-    &__label:after {
-      content: '';
-      position: absolute;
-      display: block;
-      top: 0;
-      left: 0;
-      opacity: 0;
-      z-index: 2;
-      width: 55px;
-      height: 36px;
-    }
-
-    &__radio:checked + &__label:before {
-      border: 2px solid $dark-color;
-    }
-
-    &__radio:checked + &__label:after {
-      opacity: 1;
+    &__radio:checked + &__label {
+      outline: 2px solid $dark-color;
     }
   }
 }
 
 
 .color-wrapper {
-  position: relative;
 
   &__color {
     color: $dark-color;
 
     &__radio {
-      -webkit-appearance: none;
+      // убрать стандартные рамки чек-бокс
       position: absolute;
-      appearance: none;
+      z-index: -1;
+      opacity: 0;
     }
 
     &__label {
+      border: 1px solid $dark-color;
+      text-align: center;
       cursor: pointer;
       font-size: $font-size22;
       width: 55px;
       height: 36px;
     }
 
-    &__label:before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      border: 1px solid gray;
-      cursor: pointer;
-      transition: .2s;
-      width: 55px;
-      height: 36px;
-
-    }
-
     &__label:after {
-      content: '✔';
-      position: absolute;
-      display: block;
-      top: 0;
-      left: 0;
-      opacity: 0;
-      z-index: 2;
-      width: 55px;
-      height: 36px;
-    }
-
-    &__radio:checked + &__label:before {
-      border: 2px solid $dark-color;
+      content: '';
     }
 
     &__radio:checked + &__label:after {
-      opacity: 1;
+      content: '✔';
+      transition: .5s;
+    }
+
+    &__radio:checked + &__label {
+      outline: 2px solid $dark-color;
     }
   }
 }
@@ -246,6 +198,7 @@ body {
 [data-microtip] {
   position: relative; /* Относительное позиционирование */
 }
+
 [data-microtip]::after {
   background: rgba(17, 17, 17, 0.9);
   border-radius: 4px;
@@ -263,8 +216,21 @@ body {
   opacity: 0;
   transition: .5s;
 }
+
 [data-microtip]:hover::after {
   opacity: 1; /* Показываем подсказку */
   top: -150%; /* Положение подсказки */
   left: -150%;
+}
+
+.disabled {
+  opacity: 50%;
+}
+
+.refresh-btn {
+  transition: 0.5s; /* Время поворота */
+}
+
+.refresh-btn:hover {
+  transform: rotate(360deg); /* Поворачиваем на 360 градусов */
 }

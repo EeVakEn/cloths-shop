@@ -1,33 +1,35 @@
 <template>
-  <div>
-
-    <span
-        v-if="categories_array.length > 0"
-        class="v-breadcrumb__link"
-        @click="$router.push({name: 'catalog'})"
-    >
-      Главная
-    </span>
-    <span v-for="item in this.categories_array.slice(0, -1)"
+  <p>
+    <span v-for="item in this.categories.slice(0, -1)"
           :key="item.id"
     >
-      >
-      <span
-          class="v-breadcrumb__link"
-          @click="$router.push({name:'category', params: {cat_slug:item.slug}}, $router.go())"
-      >
-        {{ item.name }}
-      </span>
-    </span>
+        <router-link
+            class="v-breadcrumb__link"
+            :to="item.id?{ name: 'category', params: {cat_slug:item.slug}}:{name: 'catalog'} "
+        >
+          {{ item.name }}
+        </router-link>
     >
-    <span class="v-breadcrumb__link">{{ this.categories_array[this.categories_array.length - 1].name }}</span>
-
-  </div>
+    </span>
+    <b>{{ this.categories[this.categories.length - 1].name }}</b>
+  </p>
 </template>
 
 <script>
 export default {
   name: "v-breadcrumb",
+  data() {
+    return {
+      categories: [
+        {
+          id: 0,
+          name: 'Главная',
+          slug: '',
+          get_full_url: '/',
+        },
+      ]
+    }
+  },
   props: {
     categories_array: {
       type: Array,
@@ -36,8 +38,8 @@ export default {
       },
     },
   },
-  created() {
-    console.log(this.categories_array)
+  mounted() {
+    this.categories_array.forEach(category => this.categories.push(category))
   }
 }
 </script>

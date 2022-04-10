@@ -1,6 +1,6 @@
 <template>
   <div class="v-main-wrapper" :class="{'sidebar__open': isSidebarOpen}">
-    <v-sidebar @isOpenSidebar="isOpenSidebar" />
+    <v-sidebar @isOpenSidebar="isOpenSidebar"/>
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
@@ -15,8 +15,8 @@ import VSidebar from "./sidebar/v-sidebar";
 export default {
   name: 'v-main-wrapper',
   components: {VSidebar},
-  data(){
-    return{
+  data() {
+    return {
       isSidebarOpen: false,
     };
   },
@@ -25,8 +25,8 @@ export default {
       'CART',
     ])
   },
-  methods:{
-    isOpenSidebar(a){
+  methods: {
+    isOpenSidebar(a) {
       this.isSidebarOpen = a;
     }
   },
@@ -42,7 +42,8 @@ export default {
   transition: .4s;
 
 }
-.sidebar__open{
+
+.sidebar__open {
   margin-left: 350px;
 }
 </style>

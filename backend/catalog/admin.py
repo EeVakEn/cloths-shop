@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from mptt.admin import MPTTModelAdmin
-from .models import Product, Color, Size, Category, ProductVariant
+from .models import Product, Color, Size, Category, ProductVariant, Review
 
 
 class VariantInline(admin.TabularInline):
@@ -38,5 +38,6 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Color)
 admin.site.register(Size)
+admin.site.register(Review)
 
 # Register your models here.

@@ -1,17 +1,17 @@
 <template>
   <div class="v-cart">
-    <div v-if="cart_data.length">
-      <h1>Корзина</h1>
+    <div v-if="this.CART.length">
+
       <div class="v-cart__wrapper row">
         <div class="v-cart__delivery col-lg-6">
-          <img
-              src="https://mykaleidoscope.ru/uploads/posts/2021-10/1634164062_50-mykaleidoscope-ru-p-rizhii-tsvet-volos-krasivaya-pricheska-dev-54.jpg"
-              style="width: 100%"/>
+          <h1>Оформление заказа</h1>
+
         </div>
         <div class="v-cart__cart col-lg-6">
+          <h1>Корзина</h1>
           <v-cart-item
-              v-for="(item,index) in cart_data"
-              :key="item.article"
+              v-for="(item,index) in this.CART"
+              :key="index"
               :cart_item_data="item"
               @deleteFromCart="deleteFromCart(index)"
               @increment="increment(index)"
@@ -24,6 +24,7 @@
                 class="v-cart__total__delete"
                 @click="deleteAllFromCart"
             >
+              <i class="bi bi-trash"></i>
               Очистить корзину
             </a>
           </div>
@@ -48,19 +49,11 @@
 
 <script>
 import VCartItem from "./v-cart-item";
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "v-cart",
   components: {VCartItem},
-  props: {
-    cart_data: {
-      type: Array,
-      default() {
-        return []
-      }
-    }
-  },
   methods: {
     ...mapActions([
       'DELETE_FROM_CART',
@@ -81,11 +74,17 @@ export default {
       this.DELETE_ALL_FROM_CART();
     }
   },
+  mounted() {
+    console.log(this.CART.length)
+  },
   computed: {
+    ...mapGetters([
+      'CART',
+    ]),
     cartTotalCost() {
       let result = 0
 
-      for (let item of this.cart_data) {
+      for (let item of this.CART) {
         result += item.price * item.quantity
       }
       return result;
@@ -117,13 +116,17 @@ export default {
     font-weight: bold;
     font-size: 18px;
     text-align: right;
+
     &__delete {
-      color: white !important;
+      color: firebrick !important;
       text-decoration: none;
       cursor: pointer;
       font-size: 16px;
       font-weight: bold;
     }
+  }
+  &__no_items{
+    text-align: center;
   }
 
 

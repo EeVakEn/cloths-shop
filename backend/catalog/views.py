@@ -35,9 +35,7 @@ class ProductListByCategoryAPIView(generics.ListAPIView):
     def get_queryset(self):
         descendants = Category.objects.get(slug=self.kwargs.get('cat_slug')).get_descendants(include_self=True)
         descendants_ids = [item.id for item in descendants]
-        products = Product.objects.filter(is_available=True)
-        # фильтр по потомкам
-        products = products.filter(reduce(lambda x, y: x | y, [Q(pk=item) for item in descendants_ids]))
+        products = Product.objects.filter(is_available=True).filter(category__in=descendants_ids)
         return products
 
 
@@ -69,6 +67,11 @@ class BreadcrumbAPIView(generics.ListAPIView):
             .get_ancestors(ascending=False, include_self=True)
 
         return breadcrumb
+
+
+class VariantDetailAPIView(generics.RetrieveAPIView):
+    queryset = ProductVariant.objects.all()
+    serializer_class = VariantDetailSerializer
 
 # class ProductInfoListView(APIView):
 #     def get(self, request):

@@ -2,25 +2,24 @@
   <div class="v-catalog">
     <div class="cart_favorites">
       <router-link class="cart_favorites__link" :to="{name:'favorites', params:{favorites_data: FAVORITES}}">
-        <b-icon icon="heart"/>
+        <i class="bi bi-heart"></i>
         <span class="cart_favorites__count">{{ FAVORITES.length }}</span>
       </router-link>
       <router-link class="cart_favorites__link" :to="{name:'cart', params:{cart_data: CART}}">
-        <b-icon icon="basket"/>
+        <i class="bi bi-bag"></i>
         <span class="cart_favorites__count">{{ getCartQuantity }}</span>
       </router-link>
     </div>
 
     <h2>Каталог</h2>
 
-    <v-breadcrumb :categories_array='BREADCRUMB'/>
+    <v-breadcrumb v-if="isFetching" :categories_array='BREADCRUMB'/>
 
-    <div class="v-catalog__list">
+    <div v-if="isFetching" class="v-catalog__list">
       <v-catalog-item
           v-for="product in PRODUCTS"
           :key="product.article"
           :product_data="product"
-          @addToCart="addToCart"
           @addToFavorites="addToFavorites"
       />
     </div>
@@ -37,33 +36,30 @@ export default {
   components: {VBreadcrumb, VCatalogItem},
   data() {
     return {
+      isFetching: false,
     }
   },
   methods: {
     ...mapActions([
       'GET_PRODUCTS_FROM_API',
       'GET_PRODUCTS_WITH_CATEGORY',
+      'GET_BREADCRUMB',
       'GET_CATEGORY_BREADCRUMB',
-      'ADD_TO_CART',
       'ADD_TO_FAVORITES'
     ]),
-    addToCart(product, quantity, selectedColor, selectedSize) {
-      this.ADD_TO_CART({product, quantity, selectedColor, selectedSize});
-    },
     addToFavorites(data) {
       this.ADD_TO_FAVORITES(data)
     },
-    getProducts() {
-      if (this.$route.params.cat_slug) {
-        this.GET_PRODUCTS_WITH_CATEGORY(this.$route.params.cat_slug)
-        this.GET_CATEGORY_BREADCRUMB(this.$route.params.cat_slug)
-      } else {
-        this.GET_PRODUCTS_FROM_API()
-      }
-    }
   },
   mounted() {
-    this.getProducts()
+    if (this.$route.params.cat_slug) {
+      this.GET_PRODUCTS_WITH_CATEGORY(this.$route.params.cat_slug)
+      this.GET_CATEGORY_BREADCRUMB(this.$route.params.cat_slug)
+    } else {
+      this.GET_PRODUCTS_FROM_API()
+      this.GET_BREADCRUMB()
+    }
+    this.isFetching = true
   },
   computed: {
     ...mapGetters([
@@ -86,6 +82,7 @@ export default {
 <style lang="scss">
 .v-catalog {
   margin: 30px;
+
   &__list {
     display: grid;
     grid-template-columns: repeat(auto-fill, 300px);

@@ -53,3 +53,19 @@ class BreadcrumbSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('id', 'name', 'slug', 'get_full_url')
+
+
+class ProductMinimalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ('article', 'name', 'description', 'image', 'price')
+
+
+class VariantDetailSerializer(serializers.ModelSerializer):
+    product = ProductMinimalSerializer()
+    color = serializers.SlugRelatedField(read_only=True, slug_field='name')
+    size = serializers.SlugRelatedField(read_only=True, slug_field='name')
+
+    class Meta:
+        model = ProductVariant
+        fields = "__all__"

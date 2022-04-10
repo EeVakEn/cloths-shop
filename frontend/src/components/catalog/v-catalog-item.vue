@@ -6,8 +6,6 @@
         v-if="isInfoModalVisible"
         rightBtnTitle="Add to cart"
         :product_data="product_data"
-        :colors="getColorStack"
-        :sizes="getSizeStack"
         @closeModal="closeModal"
     />
 
@@ -33,21 +31,21 @@
       <div class="v-catalog-item__description">{{ product_data.description }}</div>
       <div class="v-catalog-item__bottom">
         <div class="v-catalog-item__price">{{ this.product_data.price.toLocaleString() }} ₽</div>
-        <b-button-group class="v-catalog-item__btn-grp">
-          <b-button class="v-catalog-item__btn-grp__btn" @click="showModal">
+        <div>
+          <button class="dark-button" @click="showModal">
             В корзину
-            <b-icon icon="basket" scale="1"/>
-          </b-button>
-          <b-button class="v-catalog-item__btn-grp__btn" @click="addToFavorites">
-            <b-icon v-if="isFavorite" icon="heart-fill" scale="1"/>
-            <b-icon v-else icon="heart" scale="1"/>
-          </b-button>
-        </b-button-group>
+            <i class="bi bi-bag"/>
+          </button>
+          <button class="dark-button" @click="addToFavorites">
+            <i class="bi bi-heart-fill" v-if="isFavorite"/>
+            <i class="bi bi-heart" v-else/>
+          </button>
+        </div>
+
+        </div>
       </div>
     </div>
 
-
-  </div>
 </template>
 
 <script>
@@ -138,152 +136,31 @@ export default {
     this.$set(this.product_data, 'quantity', 1)
   },
   computed: {
-    getColorStack(){
+    getColorStack() {
       let colorSet = new Set()
-      this.product_data.variants.forEach(function (o){
+      this.product_data.variants.forEach(function (o) {
         colorSet.add(o.color)
       })
       return Array.from(colorSet)
-    },
-    getSizeStack(){
-      let sizeSet = new Set()
-      this.product_data.variants.forEach(function (o){
-        sizeSet.add(o.size)
-      })
-      return Array.from(sizeSet)
     }
   }
 }
 </script>
 
 <style lang="scss">
-.v-modal__slot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
-.v-modal {
-  &__select {
-    color: red;
-    display: block;
-    font-size: 12px;
-    position: absolute;
-    top: 36px;
-  }
-
-  &__size {
-    display: block;
-    position: relative;
-    align-self: flex-start;
-    justify-self: flex-start;
-    margin-bottom: 14px;
-  }
-
-  &__size-check {
-    display: flex;
-    flex-flow: row wrap;
-    gap: $padding/2;
-  }
-
-  &__color {
-    display: block;
-    position: relative;
-    align-self: flex-start;
-    justify-self: flex-start;
-    margin-bottom: 14px;
-  }
-
-  &__color-check {
-    display: flex;
-    flex-flow: row wrap;
-    gap: $padding/2;
-  }
-
-  &__image {
-    width: 100%;
-    object-fit: cover;
-  }
-
-  &__image-wrapper {
-    display: block;
-    width: 400px;
-  }
-
-  &__info {
-    display: flex;
-    flex-flow: column;
-    align-items: flex-start;
-    padding: $padding !important;
-    width: 480px;
-  }
-
-  &__price {
-    font-size: $font-size30;
-    font-weight: bold;
-  }
-
-  &__input {
-    display: inline-block;
-    width: 45px;
-    background-color: white;
-    color: $dark-color;
-    line-height: 1.5;
-    border: 1px solid white;
-    text-align: center;
-    vertical-align: center;
-    outline: none;
-    padding: 0.375rem 0.75rem;
-  }
-
-  &__input:active {
-    border: none;
-    outline: none;
-  }
-
-  &__qty-btn {
-    display: inline-block;
-    width: 40px;
-    padding: 0.375rem 0.75rem;
-  }
-
-  &__buttons {
-    display: flex;
-
-    flex-flow: row wrap;
-    justify-self: flex-end;
-    align-self: flex-end;
-    padding: $padding*2 0;
-  }
-
-  &__quantity {
-    display: block;
-    font-size: 22px;
-  }
-
-  &__btn-grp {
-    margin-left: $margin*2;
-    align-self: flex-end;
-    display: block;
-    font-size: $font-size22;
-  }
-
-  &__description {
-    padding-top: $padding;
-    text-align: justify;
-  }
-}
-
 .v-catalog-item {
   display: flex;
   flex-direction: column;
   background-color: $second-color;
   width: 300px;
   height: 500px;
-  &__info{
+
+  &__info {
+    display: flex;
+    flex-flow: column;
     padding: $padding;
   }
+
   &__image-wrapper {
     width: 100%;
     height: 350px;
@@ -296,9 +173,7 @@ export default {
   }
 
   &__description {
-    padding: $padding/2 0;
     text-align: left;
-    height: 50px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -316,13 +191,14 @@ export default {
     border-radius: 2px;
     border: solid 1px $dark-color;
     cursor: pointer;
-    margin: 0 $margin/3;
+    margin: 0 $margin/8;
   }
 
   &__bottom {
-    position: relative;
     display: flex;
     flex-flow: row nowrap;
+    margin-top: $margin;
+    justify-self: flex-end;
     justify-content: space-between;
     align-items: center;
   }

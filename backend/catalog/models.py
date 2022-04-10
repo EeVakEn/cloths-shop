@@ -43,7 +43,7 @@ class Category(MPTTModel):
         return self.name
 
     def __str__(self):
-        return self.get_level() * ' ' + self.name
+        return self.get_full_url()
 
 
 mptt.register(Category, order_insertation_by=['name'])

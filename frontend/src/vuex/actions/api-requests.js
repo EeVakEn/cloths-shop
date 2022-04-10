@@ -1,4 +1,5 @@
 import axios from "axios";
+
 axios.defaults.baseURL = 'http://localhost:8000'
 export default {
     GET_PRODUCTS_FROM_API({commit}) { // метод для получение данных с API
@@ -23,24 +24,34 @@ export default {
             return error;
         })
     },
-    GET_PRODUCTS_WITH_CATEGORY({commit}, cat_slug){
+    GET_PRODUCTS_WITH_CATEGORY({commit}, cat_slug) {
         return axios(`/api/catalog/category/${cat_slug}/`, {
             method: "GET"
-        }).then((products)=>{
+        }).then((products) => {
             commit('SET_PRODUCTS_TO_STATE_WITH_CATEGORY', products.data);
             return products.data;
-        }).catch((error)=>{
+        }).catch((error) => {
             return error
         })
     },
-    GET_CATEGORY_BREADCRUMB({commit}, cat_slug){
+    GET_CATEGORY_BREADCRUMB({commit}, cat_slug) {
         return axios(`/api/catalog/breadcrumb/${cat_slug}/`, {
             method: "GET"
-        }).then((breadcrumb)=>{
-            commit('SET_BREADCRUMB', breadcrumb.data);
+        }).then((breadcrumb) => {
+            commit('SET_CAT_BREADCRUMB', breadcrumb.data);
             return breadcrumb.data;
-        }).catch((error)=>{
+        }).catch((error) => {
             return error
         })
-    }
+    },
+    // GET_VARIANT({commit}, variant_id){
+    //     return axios(`/api/catalog/variants/${variant_id}/`, {
+    //         method: "GET"
+    //     }).then((variant) => {
+    //         commit('SET_VARIANTS', variant.data);
+    //         return variant.data;
+    //     }).catch((error) => {
+    //         return error
+    //     })
+    // }
 }

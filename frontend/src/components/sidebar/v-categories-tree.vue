@@ -8,11 +8,9 @@
         <b-icon v-if="!expanded" icon="arrow-down-short"></b-icon>
         <b-icon v-else icon="dash"></b-icon>
       </span>
-      <div
-          @click=" $router.push({name: 'category', params:{cat_slug:node.slug}}),$router.go()"
-          class="link">
+      <router-link class="link" :to="{name: 'category', params:{cat_slug:node.slug}}">
         {{ node.name }}
-      </div>
+      </router-link>
 
     </div>
     <div v-if="expanded">

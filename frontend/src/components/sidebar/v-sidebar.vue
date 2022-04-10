@@ -6,10 +6,9 @@
         <b-icon v-else icon="arrow-bar-left"/>
       </div>
       <div v-if="isOpen">
-        <div class="v-sidebar_catalog_link"
-             @click="$router.push({name: 'catalog'}), $router.go()">
+        <router-link class="v-sidebar_catalog_link" :to="{name: 'catalog'}">
           Каталог
-        </div>
+        </router-link>
         <v-categories-tree
             v-for="node in CATEGORIES"
             :key="node.name"

@@ -10,14 +10,24 @@ import VMainWrapper from "./components/v-main-wrapper";
 
 export default {
   name: 'App',
+  data(){
+    return{
+      cart:[]
+    }
+  },
+  beforeCreate() {
+    this.$store.commit('INIT_STORE')
+  },
+  mounted() {
+    this.cart = this.$store.state.cart
+  },
   components: {
     VMainWrapper
-
   }
 }
 </script>
 
-<style>
+<style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   margin-top: 80px;
