@@ -15,17 +15,14 @@
           <div class="col-md-6">
             <img class="v-modal__image"
                  :src="this.product_data.image"
-                 style="width:100%;"
                  :alt="this.product_data.image">
           </div>
           <div class="col-md-6 v-modal__info">
             <h1 class="v-modal__name">{{ product_data.name }}</h1>
             <p class="v-modal__article">Артикул: {{ product_data.article }}</p>
-            <p>Выбор варианта товара: <span style="cursor: pointer" @click="reloadData"><b-icon class='refresh-btn'
-                                                                                                icon="arrow-clockwise"></b-icon></span>
-            </p>
+            <h4>Выбор варианта товара: <i @click="reloadData" class="bi bi-arrow-clockwise refresh-btn"/></h4>
 
-            <p style="margin-bottom: 10px">Цвет: {{ selectedColorToRussian }}</p>
+            <p >Цвет: {{ selectedColorToRussian }}</p>
             <div class="v-modal__color">
               <div class="v-modal__color-check">
                 <div class="color-wrapper"

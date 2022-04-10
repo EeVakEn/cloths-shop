@@ -15,7 +15,7 @@
 
     <v-breadcrumb v-if="isFetching" :categories_array='BREADCRUMB'/>
 
-    <div v-if="isFetching" class="v-catalog__list">
+    <div  v-if="isFetching" class="v-catalog__list">
       <v-catalog-item
           v-for="product in PRODUCTS"
           :key="product.article"
@@ -50,16 +50,21 @@ export default {
     addToFavorites(data) {
       this.ADD_TO_FAVORITES(data)
     },
-  },
-  mounted() {
-    if (this.$route.params.cat_slug) {
-      this.GET_PRODUCTS_WITH_CATEGORY(this.$route.params.cat_slug)
-      this.GET_CATEGORY_BREADCRUMB(this.$route.params.cat_slug)
-    } else {
-      this.GET_PRODUCTS_FROM_API()
-      this.GET_BREADCRUMB()
+    async loadData() {
+      if (this.$route.params.cat_slug) {
+        this.GET_CATEGORY_BREADCRUMB(this.$route.params.cat_slug)
+        this.GET_PRODUCTS_WITH_CATEGORY(this.$route.params.cat_slug)
+      } else {
+        this.GET_BREADCRUMB()
+        this.GET_PRODUCTS_FROM_API()
+      }
+      this.isFetching = true
     }
-    this.isFetching = true
+  },
+  async created() {
+    this.loadData()
+    // следим за изменением параметров роутера (изменениями в URI)
+    this.$watch(() => this.$route.params, this.loadData)
   },
   computed: {
     ...mapGetters([

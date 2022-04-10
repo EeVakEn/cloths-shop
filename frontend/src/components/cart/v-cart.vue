@@ -1,5 +1,5 @@
 <template>
-  <div class="v-cart">
+  <div class="v-cart container-fluid">
     <div v-if="this.CART.length">
 
       <div class="v-cart__wrapper row">

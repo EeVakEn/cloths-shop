@@ -12,14 +12,17 @@ export default {
   name: 'App',
   data(){
     return{
-      cart:[]
+      cart:[],
+      favorites:[],
     }
   },
   beforeCreate() {
-    this.$store.commit('INIT_STORE')
+    this.$store.commit('INIT_CART')
+    this.$store.commit('INIT_FAVORITES')
   },
   mounted() {
     this.cart = this.$store.state.cart
+    this.favorites = this.$store.state.favorites
   },
   components: {
     VMainWrapper

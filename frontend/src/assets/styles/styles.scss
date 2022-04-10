@@ -228,9 +228,11 @@ body {
 }
 
 .refresh-btn {
-  transition: 0.5s; /* Время поворота */
+  display: inline-block;
+  cursor: pointer;
+  transition: 0.5s !important; /* Время поворота */
 }
 
 .refresh-btn:hover {
-  transform: rotate(360deg); /* Поворачиваем на 360 градусов */
+  transform: rotate(360deg)!important; /* Поворачиваем на 360 градусов */
 }

@@ -1,13 +1,18 @@
 export default {
-    INIT_STORE: (state) => {
+    INIT_CART: (state) => {
         if (localStorage.getItem('cart'))
             state.cart = JSON.parse(localStorage.getItem('cart'))
         else
             localStorage.setItem('cart', JSON.stringify(state.cart))
     },
+    INIT_FAVORITES: (state) => {
+        if (localStorage.getItem('favorites'))
+            state.favorites = JSON.parse(localStorage.getItem('favorites'))
+        else
+            localStorage.setItem('favorites', JSON.stringify(state.favorites))
+    },
     SET_PRODUCTS_TO_STATE: (state, products) => { // заполняем state данными
         state.products = products.results;
-        state.breadcrumb = []
     },
     SET_PRODUCTS_TO_STATE_WITH_CATEGORY: (state, products) => { // заполняем state данными
         state.products = products.results;
@@ -31,19 +36,27 @@ export default {
         localStorage.setItem('cart', JSON.stringify(state.cart))
     },
     SET_FAVORITE: (state, product) => {
-        if (state.favorites.includes(product)) {
-            state.favorites.splice(state.favorites.indexOf(product), 1)
-            product.isFavorite = false
-        } else {
+        let exists = false
+        state.favorites.forEach(fav => {
+            if (fav.article === product.article) {
+                state.favorites.splice(state.favorites.indexOf(product), 1)
+                product.isFavorite = false
+                exists = true
+            }
+        })
+        if (!exists){
             product.isFavorite = true
             state.favorites.push(product);
         }
+        localStorage.setItem('favorites', JSON.stringify(state.favorites))
+    },
+    SET_PRODUCT: (state, product) => {
+        state.currentProduct = product
     },
     DEL_FROM_CART: (state, index) => {
         state.cart[index].quantity = 1;
         state.cart.splice(index, 1)
         localStorage.setItem('cart', JSON.stringify(state.cart))
-
     },
     DEL_ALL_FROM_CART: (state) => {
         state.cart.map(function () {

@@ -14,6 +14,7 @@ Vue.use(Vuex)
 let store = new Vuex.Store({ //Центральное хранилище наших данных
     state: {
         products: [], // записываем пустой массив
+        currentProduct: {},
         cart: [],
         favorites: [],
         categories: [],

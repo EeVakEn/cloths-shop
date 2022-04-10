@@ -30,14 +30,14 @@
 
       <div class="v-catalog-item__description">{{ product_data.description }}</div>
       <div class="v-catalog-item__bottom">
-        <div class="v-catalog-item__price">{{ this.product_data.price.toLocaleString() }} ₽</div>
+        <div class="v-catalog-item__price">{{ product_data.price.toLocaleString() }} ₽</div>
         <div>
           <button class="dark-button" @click="showModal">
             В корзину
             <i class="bi bi-bag"/>
           </button>
           <button class="dark-button" @click="addToFavorites">
-            <i class="bi bi-heart-fill" v-if="isFavorite"/>
+            <i class="bi bi-heart-fill" v-if="this.isFavorite"/>
             <i class="bi bi-heart" v-else/>
           </button>
         </div>
@@ -50,6 +50,7 @@
 
 <script>
 import VModal from "../product/v-modal";
+import {mapGetters} from "vuex";
 
 export default {
   name: "v-catalog-item",
@@ -71,7 +72,6 @@ export default {
   data() {
     return {
       isInfoModalVisible: false,
-      quantity: 1,
       isFavorite: false,
     }
   },
@@ -79,7 +79,7 @@ export default {
   methods: {
     addToFavorites() {
       this.$emit('addToFavorites', this.product_data)
-      this.isFavorite = this.product_data.isFavorite
+      this.isFavorite = !this.isFavorite
     },
     showModal() {
       this.isInfoModalVisible = true;
@@ -126,16 +126,25 @@ export default {
         default :
           return '';
       }
+    },
+    isFav(){
+      let exists = false
+      this.FAVORITES.forEach(fav => {
+        if (fav.article === this.product_data.article) {
+          this.isFavorite = true
+          exists = true
+        }
+      })
+      if (!exists){
+        this.isFavorite = false
+      }
     }
-
-  },
-  activated() {
-    this.isFavorite = this.product_data.isFavorite
   },
   mounted() {
-    this.$set(this.product_data, 'quantity', 1)
+    this.isFav()
   },
   computed: {
+    ...mapGetters(['FAVORITES']),
     getColorStack() {
       let colorSet = new Set()
       this.product_data.variants.forEach(function (o) {

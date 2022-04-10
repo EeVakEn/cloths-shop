@@ -1,12 +1,12 @@
 <template>
   <div class="v-cart-item">
     <div class="col-3 v-cart-item__image-wrapper">
-      <img class="v-cart-item__image" :src="this.variant.product.image"
-           :alt="this.variant.product.article">
+      <img class="v-cart-item__image" :src="variant.product.image"
+           alt="Картинка не найдена">
     </div>
     <div class="col-5 v-cart-item__info">
-      <p><b>{{ this.variant.name }}</b></p>
-      <div>Размер: {{ this.variant.size }}</div>
+      <p><b>{{ variant.product.name }}</b></p>
+      <div>Размер: {{ variant.size }}</div>
       <div>Цвет: {{ selectedColorToRussian }}</div>
     </div>
     <div class="col-4 v-cart-item__end">
@@ -16,7 +16,7 @@
       <div class="v-cart-item__quantity">
           <div class="input-group v-cart-item__btn-grp">
             <button @click="decrement" class="btn dark-button"><b>−</b></button>
-            <span class="v-cart-item__quantity__input"  size="2" maxlength="2">{{cart_item_data.quantity}}</span>
+            <span class="v-cart-item__quantity__input" >{{cart_item_data.quantity}}</span>
             <button @click="increment" class="btn dark-button" ><b>+</b></button>
           </div>
       </div>
@@ -66,11 +66,10 @@ export default {
     axios.get(`http://localhost:8000/api/catalog/variants/${this.cart_item_data.variant_id}/`)
         .then(response  => {this.variant = response.data})
         .catch(error => error)
-
   },
   computed: {
     getPrice: function () {
-      return this.variant.product.price * this.cart_item_data.quantity
+      return (this.variant.product.price * this.cart_item_data.quantity).toLocaleString()
     },
     selectedColorToRussian() {
       switch (this.variant.color) {

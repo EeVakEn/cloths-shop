@@ -13,5 +13,8 @@ export default {
     },
     BREADCRUMB(state) {
         return state.breadcrumb;
+    },
+    PRODUCT(state){
+        return state.currentProduct;
     }
 }

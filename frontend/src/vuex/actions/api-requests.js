@@ -44,6 +44,16 @@ export default {
             return error
         })
     },
+    GET_DETAIL_PRODUCT({commit}, product_id) {
+        return axios(`/api/catalog/products/${product_id}/`, {
+            method: "GET"
+        }).then((product) => {
+            commit('SET_PRODUCT', product.data);
+            return product.data;
+        }).catch((error) => {
+            return error
+        })
+    }
     // GET_VARIANT({commit}, variant_id){
     //     return axios(`/api/catalog/variants/${variant_id}/`, {
     //         method: "GET"

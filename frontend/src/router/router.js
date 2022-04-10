@@ -3,6 +3,7 @@ import Router from "vue-router";
 import VCatalog from "../components/catalog/v-catalog";
 import VCart from "../components/cart/v-cart";
 import VFavorites from "../components/favorites/v-favorites";
+import VProduct from "../components/product/v-product";
 
 Vue.use(Router)
 
@@ -31,6 +32,11 @@ let router = new Router(
                 path: '/:cat_slug',
                 name: 'category',
                 component: VCatalog,
+            },
+            {
+                path: '/product/:product_id',
+                name: 'product',
+                component: VProduct,
             }
         ]
     }

@@ -5,8 +5,8 @@
         :style="{'margin-left':`${depth*20+100}px`}"
     >
       <span v-if="hasChildren" @click="expanded=!expanded">
-        <b-icon v-if="!expanded" icon="arrow-down-short"></b-icon>
-        <b-icon v-else icon="dash"></b-icon>
+        <i v-if="!expanded" class="bi bi-caret-right"></i>
+        <i v-else class="bi bi-caret-down"></i>
       </span>
       <router-link class="link" :to="{name: 'category', params:{cat_slug:node.slug}}">
         {{ node.name }}
