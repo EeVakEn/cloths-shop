@@ -1,6 +1,5 @@
-import axios from "axios";
+import axios from "axios"
 
-axios.defaults.baseURL = 'http://localhost:8000'
 export default {
     GET_PRODUCTS_FROM_API({commit}) { // метод для получение данных с API
         return axios('/api/catalog/products/', { // axios запрос
@@ -54,14 +53,4 @@ export default {
             return error
         })
     }
-    // GET_VARIANT({commit}, variant_id){
-    //     return axios(`/api/catalog/variants/${variant_id}/`, {
-    //         method: "GET"
-    //     }).then((variant) => {
-    //         commit('SET_VARIANTS', variant.data);
-    //         return variant.data;
-    //     }).catch((error) => {
-    //         return error
-    //     })
-    // }
 }

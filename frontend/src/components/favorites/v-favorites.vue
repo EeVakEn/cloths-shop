@@ -1,10 +1,11 @@
 <template>
 
-  <div class="v-favorites">
+  <div class="v-favorites container-fluid">
     <h1>Избранное</h1>
-    <div v-if="FAVORITES.length">
-      <div class="v-catalog__list">
+    <div v-if="FAVORITES.length" class="container-fluid">
+      <div class="row g-2" >
         <v-catalog-item
+            class=" col-xl-3 col-lg-4 col-md-6 col-sm-12"
             v-for="product in FAVORITES"
             :key="product.article"
             :product_data="product"
@@ -13,7 +14,7 @@
         />
       </div>
     </div>
-    <div v-else>
+    <div v-else style="text-align: center">
       <p>Вы пока что ничего не выбрали<br/>Но всегда это можно исправить<br/> Кликай на кнопочку снизу </p>
       <router-link :to="{name: 'catalog'}">
         <button class="dark-button">Перейти в каталог</button>

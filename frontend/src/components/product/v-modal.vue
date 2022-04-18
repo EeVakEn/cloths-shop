@@ -1,12 +1,12 @@
 <template>
-  <div class="modal_wrapper">
+  <div class="modal_wrapper" @click="closeModal">
     <span tabindex="0"></span>
     <div class='v-modal'>
       <div class="v-modal__close">
-        <div class="cl-btn-2" @click="closeModal">
+        <div class="close-btn-2" @click="closeModal">
           <div>
-            <div class="leftright"></div>
-            <div class="rightleft"></div>
+            <div class="close-leftright"></div>
+            <div class="close-rightleft"></div>
           </div>
         </div>
       </div>
@@ -16,13 +16,14 @@
             <img class="v-modal__image"
                  :src="this.product_data.image"
                  :alt="this.product_data.image">
+
           </div>
           <div class="col-md-6 v-modal__info">
             <h1 class="v-modal__name">{{ product_data.name }}</h1>
             <p class="v-modal__article">Артикул: {{ product_data.article }}</p>
             <h4>Выбор варианта товара: <i @click="reloadData" class="bi bi-arrow-clockwise refresh-btn"/></h4>
 
-            <p >Цвет: {{ selectedColorToRussian }}</p>
+            <p>Цвет: {{ selectedColorToRussian }}</p>
             <div class="v-modal__color">
               <div class="v-modal__color-check">
                 <div class="color-wrapper"
@@ -68,7 +69,7 @@
             <div class="v-modal__buttons">
               <div class="v-modal__quantity">
                 <button class="dark-button" @click="decrementQty"><b>−</b></button>
-                <span class="v-modal__input" :value="quantity" >{{quantity}}</span>
+                <span class="v-modal__input" :value="quantity">{{ quantity }}</span>
                 <button class="dark-button" @click="incrementQty"><b>+</b></button>
               </div>
               <div class="v-modal__btn-grp">
@@ -82,9 +83,10 @@
                 </button>
               </div>
             </div>
-            <span class="v-modal__select" style="text-align: right" v-if="isQntOverflow">На складе остолось только {{varQnt}} единиц данной вариации товара!</span>
+            <span class="v-modal__select" style="text-align: right"
+                  v-if="isQntOverflow">На складе остолось только {{ varQnt }} единиц данной вариации товара!</span>
             <h2>Описание</h2>
-            <p class="v-modal__description">{{ product_data.description }}</p>
+            <p class="v-modal__description" v-html="product_data.description"></p>
             <a href="#">Подробнее</a>
           </div>
         </div>
@@ -192,14 +194,14 @@ export default {
         if (selectedVariant.length === 1) {
           selectedVariant = selectedVariant.at(0)
           let variant_id = selectedVariant.id
-          if(selectedVariant.quantity >= this.quantity){
+          if (selectedVariant.quantity >= this.quantity) {
             this.isQntOverflow = false
             const item = {
               variant_id: variant_id,
               quantity: this.quantity
             }
             this.ADD_TO_CART(item)
-          }else{
+          } else {
             this.isQntOverflow = true
             this.varQnt = selectedVariant.quantity
           }
@@ -324,7 +326,7 @@ export default {
     font-size: 12px;
   }
 
-  &__size,  &__color{
+  &__size, &__color {
     display: block;
     position: relative;
     align-self: flex-start;
@@ -332,7 +334,7 @@ export default {
     margin-bottom: 14px;
   }
 
-  &__size-check, &__color-check{
+  &__size-check, &__color-check {
     display: flex;
     flex-flow: row wrap;
     gap: $padding/2;
@@ -374,9 +376,11 @@ export default {
     flex-flow: row wrap;
     justify-content: flex-end;
   }
-  &__quantity{
+
+  &__quantity {
     padding-right: $padding;
   }
+
   &__btn-grp {
     display: block;
   }
@@ -387,20 +391,21 @@ export default {
   }
 
   // кнопка закрытия модального окна
-  .cl-btn-2 {
+  .close-btn-2 {
     margin: 10px;
     display: flex;
     justify-content: center;
   }
 
-  .cl-btn-2 div {
+  .close-btn-2 div {
+    z-index: 20100;
     cursor: pointer;
     position: relative;
     height: 34px;
     width: 25px;
   }
 
-  .cl-btn-2 .leftright {
+  .close-btn-2 .close-leftright {
     height: 2px;
     width: 25px;
     position: absolute;
@@ -411,7 +416,7 @@ export default {
     transition: all .2s ease-in;
   }
 
-  .cl-btn-2 .rightleft {
+  .close-btn-2 .close-rightleft {
     height: 2px;
     width: 25px;
     position: absolute;
@@ -422,17 +427,17 @@ export default {
     transition: all .2s ease-in;
   }
 
-  .cl-btn-2 div:hover .leftright {
+  .close-btn-2 div:hover .close-leftright {
     transform: rotate(-45deg);
     background-color: $dark-color;
   }
 
-  .cl-btn-2 div:hover .rightleft {
+  .close-btn-2 div:hover .close-rightleft {
     transform: rotate(45deg);
     background-color: $dark-color;
   }
 
-  .cl-btn-2 div:hover .close-btn {
+  .close-btn-2 div:hover .close-btn {
     opacity: 1;
   }
 }

@@ -1,6 +1,6 @@
 <template>
 
-  <div class="v-catalog-item">
+  <div class="v-catalog-item nopadding">
 
     <v-modal
         v-if="isInfoModalVisible"
@@ -11,8 +11,11 @@
 
 
     <div class="v-catalog-item__image-wrapper">
-      <img class="v-catalog-item__image" :src="product_data.image"
-           :alt="product_data.image">
+      <router-link :to="{name: 'product', params:{product_id:product_data.article}}">
+        <img class="v-catalog-item__image" :src="product_data.image"
+             :alt="product_data.image">
+      </router-link>
+
     </div>
 
     <div class="v-catalog-item__info">
@@ -28,7 +31,6 @@
         />
       </div>
 
-      <div class="v-catalog-item__description">{{ product_data.description }}</div>
       <div class="v-catalog-item__bottom">
         <div class="v-catalog-item__price">{{ product_data.price.toLocaleString() }} ₽</div>
         <div>
@@ -161,8 +163,6 @@ export default {
   display: flex;
   flex-direction: column;
   background-color: $second-color;
-  width: 300px;
-  height: 500px;
 
   &__info {
     display: flex;
@@ -171,8 +171,7 @@ export default {
   }
 
   &__image-wrapper {
-    width: 100%;
-    height: 350px;
+    height: 90%;
   }
 
   &__name {
@@ -218,14 +217,6 @@ export default {
     font-weight: bold;
   }
 
-  &__btn-grp {
-    width: 180px;
-
-    &__btn {
-      background-color: $dark-color !important;
-      border-radius: 0 !important;
-    }
-  }
 
   &__image {
     width: 100%;

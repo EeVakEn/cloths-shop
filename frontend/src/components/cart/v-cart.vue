@@ -72,26 +72,26 @@ export default {
     },
     deleteAllFromCart() {
       this.DELETE_ALL_FROM_CART();
-    }
+    },
+
   },
   mounted() {
-    console.log(this.CART.length)
   },
   computed: {
-    ...mapGetters([
-      'CART',
-    ]),
     cartTotalCost() {
       let result = 0
 
       for (let item of this.CART) {
-        result += item.price * item.quantity
+        result += item.variant_id * item.quantity
       }
       return result;
     },
     getFormattedPrice: function () {
       return this.cartTotalCost.toLocaleString()
     },
+    ...mapGetters([
+      'CART',
+    ]),
   }
 
 }
@@ -125,7 +125,8 @@ export default {
       font-weight: bold;
     }
   }
-  &__no_items{
+
+  &__no_items {
     text-align: center;
   }
 

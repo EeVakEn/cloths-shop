@@ -11,6 +11,26 @@ export default {
         else
             localStorage.setItem('favorites', JSON.stringify(state.favorites))
     },
+    INIT_STORE: (state) => {
+        if (localStorage.getItem('token')){
+            state.token = localStorage.getItem('token')
+            state.isAuthenticated = true
+        } else {
+            state.token = ''
+            state.isAuthenticated = false
+        }
+    },
+    SET_IS_LOADING: (state, status) => {
+        state.isLoading = status;
+    },
+    SET_TOKEN: (state, token) => {
+        state.token = token
+        state.isAuthenticated = true
+    },
+    REMOVE_TOKEN : (state) => {
+        state.token = ''
+        state.isAuthenticated = false
+    },
     SET_PRODUCTS_TO_STATE: (state, products) => { // заполняем state данными
         state.products = products.results;
     },
@@ -44,7 +64,7 @@ export default {
                 exists = true
             }
         })
-        if (!exists){
+        if (!exists) {
             product.isFavorite = true
             state.favorites.push(product);
         }

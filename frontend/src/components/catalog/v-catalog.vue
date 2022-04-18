@@ -14,15 +14,18 @@
     <h2>Каталог</h2>
 
     <v-breadcrumb v-if="isFetching" :categories_array='BREADCRUMB'/>
-
-    <div  v-if="isFetching" class="v-catalog__list">
-      <v-catalog-item
-          v-for="product in PRODUCTS"
-          :key="product.article"
-          :product_data="product"
-          @addToFavorites="addToFavorites"
-      />
+    <div class="container-fluid">
+      <div  v-if="isFetching" class="row g-2" >
+        <v-catalog-item
+            class=" col-xl-3 col-lg-4 col-md-6 col-sm-12"
+            v-for="product in PRODUCTS"
+            :key="product.article"
+            :product_data="product"
+            @addToFavorites="addToFavorites"
+        />
+      </div>
     </div>
+
   </div>
 </template>
 

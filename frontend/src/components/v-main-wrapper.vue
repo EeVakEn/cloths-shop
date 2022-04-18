@@ -1,5 +1,7 @@
 <template>
+
   <div class="v-main-wrapper" :class="{'sidebar__open': isSidebarOpen}">
+    <v-navbar/>
     <v-sidebar @isOpenSidebar="isOpenSidebar"/>
     <keep-alive>
       <router-view></router-view>
@@ -11,10 +13,11 @@
 <script>
 import {mapGetters} from "vuex";
 import VSidebar from "./sidebar/v-sidebar";
+import VNavbar from "./v-navbar";
 
 export default {
   name: 'v-main-wrapper',
-  components: {VSidebar},
+  components: {VNavbar, VSidebar},
   data() {
     return {
       isSidebarOpen: false,
@@ -35,9 +38,6 @@ export default {
 
 <style lang="scss">
 .v-main-wrapper {
-  max-width: calc(100% - 100px);
-  //padding-left: 80px;
-
   margin-left: 70px;
   transition: .4s;
 

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from mptt.models import MPTTModel, TreeForeignKey
 from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 
 class Category(MPTTModel):
     class MPTTMeta:
@@ -76,7 +77,7 @@ class Size(models.Model):
 class Product(models.Model):
     article = models.AutoField(verbose_name='Артикул', primary_key=True)
     name = models.CharField(max_length=255, db_index=True, verbose_name='Название товара')
-    description = models.TextField(verbose_name='Описание товара', blank=True)
+    description = RichTextField(verbose_name='Описание товара', blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
     image = models.ImageField(verbose_name='Картинка', upload_to='img/products/')
     price = models.PositiveIntegerField(verbose_name='Цена')
