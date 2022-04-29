@@ -96,6 +96,8 @@ import axios from "axios"
 axios.defaults.baseURL = 'http://localhost:8000'
 
 export default {
+  components: {},
+
   mixins: [validationMixin],
   name: "v-sign-up",
   data() {
@@ -110,32 +112,29 @@ export default {
     }
   },
   methods: {
-    checkForm() {
+    async checkForm() {
       this.$v.form.$touch()
       this.errors = []
       if (!this.$v.form.$error) {
+        this.$store.commit('SET_IS_LOADING', true)
         console.log('Валидация прошла успешно')
         const formData = {
           email: this.form.email,
           username: this.form.username,
           password: this.form.password1
         }
-        axios
+        await axios
             .post('/api/users/', formData)
             .then(() => {
-              this.$bvToast.toast(`Аккаунт создан, пожалуйста, войдите в него`, {
-                title: 'Авторизация',
-                variant: 'dark',
-                autoHideDelay: 5000,
-                solid: true
-              })
-              // this.$router.push({name: 'login'})
+              this.$router.push({name: 'login'})
             })
             .catch(error => {
               if (error.response) {
                 this.errors = error.response.data
               }
             })
+
+        this.$store.commit('SET_IS_LOADING', false)
       }
     }
   },
@@ -154,11 +153,14 @@ export default {
 .form-group {
   margin-bottom: $margin;
 }
-
-.reg_form {
+.reg_form{
   width: 500px;
 }
-
+@media screen and (max-width: 550px){
+  .reg_form{
+    width: auto;
+  }
+}
 .dark-button {
   width: 100%;
 }

@@ -6,8 +6,8 @@ import datetime, locale
 locale.setlocale(locale.LC_ALL, 'russian_russia')
 
 class ReviewSerializer(serializers.ModelSerializer):
-    created_at = serializers.DateTimeField(format="%d %B %Y, %H:%M")
-    updated_at = serializers.DateTimeField(format="%d %B %Y, %H:%M")
+    created_at = serializers.DateTimeField(format="%d %B %Y, %H:%M", read_only=True)
+    updated_at = serializers.DateTimeField(format="%d %B %Y, %H:%M", read_only=True)
     review_author = serializers.StringRelatedField(read_only=True)
 
     class Meta:

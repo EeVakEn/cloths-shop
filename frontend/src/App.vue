@@ -39,8 +39,6 @@ export default {
 </script>
 
 <style lang="scss">
-
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-}
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,500,80);
+#app {font-family: Montserrat, sans-serif;}
 </style>

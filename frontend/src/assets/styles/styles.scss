@@ -238,5 +238,16 @@ body {
 }
 
 .refresh-btn:hover {
-  transform: rotate(360deg)!important; /* Поворачиваем на 360 градусов */
+  transform: rotate(360deg) !important; /* Поворачиваем на 360 градусов */
+}
+
+.link {
+  cursor: pointer;
+  opacity: 100%;
+  transition: .2s;
+}
+.link:hover{
+
+  text-decoration: none;
+  opacity: 50%;
 }

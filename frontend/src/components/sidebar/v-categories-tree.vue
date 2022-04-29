@@ -1,17 +1,21 @@
 <template>
   <div>
     <div
-        class="v-categories-tree"
-        :style="{'margin-left':`${depth*20+100}px`}"
+        class="container-fluid v-categories-tree"
+        @click="expanded=!expanded"
     >
-      <span v-if="hasChildren" @click="expanded=!expanded">
-        <i v-if="!expanded" class="bi bi-caret-right"></i>
-        <i v-else class="bi bi-caret-down"></i>
-      </span>
-      <router-link class="link" :to="{name: 'category', params:{cat_slug:node.slug}}">
-        {{ node.name }}
-      </router-link>
 
+      <span
+          class="link"
+          @click="$router.push(`/category/${node.slug}`).catch(()=>{})"
+          :style="{'margin-left':`${depth*20}px`}"
+      >
+        {{ node.name }}
+      </span>
+      <span v-if="hasChildren" >
+        <i v-if="!expanded" class="bi bi-caret-right link"></i>
+        <i v-else class="bi bi-caret-down link"></i>
+      </span>
     </div>
     <div v-if="expanded">
       <v-categories-tree
@@ -28,6 +32,7 @@
 </template>
 
 <script>
+
 export default {
   name: "v-categories-tree",
   props: {
@@ -39,7 +44,7 @@ export default {
   },
   data() {
     return {
-      expanded: true,
+      expanded: false,
     }
   },
   computed: {
@@ -52,19 +57,15 @@ export default {
 
 <style scoped lang="scss">
 .v-categories-tree {
-  font-size: $font-size18;
   text-align: left;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: solid 1px grey;
+  z-index: 0;
 }
-
-.link {
-  display: inline-block;
-  padding: 4px 8px;
-  color: white !important;
-  transition: .5s;
-}
-
-.link:hover {
-  color: #555;
+.link{
+  color: $second-color !important;
+  z-index: 200;
 }
 </style>

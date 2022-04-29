@@ -8,10 +8,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('api/catalog/', include('catalog.urls')),
+    path('api/customer/', include('customer.urls')),
 
     #djoser auth
     path('api/', include('djoser.urls')),
-    path('api/', include('djoser.urls.authtoken'))
+    path('api/', include('djoser.urls.authtoken')),
+
 ]
 
 if settings.DEBUG:

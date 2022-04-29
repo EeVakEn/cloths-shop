@@ -6,9 +6,9 @@
         <i v-else class="bi bi-x"/>
       </div>
       <div v-if="isOpen">
-        <router-link class="v-sidebar_catalog_link" :to="{name: 'catalog'}">
+        <span class="v-sidebar_catalog_link" @click=" $router.push('/').catch(()=>{})">
           Каталог
-        </router-link>
+        </span>
         <v-categories-tree
             v-for="node in CATEGORIES"
             :key="node.name"

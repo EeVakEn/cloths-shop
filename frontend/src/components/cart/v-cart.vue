@@ -4,11 +4,11 @@
 
       <div class="v-cart__wrapper row">
         <div class="v-cart__delivery col-lg-6">
-          <h1>Оформление заказа</h1>
-
+          <h2>Оформление</h2>
+          <v-order-form></v-order-form>
         </div>
         <div class="v-cart__cart col-lg-6">
-          <h1>Корзина</h1>
+          <h2>Корзина</h2>
           <v-cart-item
               v-for="(item,index) in this.CART"
               :key="index"
@@ -39,9 +39,7 @@
     >
       <h2>Корзина пуста</h2>
       <p>Но ты всегда можешь ее наполнить :) <br/> Кликай на кнопочку </p>
-      <router-link :to="{name: 'catalog'}">
-        <button class="dark-button">Перейти в каталог</button>
-      </router-link>
+      <button class="dark-button" @click="$router.push('/')">Перейти в каталог</button>
     </div>
   </div>
 
@@ -50,10 +48,11 @@
 <script>
 import VCartItem from "./v-cart-item";
 import {mapActions, mapGetters} from "vuex";
+import VOrderForm from "@/components/cart/v-order-form";
 
 export default {
   name: "v-cart",
-  components: {VCartItem},
+  components: {VOrderForm, VCartItem},
   methods: {
     ...mapActions([
       'DELETE_FROM_CART',

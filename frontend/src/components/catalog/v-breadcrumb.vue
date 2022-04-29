@@ -1,21 +1,21 @@
 <template>
   <p>
-    <router-link
+    <span
         class="v-breadcrumb__link"
-        :to="{ name: 'catalog'}"
+        @click = "$router.push('/').catch(()=>{})"
     >
       Главная
-    </router-link>
+    </span>
     <span v-for="item in categories_array"
           :key="item.id"
     >
       <i class="bi bi-chevron-right"></i>
-      <router-link
+      <span
           class="v-breadcrumb__link"
-          :to="{ name: 'category', params: {cat_slug:item.slug}} "
+          @click="$router.push(`/category/${item.slug}`)"
       >
         {{ item.name }}
-      </router-link>
+      </span>
     </span>
   </p>
 </template>

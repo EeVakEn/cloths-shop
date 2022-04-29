@@ -96,5 +96,8 @@ export default {
         else
             state.cart.pop(index);
         localStorage.setItem('cart', JSON.stringify(state.cart))
-    }
+    },
+    SET_CAT_DROP_VIS: (state) => {
+        state.isVisibleCategoryDropdown = false
+    },
 }

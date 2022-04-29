@@ -11,10 +11,10 @@
 
 
     <div class="v-catalog-item__image-wrapper">
-      <router-link :to="{name: 'product', params:{product_id:product_data.article}}">
+      <a class="link" @click="$router.push(`/product/${product_data.article}`)">
         <img class="v-catalog-item__image" :src="product_data.image"
              :alt="product_data.image">
-      </router-link>
+      </a>
 
     </div>
 

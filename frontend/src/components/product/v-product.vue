@@ -5,14 +5,13 @@
         <img class="image" :src="PRODUCT.image" alt="Картинка товара отсутствует"/>
       </div>
       <div class="col-md-6 info">
-        <h1>{{PRODUCT.name}}</h1>
+        <h1>{{ PRODUCT.name }}</h1>
         <p>Артикул: <span class="badge rounded-pill bg-dark">{{ PRODUCT.article }}</span></p>
-
 
 
         <h4>Выбор варианта товара: <i @click="reloadData" class="bi bi-arrow-clockwise refresh-btn"/></h4>
         <div v-if="isFetching">
-          <p >Цвет: {{ selectedColorToRussian }}</p>
+          <p>Цвет: {{ selectedColorToRussian }}</p>
           <div class="v-modal__color">
             <div class="v-modal__color-check">
               <div class="color-wrapper"
@@ -54,11 +53,11 @@
             </div>
             <span class="v-modal__select" v-if="isSizeNotSelected">Выберите размер</span>
           </div>
-          <span class="v-modal__price">{{ PRODUCT.price.toLocaleString()}} ₽</span>
+          <span class="v-modal__price">{{ PRODUCT.price.toLocaleString() }} ₽</span>
           <div class="v-modal__buttons">
             <div class="v-modal__quantity">
               <button class="dark-button" @click="decrementQty"><b>−</b></button>
-              <span class="v-modal__input" :value="quantity" >{{quantity}}</span>
+              <span class="v-modal__input" :value="quantity">{{ quantity }}</span>
               <button class="dark-button" @click="incrementQty"><b>+</b></button>
             </div>
             <div class="v-modal__btn-grp">
@@ -66,17 +65,15 @@
                 В корзину
                 <i class="bi bi-bag"/>
               </button>
-              <button class="dark-button" @click="addToFavorites">
-                <i class="bi bi-heart-fill" v-if="PRODUCT.isFavorite"/>
+              <button class="dark-button" @click="addToFav">
+                <i class="bi bi-heart-fill" v-if="isFavorite"/>
                 <i class="bi bi-heart" v-else/>
               </button>
             </div>
           </div>
-          <span class="v-modal__select" style="text-align: right" v-if="isQntOverflow">На складе остолось только {{varQnt}} единиц данной вариации товара!</span>
+          <span class="v-modal__select" style="text-align: right"
+                v-if="isQntOverflow">На складе остолось только {{ varQnt }} единиц данной вариации товара!</span>
         </div>
-
-
-
 
 
         <h3>
@@ -96,20 +93,22 @@
           </a>
         </h3>
         <div class="collapse" id="reviews">
-          <div>
-            <form class="review">
-              <h4><b>Оставьте ваш отзыв</b></h4>
-              <label for="markReview" class="form-label">Оцените товар</label>
-              <star-rating id="markReview" style="margin-bottom: 10px" :show-rating="false" :star-size="25"
-                           :animate="true" active-color="#000" active-border-color="#000" :border-width="2"
-                           :active-on-click="true" :padding="3"></star-rating>
-              <div class="mb-3">
-                <label for="textReview" class="form-label">Отзыв</label>
-                <textarea class="form-control" id="textReview" rows="2" placeholder="Напишите свой отзыв..."></textarea>
-              </div>
-              <button type="submit" class="dark-button">Отправить</button>
-            </form>
-            <div class="review" v-for="item in PRODUCT.reviews" :key='item.id'>
+          <form class="review" @submit="addReview" @submit.prevent="">
+            <h4><b>Оставьте ваш отзыв</b></h4>
+            <label for="markReview" class="form-label">Оцените товар</label>
+            <star-rating id="markReview" style="margin-bottom: 10px" :show-rating="false" :star-size="25"
+                         :animate="true" active-color="#000" active-border-color="#000" :border-width="2"
+                         :active-on-click="true" :padding="3" aria-required="true" v-model="mark"></star-rating>
+            <div class="mb-3">
+              <label for="textReview" class="form-label">Отзыв</label>
+              <textarea class="form-control" v-model="reviewText" id="textReview" rows="2"
+                        placeholder="Напишите свой отзыв..." required></textarea>
+            </div>
+            <button type="submit" class="dark-button">Отправить</button>
+          </form>
+          <transition-group name="slide-fade">
+            <div class="review" v-for="item in reviews" :key='item.id'>
+
               <div class="review_header">
                 <div class="author">
                   <div class="author_img">
@@ -119,25 +118,26 @@
                     {{ item.review_author }}
                   </b>
                   <div style="transform: translateY(-3px)">
-                    <star-rating :read-only="true" active-color="#000" active-border-color="#000" :rating="item.raiting"
+                    <star-rating :read-only="true" active-color="#000" active-border-color="#000"
+                                 :rating="item.raiting"
                                  :show-rating="false" :star-size="15"></star-rating>
                   </div>
                 </div>
                 <div>
-                  <span v-if="item.updated_at === item.created_at"
-                        class="badge rounded-pill bg-light text-dark"><i>{{ item.updated_at }}</i></span>
+                    <span v-if="item.updated_at === item.created_at"
+                          class="badge rounded-pill bg-light text-dark"><i>{{ item.updated_at }}</i></span>
                   <span v-else class="badge rounded-pill bg-light text-dark"><i class="bi bi-pencil"> {{
                       item.updated_at
                     }}</i></span>
                 </div>
 
               </div>
-
               <div class="review_body">
                 <div class="review_text">{{ item.review }}</div>
               </div>
+
             </div>
-          </div>
+          </transition-group>
         </div>
         <hr/>
 
@@ -150,6 +150,7 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import StarRating from 'vue-star-rating'
+import axios from "axios";
 
 export default {
   name: "v-product",
@@ -158,6 +159,9 @@ export default {
   },
   data() {
     return {
+      reviews: [],
+      mark: 1,
+      reviewText: '',
       data_size: [],
       data_color: [],
       selectedSize: '',
@@ -170,16 +174,52 @@ export default {
       hover: false,
       isFetching: false,
       isFetchingData: false,
+      isFavorite: false
     };
   },
   methods: {
     ...mapActions([
       'ADD_TO_CART',
-      'GET_DETAIL_PRODUCT'
+      'GET_DETAIL_PRODUCT',
+      'ADD_TO_FAVORITES'
     ]),
-    addToFavorites() {
-      this.$emit('addToFavorites', this.PRODUCT)
-      this.isFavorite = this.PRODUCT.isFavorite
+    async addReview() {
+      if (this.$store.state.isAuthenticated) {
+        const data = {
+          'review': this.reviewText,
+          'raiting': parseInt(this.mark)
+        }
+        this.reviewText = ''
+        this.mark = 1
+        await axios.post(`/api/catalog/products/${this.PRODUCT.article}/review/`, data)
+            .then().catch(error => {
+              console.log(error)
+            })
+        await axios.get(`/api/catalog/products/${this.PRODUCT.article}/reviewlist/`)
+            .then(resp => {
+              this.reviews = resp.data.results
+            })
+            .catch(error => {
+              console.log(error)
+            })
+      } else {
+        this.router.push('/log-in')
+      }
+    },
+    addToFav() {
+      this.ADD_TO_FAVORITES(this.PRODUCT)
+      this.setIsFav()
+    },
+    setIsFav() {
+      let exists = false
+      this.FAVORITES.forEach(fav => {
+        if (fav.article === this.PRODUCT.article) {
+          this.isFavorite = true
+          exists = true
+        }
+      })
+      if (exists === false)
+        this.isFavorite = false
     },
     selectSize(selectedSize) {
       this.selectedSize = selectedSize
@@ -238,21 +278,21 @@ export default {
         if (selectedVariant.length === 1) {
           selectedVariant = selectedVariant.at(0)
           let variant_id = selectedVariant.id
-          if(selectedVariant.quantity >= this.quantity){
+          if (selectedVariant.quantity >= this.quantity) {
             this.isQntOverflow = false
             const item = {
               variant_id: variant_id,
               quantity: this.quantity
             }
             this.ADD_TO_CART(item)
-          }else{
+          } else {
             this.isQntOverflow = true
             this.varQnt = selectedVariant.quantity
           }
         }
       }
     },
-    async reloadData() {
+    reloadData() {
       if (document.querySelector('input[name="color"]:checked'))
         document.querySelector('input[name="color"]:checked').checked = false
 
@@ -264,21 +304,28 @@ export default {
       this.data_size = this.initSizeData
     },
     async loadData() {
-      this.GET_DETAIL_PRODUCT(this.$route.params.product_id)
+      await this.GET_DETAIL_PRODUCT(this.$route.params.product_id)
       this.data_color = this.initColorData
       this.data_size = this.initSizeData
+      if (document.querySelector('input[name="color"]:checked'))
+        document.querySelector('input[name="color"]:checked').checked = false
+
+      if (document.querySelector('input[name="size"]:checked'))
+        document.querySelector('input[name="size"]:checked').checked = false
+      this.selectedColor = ''
+      this.selectedSize = ''
       this.isFetching = true
 
     },
   },
-  async created() {
-    this.loadData()
-    this.reloadData()
-    // следим за изменением параметров роутера (изменениями в URI)
-    this.$watch(() => this.$route.params, this.loadData, this.reloadData)
+  async mounted() {
+    await this.loadData();
+    this.setIsFav()
+    this.reviews = this.PRODUCT.reviews
   },
   computed: {
-    ...mapGetters(['PRODUCT']),
+    ...mapGetters(['PRODUCT', 'FAVORITES']),
+
     initColorData() {
       let variants = this.PRODUCT.variants
       let colors_list = Array.from(new Set(variants.map((variant) => variant.color)));
@@ -386,4 +433,18 @@ export default {
   border-radius: $padding;
 }
 
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+
+.slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active до версии 2.1.8 */
+{
+  transform: translateX(10px);
+  opacity: 0;
+}
 </style>

@@ -119,6 +119,7 @@ class Review(models.Model):
         db_table = 'review'
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
+        ordering = ['-updated_at']
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     review_author = models.ForeignKey(User, on_delete=models.CASCADE)

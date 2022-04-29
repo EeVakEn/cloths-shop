@@ -4,9 +4,9 @@ import VCatalog from "../components/catalog/v-catalog";
 import VCart from "../components/cart/v-cart";
 import VFavorites from "../components/favorites/v-favorites";
 import VProduct from "../components/product/v-product";
-import VSignUp from "../components/v-sign-up";
-import VLogin from "../components/v-login";
-import VAccount from "../components/v-account";
+import VSignUp from "../components/user/v-sign-up";
+import VLogin from "../components/user/v-login";
+import VAccount from "../components/user/v-account";
 import store from "../vuex/store";
 
 Vue.use(Router)

@@ -1,16 +1,5 @@
 <template>
   <div class="v-catalog">
-    <div class="cart_favorites">
-      <router-link class="cart_favorites__link" :to="{name:'favorites', params:{favorites_data: FAVORITES}}">
-        <i class="bi bi-heart"></i>
-        <span class="cart_favorites__count">{{ FAVORITES.length }}</span>
-      </router-link>
-      <router-link class="cart_favorites__link" :to="{name:'cart', params:{cart_data: CART}}">
-        <i class="bi bi-bag"></i>
-        <span class="cart_favorites__count">{{ getCartQuantity }}</span>
-      </router-link>
-    </div>
-
     <h2>Каталог</h2>
 
     <v-breadcrumb v-if="isFetching" :categories_array='BREADCRUMB'/>
@@ -54,6 +43,8 @@ export default {
       this.ADD_TO_FAVORITES(data)
     },
     async loadData() {
+      this.$store.commit('SET_IS_LOADING', true)
+      setTimeout(()=>{}, 1000)
       if (this.$route.params.cat_slug) {
         this.GET_CATEGORY_BREADCRUMB(this.$route.params.cat_slug)
         this.GET_PRODUCTS_WITH_CATEGORY(this.$route.params.cat_slug)
@@ -62,11 +53,13 @@ export default {
         this.GET_PRODUCTS_FROM_API()
       }
       this.isFetching = true
+
+      this.$store.commit('SET_IS_LOADING', false)
     }
   },
-  async created() {
-    this.loadData()
+  async mounted() {
     // следим за изменением параметров роутера (изменениями в URI)
+    this.loadData()
     this.$watch(() => this.$route.params, this.loadData)
   },
   computed: {
@@ -108,15 +101,8 @@ export default {
   right: 20px;
 
   &__link {
-
-    font-size: 24px;
     text-decoration: none;
-    color: $dark-color;
     padding: $padding;
-  }
-
-  &__link:hover {
-    color: $dark-color;
   }
 
   &__count {

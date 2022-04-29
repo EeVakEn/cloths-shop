@@ -2,22 +2,23 @@
 
   <div class="v-main-wrapper" :class="{'sidebar__open': isSidebarOpen}">
     <v-navbar/>
-    <v-sidebar @isOpenSidebar="isOpenSidebar"/>
-    <keep-alive>
-      <router-view></router-view>
-    </keep-alive>
+<!--    <v-sidebar @isOpenSidebar="isOpenSidebar"/>-->
+
+    <router-view></router-view>
+    <v-is-loading></v-is-loading>
   </div>
 
 </template>
 
 <script>
 import {mapGetters} from "vuex";
-import VSidebar from "./sidebar/v-sidebar";
+// import VSidebar from "./sidebar/v-sidebar";
 import VNavbar from "./v-navbar";
+import VIsLoading from "@/components/v-is-loading";
 
 export default {
   name: 'v-main-wrapper',
-  components: {VNavbar, VSidebar},
+  components: {VIsLoading, VNavbar, /*VSidebar*/},
   data() {
     return {
       isSidebarOpen: false,
@@ -38,7 +39,6 @@ export default {
 
 <style lang="scss">
 .v-main-wrapper {
-  margin-left: 70px;
   transition: .4s;
 
 }

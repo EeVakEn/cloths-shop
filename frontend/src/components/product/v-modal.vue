@@ -1,14 +1,8 @@
 <template>
   <div class="modal_wrapper" @click="closeModal">
-    <span tabindex="0"></span>
     <div class='v-modal'>
-      <div class="v-modal__close">
-        <div class="close-btn-2" @click="closeModal">
-          <div>
-            <div class="close-leftright"></div>
-            <div class="close-rightleft"></div>
-          </div>
-        </div>
+      <div class="v-modal__close " @click="closeModal" >
+        <i class="bi bi-x link"></i>
       </div>
       <div class="container-fluid">
         <div class="row">
@@ -77,8 +71,8 @@
                   В корзину
                   <i class="bi bi-bag"/>
                 </button>
-                <button class="dark-button" @click="addToFavorites">
-                  <i class="bi bi-heart-fill" v-if="product_data.isFavorite"/>
+                <button class="dark-button" @click="addToFav">
+                  <i class="bi bi-heart-fill" v-if="isFavorite"/>
                   <i class="bi bi-heart" v-else/>
                 </button>
               </div>
@@ -87,7 +81,7 @@
                   v-if="isQntOverflow">На складе остолось только {{ varQnt }} единиц данной вариации товара!</span>
             <h2>Описание</h2>
             <p class="v-modal__description" v-html="product_data.description"></p>
-            <a href="#">Подробнее</a>
+            <span class="link" @click="$router.push(`/product/${product_data.article}`)">Подробнее</span>
           </div>
         </div>
       </div>
@@ -96,7 +90,7 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "v-modal",
@@ -124,15 +118,28 @@ export default {
       varQnt: 1,
       quantity: 1,
       hover: false,
+      isFavorite: false
     };
   },
   methods: {
     ...mapActions([
-      'ADD_TO_CART'
+      'ADD_TO_CART',
+        'ADD_TO_FAVORITES'
     ]),
-    addToFavorites() {
-      this.$emit('addToFavorites', this.product_data)
-      this.isFavorite = this.product_data.isFavorite
+    addToFav() {
+      this.ADD_TO_FAVORITES(this.product_data)
+      this.setIsFav()
+    },
+    setIsFav(){
+      let exists = false
+      this.FAVORITES.forEach(fav => {
+        if (fav.article === this.product_data.article) {
+          this.isFavorite = true
+          exists = true
+        }
+      })
+      if (exists === false)
+        this.isFavorite = false
     },
     closeModal() {
       this.$emit('closeModal')
@@ -221,6 +228,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['FAVORITES']),
     initColorData() {
       let variants = this.product_data.variants
       let colors_list = Array.from(new Set(variants.map((variant) => variant.color)));
@@ -283,6 +291,7 @@ export default {
   mounted() {
     this.data_color = this.initColorData;
     this.data_size = this.initSizeData;
+    this.setIsFav()
   },
 
 }
@@ -290,6 +299,7 @@ export default {
 
 <style lang="scss">
 .modal_wrapper {
+  z-index: 1040;
   overflow-y: auto;
   position: fixed;
   display: flex;
@@ -298,22 +308,21 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 20;
-  background: rgba(0, 0, 0, 0.38);
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .v-modal {
+  z-index: 1060;
   border-radius: 5px;
   position: absolute;
   top: 100px;
-  margin-left: 85px;
   padding: $padding;
   width: 70%;
   background-color: white;
-  z-index: 21;
 
 
   &__close {
+    font-size: 40px;
     position: absolute;
     top: $margin;
     right: $margin;
@@ -390,55 +399,5 @@ export default {
     text-align: justify;
   }
 
-  // кнопка закрытия модального окна
-  .close-btn-2 {
-    margin: 10px;
-    display: flex;
-    justify-content: center;
-  }
-
-  .close-btn-2 div {
-    z-index: 20100;
-    cursor: pointer;
-    position: relative;
-    height: 34px;
-    width: 25px;
-  }
-
-  .close-btn-2 .close-leftright {
-    height: 2px;
-    width: 25px;
-    position: absolute;
-    margin-top: 12px;
-    background-color: $dark-color;
-    border-radius: 1px;
-    transform: rotate(45deg);
-    transition: all .2s ease-in;
-  }
-
-  .close-btn-2 .close-rightleft {
-    height: 2px;
-    width: 25px;
-    position: absolute;
-    margin-top: 12px;
-    background-color: $dark-color;
-    border-radius: 1px;
-    transform: rotate(-45deg);
-    transition: all .2s ease-in;
-  }
-
-  .close-btn-2 div:hover .close-leftright {
-    transform: rotate(-45deg);
-    background-color: $dark-color;
-  }
-
-  .close-btn-2 div:hover .close-rightleft {
-    transform: rotate(45deg);
-    background-color: $dark-color;
-  }
-
-  .close-btn-2 div:hover .close-btn {
-    opacity: 1;
-  }
 }
 </style>
