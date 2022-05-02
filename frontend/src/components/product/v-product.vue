@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid" v-if="isFetching">
+  <div class="container" v-if="isFetching">
     <div class="row">
       <div class="col-md-6 image_wrapper">
         <img class="image" :src="PRODUCT.image" alt="Картинка товара отсутствует"/>
@@ -89,7 +89,7 @@
         <h3>
           <a data-bs-toggle="collapse" href="#reviews" role="button"
              aria-expanded="false" aria-controls="reviews">
-            Отзывы <i>({{ PRODUCT.reviews.length }})</i>
+            Отзывы <i>({{ reviews.length }})</i>
           </a>
         </h3>
         <div class="collapse" id="reviews">
@@ -151,6 +151,7 @@
 import {mapActions, mapGetters} from "vuex";
 import StarRating from 'vue-star-rating'
 import axios from "axios";
+import router from "@/router/router";
 
 export default {
   name: "v-product",
@@ -203,7 +204,7 @@ export default {
               console.log(error)
             })
       } else {
-        this.router.push('/log-in')
+        router.push('/log-in')
       }
     },
     addToFav() {
@@ -402,6 +403,7 @@ export default {
 
 .author_img {
   display: flex;
+  box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.2);
   justify-content: center;
   align-items: center;
   font-size: $font-size22;
@@ -426,10 +428,9 @@ export default {
 }
 
 .review {
-  box-shadow: 2px 2px 2px $main-color;
-  outline: solid 1px #eee;
+  box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.1);
   padding: $padding*2;
-  margin-bottom: $margin;
+  margin-bottom: $margin*2;
   border-radius: $padding;
 }
 

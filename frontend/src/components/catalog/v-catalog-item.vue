@@ -2,51 +2,59 @@
 
   <div class="v-catalog-item nopadding">
 
-    <v-modal
-        v-if="isInfoModalVisible"
-        rightBtnTitle="Add to cart"
-        :product_data="product_data"
-        @closeModal="closeModal"
-    />
+    <!--MODAL-->
+    <transition name="fade" appear>
+      <v-modal
+          v-if="isInfoModalVisible"
+          tabindex="-1"
+          aria-hidden="true"
+          rightBtnTitle="Add to cart"
+          :product_data="product_data"
+          @closeModal="closeModal"
+      />
+    </transition>
+    <!--MODAL END-->
 
-
-    <div class="v-catalog-item__image-wrapper">
-      <a class="link" @click="$router.push(`/product/${product_data.article}`)">
-        <img class="v-catalog-item__image" :src="product_data.image"
-             :alt="product_data.image">
-      </a>
-
-    </div>
-
-    <div class="v-catalog-item__info">
-      <div class="v-catalog-item__name">{{ product_data.name }}</div>
-
-      <div class="v-catalog-item__colors-wrapper">
-        <b>Цвет: </b>
-        <div
-            v-for="(color,index) in getColorStack"
-            :key="index"
-            :class="[color, 'v-catalog-item__color']"
-            :data-microtip="colorToRu(color)"
-        />
+    <div class="v-catalog-cart">
+      <div class="v-catalog-item__image-wrapper">
+        <img
+            class="link-img v-catalog-item__image"
+            @click="$router.push(`/product/${product_data.article}`)"
+            :src="product_data.image"
+            :alt="product_data.image"/>
       </div>
 
-      <div class="v-catalog-item__bottom">
-        <div class="v-catalog-item__price">{{ product_data.price.toLocaleString() }} ₽</div>
-        <div>
-          <button class="dark-button" @click="showModal">
-            В корзину
-            <i class="bi bi-bag"/>
-          </button>
-          <button class="dark-button" @click="addToFavorites">
-            <i class="bi bi-heart-fill" v-if="this.isFavorite"/>
-            <i class="bi bi-heart" v-else/>
-          </button>
+      <div class="v-catalog-item__info">
+        <div class="v-catalog-item__name">{{ product_data.name }}</div>
+
+        <div class="v-catalog-item__colors-wrapper">
+          <b>Цвет: </b>
+          <div
+              v-for="(color,index) in getColorStack"
+              :key="index"
+              :class="[color, 'v-catalog-item__color']"
+              :data-microtip="colorToRu(color)"
+          />
         </div>
+
+        <div class="v-catalog-item__bottom">
+          <div class="v-catalog-item__price">{{ product_data.price.toLocaleString() }} ₽</div>
+          <div>
+            <button class="dark-button" @click="showModal">
+              В корзину
+              <i class="bi bi-bag"/>
+            </button>
+
+            <button class="dark-button" @click="addToFavorites">
+              <i class="bi bi-heart-fill" v-if="this.isFavorite"/>
+              <i class="bi bi-heart" v-else/>
+            </button>
+          </div>
 
         </div>
       </div>
     </div>
+  </div>
 
 </template>
 
@@ -129,7 +137,7 @@ export default {
           return '';
       }
     },
-    isFav(){
+    isFav() {
       let exists = false
       this.FAVORITES.forEach(fav => {
         if (fav.article === this.product_data.article) {
@@ -137,7 +145,7 @@ export default {
           exists = true
         }
       })
-      if (!exists){
+      if (!exists) {
         this.isFavorite = false
       }
     }
@@ -159,10 +167,18 @@ export default {
 </script>
 
 <style lang="scss">
+.v-catalog-cart {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+  margin: $margin/2;
+  background-color: $second-color;
+}
+
 .v-catalog-item {
   display: flex;
   flex-direction: column;
-  background-color: $second-color;
 
   &__info {
     display: flex;
@@ -223,5 +239,15 @@ export default {
     height: 100%;
     object-fit: cover;
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

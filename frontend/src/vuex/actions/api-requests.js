@@ -64,10 +64,4 @@ export default {
             return error
         })
     },
-    // async GET_PRODUCT_REVIEWS({commit}, product_id){
-    //     return axios
-    //         .get(`/api/catalog/products/${product_id}/reviews/`)
-    //         .then((resp) => commit('SET_REVIEWS', resp.data))
-    //         .catch(error=> {return error})
-    // },
 }

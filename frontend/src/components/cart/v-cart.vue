@@ -1,15 +1,12 @@
 <template>
-  <div class="v-cart container-fluid">
+  <div class="v-cart container">
     <div v-if="this.CART.length">
 
       <div class="v-cart__wrapper row">
-        <div class="v-cart__delivery col-lg-6">
-          <h2>Оформление</h2>
-          <v-order-form></v-order-form>
-        </div>
         <div class="v-cart__cart col-lg-6">
           <h2>Корзина</h2>
-          <v-cart-item
+          <div class="v-cart__cart-wrapper">
+            <v-cart-item
               v-for="(item,index) in this.CART"
               :key="index"
               :cart_item_data="item"
@@ -19,7 +16,7 @@
           />
           <div class="v-cart__total">
             <div>Итого</div>
-            <div><b>{{ getFormattedPrice }} ₽</b></div>
+            <div><b>{{ totalPrice }} ₽</b></div>
             <a
                 class="v-cart__total__delete"
                 @click="deleteAllFromCart"
@@ -28,8 +25,12 @@
               Очистить корзину
             </a>
           </div>
-        </div>
+          </div>
 
+        </div>
+        <div class="v-cart__delivery col-lg-6">
+          <v-order-form></v-order-form>
+        </div>
       </div>
 
     </div>
@@ -38,6 +39,7 @@
         class="v-cart__no_items"
     >
       <h2>Корзина пуста</h2>
+      <img class="link-img" src="@/assets/images/shopping-cart-svgrepo-com.svg" alt="" style="max-width: 400px"/>
       <p>Но ты всегда можешь ее наполнить :) <br/> Кликай на кнопочку </p>
       <button class="dark-button" @click="$router.push('/')">Перейти в каталог</button>
     </div>
@@ -49,10 +51,16 @@
 import VCartItem from "./v-cart-item";
 import {mapActions, mapGetters} from "vuex";
 import VOrderForm from "@/components/cart/v-order-form";
+import axios from "axios";
 
 export default {
   name: "v-cart",
   components: {VOrderForm, VCartItem},
+  data() {
+    return {
+      totalPrice: 0
+    }
+  },
   methods: {
     ...mapActions([
       'DELETE_FROM_CART',
@@ -72,22 +80,28 @@ export default {
     deleteAllFromCart() {
       this.DELETE_ALL_FROM_CART();
     },
-
+    async getTotal(){
+      let res = 0
+        for (let item of this.CART) {
+          res += await axios.get(`/api/catalog/variants/${item.variant_id}/`)
+              .then(response => response.data.product.price)
+              .catch(error => error) * item.quantity
+        }
+        this.totalPrice = res.toLocaleString()
+    }
   },
   mounted() {
+    this.getTotal()
+  },
+  watch:{
+    'CART':{
+      deep: true,
+      async handler(){
+        this.getTotal()
+      }
+    }
   },
   computed: {
-    cartTotalCost() {
-      let result = 0
-
-      for (let item of this.CART) {
-        result += item.variant_id * item.quantity
-      }
-      return result;
-    },
-    getFormattedPrice: function () {
-      return this.cartTotalCost.toLocaleString()
-    },
     ...mapGetters([
       'CART',
     ]),
@@ -101,8 +115,11 @@ export default {
 .v-cart {
   &__wrapper {
   }
-
+  &__cart-wrapper{
+    box-shadow: 0 4px 25px 0 rgba(0, 0, 0, 0.3);
+  }
   &__cart, &__delivery {
+
     padding: $padding;
   }
 

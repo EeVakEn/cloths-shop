@@ -4,9 +4,9 @@
 
     <v-breadcrumb v-if="isFetching" :categories_array='BREADCRUMB'/>
     <div class="container-fluid">
-      <div  v-if="isFetching" class="row g-2" >
+      <div  v-if="isFetching" class="row" >
         <v-catalog-item
-            class=" col-xl-3 col-lg-4 col-md-6 col-sm-12"
+            class="col-xl-3 col-lg-4 col-md-6 col-sm-12"
             v-for="product in PRODUCTS"
             :key="product.article"
             :product_data="product"
@@ -57,10 +57,16 @@ export default {
       this.$store.commit('SET_IS_LOADING', false)
     }
   },
-  async mounted() {
+  mounted() {
     // следим за изменением параметров роутера (изменениями в URI)
     this.loadData()
-    this.$watch(() => this.$route.params, this.loadData)
+  },
+  watch:{
+    '$route.params':{
+      handler(){
+        this.loadData()
+      }
+    }
   },
   computed: {
     ...mapGetters([

@@ -1,88 +1,87 @@
 <template>
-  <div class="modal_wrapper" @click="closeModal">
+  <div class="modal_wrapper" ref="modal_wrapper">
+    <span tabindex="0"></span>
     <div class='v-modal'>
-      <div class="v-modal__close " @click="closeModal" >
+      <div class="v-modal__close" @click="closeModal">
         <i class="bi bi-x link"></i>
       </div>
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-6">
-            <img class="v-modal__image"
-                 :src="this.product_data.image"
-                 :alt="this.product_data.image">
+      <div class="row">
+        <div class="col-md-6">
+          <img class="v-modal__image"
+               :src="this.product_data.image"
+               :alt="this.product_data.image">
 
-          </div>
-          <div class="col-md-6 v-modal__info">
-            <h1 class="v-modal__name">{{ product_data.name }}</h1>
-            <p class="v-modal__article">Артикул: {{ product_data.article }}</p>
-            <h4>Выбор варианта товара: <i @click="reloadData" class="bi bi-arrow-clockwise refresh-btn"/></h4>
+        </div>
+        <div class="col-md-6 v-modal__info">
+          <h1 class="v-modal__name">{{ product_data.name }}</h1>
+          <p class="v-modal__article">Артикул: {{ product_data.article }}</p>
+          <h4>Выбор варианта товара: <i @click="reloadData" class="bi bi-arrow-clockwise refresh-btn"/></h4>
 
-            <p>Цвет: {{ selectedColorToRussian }}</p>
-            <div class="v-modal__color">
-              <div class="v-modal__color-check">
-                <div class="color-wrapper"
-                     v-for="(color, index) in this.data_color"
-                     :key="index"
-                >
-                  <input
-                      :disabled="!color.isActive"
-                      type="radio"
-                      name="color"
-                      :id="color.name"
-                      :class="['color-wrapper__color__radio', color.name]"
-                      @change="selectColor(color.name)"
-                  />
-                  <label :for="color.name"
-                         :class="['color-wrapper__color__label', color.name, !color.isActive?'disabled':'']"/>
-                </div>
-              </div>
-              <span class="v-modal__select" v-if="isColorNotSelected">Выберите цвет</span>
-            </div>
-            <p style="margin-bottom: 10px">Размер: {{ selectedSize }}</p>
-            <div class="v-modal__size">
-              <div class="v-modal__size-check">
-                <div class="size-wrapper"
-                     v-for="(size, index) in this.data_size"
-                     :key="index"
-                >
-                  <input
-                      :disabled="!size.isActive"
-                      :id="size.name"
-                      class="size-wrapper__size__radio"
-                      name="size"
-                      type="radio"
-                      @change="selectSize(size.name)"
-                  />
-                  <label :for="size.name"
-                         :class="{'size-wrapper__size__label':true,'disabled': !size.isActive }">{{ size.name }}</label>
-                </div>
-              </div>
-              <span class="v-modal__select" v-if="isSizeNotSelected">Выберите размер</span>
-            </div>
-            <span class="v-modal__price">{{ this.product_data.price.toLocaleString() }} ₽</span>
-            <div class="v-modal__buttons">
-              <div class="v-modal__quantity">
-                <button class="dark-button" @click="decrementQty"><b>−</b></button>
-                <span class="v-modal__input" :value="quantity">{{ quantity }}</span>
-                <button class="dark-button" @click="incrementQty"><b>+</b></button>
-              </div>
-              <div class="v-modal__btn-grp">
-                <button class="dark-button" @click="addToCart">
-                  В корзину
-                  <i class="bi bi-bag"/>
-                </button>
-                <button class="dark-button" @click="addToFav">
-                  <i class="bi bi-heart-fill" v-if="isFavorite"/>
-                  <i class="bi bi-heart" v-else/>
-                </button>
+          <p>Цвет: {{ selectedColorToRussian }}</p>
+          <div class="v-modal__color">
+            <div class="v-modal__color-check">
+              <div class="color-wrapper"
+                   v-for="(color, index) in this.data_color"
+                   :key="index"
+              >
+                <input
+                    :disabled="!color.isActive"
+                    type="radio"
+                    name="color"
+                    :id="color.name"
+                    :class="['color-wrapper__color__radio', color.name]"
+                    @change="selectColor(color.name)"
+                />
+                <label :for="color.name"
+                       :class="['color-wrapper__color__label', color.name, !color.isActive?'disabled':'']"/>
               </div>
             </div>
-            <span class="v-modal__select" style="text-align: right"
-                  v-if="isQntOverflow">На складе остолось только {{ varQnt }} единиц данной вариации товара!</span>
-            <h2>Описание</h2>
-            <p class="v-modal__description" v-html="product_data.description"></p>
-            <span class="link" @click="$router.push(`/product/${product_data.article}`)">Подробнее</span>
+            <span class="v-modal__select" v-if="isColorNotSelected">Выберите цвет</span>
           </div>
+          <p style="margin-bottom: 10px">Размер: {{ selectedSize }}</p>
+          <div class="v-modal__size">
+            <div class="v-modal__size-check">
+              <div class="size-wrapper"
+                   v-for="(size, index) in this.data_size"
+                   :key="index"
+              >
+                <input
+                    :disabled="!size.isActive"
+                    :id="size.name"
+                    class="size-wrapper__size__radio"
+                    name="size"
+                    type="radio"
+                    @change="selectSize(size.name)"
+                />
+                <label :for="size.name"
+                       :class="{'size-wrapper__size__label':true,'disabled': !size.isActive }">{{ size.name }}</label>
+              </div>
+            </div>
+            <span class="v-modal__select" v-if="isSizeNotSelected">Выберите размер</span>
+          </div>
+          <span class="v-modal__price">{{ this.product_data.price.toLocaleString() }} ₽</span>
+          <div class="v-modal__buttons">
+            <div class="v-modal__quantity">
+              <button class="dark-button" @click="decrementQty"><b>−</b></button>
+              <span class="v-modal__input" :value="quantity">{{ quantity }}</span>
+              <button class="dark-button" @click="incrementQty"><b>+</b></button>
+            </div>
+            <div class="v-modal__btn-grp">
+              <button class="dark-button" @click="addToCart">
+                В корзину
+                <i class="bi bi-bag"/>
+              </button>
+              <button class="dark-button" @click="addToFav">
+                <i class="bi bi-heart-fill" v-if="isFavorite"/>
+                <i class="bi bi-heart" v-else/>
+              </button>
+            </div>
+          </div>
+          <span class="v-modal__select" style="text-align: right"
+                v-if="isQntOverflow">На складе остолось только {{ varQnt }} единиц данной вариации товара!</span>
+          <h2>Описание</h2>
+          <p class="v-modal__description" v-html="product_data.description"></p>
+          <span class="link" @click="$router.push(`/product/${product_data.article}`)">Подробнее</span>
         </div>
       </div>
     </div>
@@ -124,13 +123,13 @@ export default {
   methods: {
     ...mapActions([
       'ADD_TO_CART',
-        'ADD_TO_FAVORITES'
+      'ADD_TO_FAVORITES'
     ]),
     addToFav() {
       this.ADD_TO_FAVORITES(this.product_data)
       this.setIsFav()
     },
-    setIsFav(){
+    setIsFav() {
       let exists = false
       this.FAVORITES.forEach(fav => {
         if (fav.article === this.product_data.article) {
@@ -292,6 +291,9 @@ export default {
     this.data_color = this.initColorData;
     this.data_size = this.initSizeData;
     this.setIsFav()
+    document.addEventListener('click', item => {
+      if (item.target === this.$refs['modal_wrapper']) this.closeModal()
+    })
   },
 
 }
@@ -299,7 +301,7 @@ export default {
 
 <style lang="scss">
 .modal_wrapper {
-  z-index: 1040;
+  z-index: 11;
   overflow-y: auto;
   position: fixed;
   display: flex;
@@ -312,7 +314,7 @@ export default {
 }
 
 .v-modal {
-  z-index: 1060;
+  z-index: 20000;
   border-radius: 5px;
   position: absolute;
   top: 100px;
@@ -324,8 +326,9 @@ export default {
   &__close {
     font-size: 40px;
     position: absolute;
-    top: $margin;
-    right: $margin;
+    line-height: 1;
+    top: 0;
+    right: 0;
   }
 
 

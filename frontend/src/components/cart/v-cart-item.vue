@@ -1,11 +1,11 @@
 <template>
   <div class="v-cart-item">
     <div class="col-3 v-cart-item__image-wrapper">
-      <img class="v-cart-item__image" :src="variant.product.image"
+      <img class="v-cart-item__image link-img" @click="$router.push(`/product/${variant.product.article}`)" :src="variant.product.image"
            alt="Картинка не найдена">
     </div>
     <div class="col-5 v-cart-item__info">
-      <p><b>{{ variant.product.name }}</b></p>
+      <p @click="$router.push(`/product/${variant.product.article}`)" class="link"><b>{{ variant.product.name }}</b></p>
       <div>Размер: {{ variant.size }}</div>
       <div>Цвет: {{ selectedColorToRussian }}</div>
     </div>
@@ -29,8 +29,6 @@
 </template>
 
 <script>
-
-import {mapActions} from "vuex";
 import axios from "axios";
 
 export default {
@@ -49,9 +47,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-        'GET_VARIANT'
-    ]),
     deleteFromCart() {
       this.$emit('deleteFromCart')
     },
@@ -62,8 +57,8 @@ export default {
       this.$emit('decrement')
     },
   },
-  mounted() {
-    axios.get(`http://localhost:8000/api/catalog/variants/${this.cart_item_data.variant_id}/`)
+  async mounted() {
+    await axios.get(`api/catalog/variants/${this.cart_item_data.variant_id}/`)
         .then(response  => {this.variant = response.data})
         .catch(error => error)
   },

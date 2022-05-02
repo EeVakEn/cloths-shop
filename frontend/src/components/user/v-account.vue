@@ -1,7 +1,13 @@
 <template>
-  <div class="container-fluid account">
-    <h1>Личный кабинет</h1>
+  <div class="container account">
+    <div class="d-flex justify-content-between">
+      <h2>Личный кабинет</h2>
     <button class="dark-button" @click="logout()">Выйти</button>
+    </div>
+    <div>
+      Вы пока-что ничего не заказали
+    </div>
+
   </div>
 </template>
 
