@@ -2,8 +2,10 @@ import json
 
 from rest_framework import serializers
 from .models import Category, Product, ProductVariant, Review
-import datetime, locale
+import locale
+
 locale.setlocale(locale.LC_ALL, 'russian_russia')
+
 
 class ReviewSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(format="%d %B %Y, %H:%M", read_only=True)
@@ -26,6 +28,7 @@ class VariantSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     variants = VariantSerializer(many=True, read_only=True)
+    rating = serializers.DecimalField(decimal_places=2, max_digits=3)
 
     class Meta:
         model = Product

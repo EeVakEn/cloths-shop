@@ -2,7 +2,7 @@ import mptt
 from django.db import models
 from django.contrib.auth.models import User
 from mptt.models import MPTTModel, TreeForeignKey
-from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 
@@ -84,6 +84,17 @@ class Product(models.Model):
     is_available = models.BooleanField(default=True, verbose_name='Опубликовано')
     created_at = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Создано')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Редактировано')
+
+    def rating(self):
+        reviews = Review.objects.filter(product=self.pk)
+        if len(reviews) == 0:
+            return 2.5
+        else:
+            sum = 0
+            for i in reviews:
+                sum += i.raiting
+            return sum/len(reviews)
+
 
     def get_category_url(self):
         return self.category.get_full_url()

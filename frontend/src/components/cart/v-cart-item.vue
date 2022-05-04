@@ -4,12 +4,12 @@
       <img class="v-cart-item__image link-img" @click="$router.push(`/product/${variant.product.article}`)" :src="variant.product.image"
            alt="Картинка не найдена">
     </div>
-    <div class="col-5 v-cart-item__info">
+    <div class="col-4 v-cart-item__info">
       <p @click="$router.push(`/product/${variant.product.article}`)" class="link"><b>{{ variant.product.name }}</b></p>
       <div>Размер: {{ variant.size }}</div>
       <div>Цвет: {{ selectedColorToRussian }}</div>
     </div>
-    <div class="col-4 v-cart-item__end">
+    <div class="col-5 v-cart-item__end">
       <div class="v-cart-item__price">
         {{ getPrice }} ₽
       </div>

@@ -1,10 +1,47 @@
 <template>
   <div class="v-catalog">
     <h2>Каталог</h2>
+    <div class="row g-3 my-3 ">
+      <div class="form-group col-md-9">
+        <label for="search">Поиск</label>
+        <input
+            type="text"
+            class="form-control "
+            id="search"
+            v-model="search"
+            placeholder="Напишите что-то для поиска"
+            @input="
+          search!==''?
+          $router.push({name:'catalog', query: {search:search, ordering:selectedOrdering}}):
+          $router.push({name:'catalog'})"
+        >
+        <small>Например: <a class="link" @click="search=`худи`; $router.push({name:'catalog', query: {search:'худи'}})">худи</a></small>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="ordering">Сортировка</label>
+        <select
+            id="ordering"
+            class="form-select "
+            v-model="selectedOrdering"
+            @change="$router.push(
+              {name: $route.name,
+              params: $route.params,
+              query:{search:search,ordering:selectedOrdering}}
+              )"
+        >
+          <option v-for="(option) in ordering" :key="option.value" v-bind:value="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+      </div>
+    </div>
 
-    <v-breadcrumb v-if="isFetching" :categories_array='BREADCRUMB'/>
+
+    <p v-if="search.length">Поиск: {{ search }}</p>
+
+    <v-breadcrumb v-else-if="isFetching" :categories_array='BREADCRUMB'/>
     <div class="container-fluid">
-      <div  v-if="isFetching" class="row" >
+      <div v-if="isFetching && PRODUCTS.length" class="row">
         <v-catalog-item
             class="col-xl-3 col-lg-4 col-md-6 col-sm-12"
             v-for="product in PRODUCTS"
@@ -12,6 +49,9 @@
             :product_data="product"
             @addToFavorites="addToFavorites"
         />
+      </div>
+      <div v-else>
+        Ничего не найдено
       </div>
     </div>
 
@@ -29,6 +69,14 @@ export default {
   data() {
     return {
       isFetching: false,
+      search: '',
+      ordering: [
+        {text: 'Сначала новые', value: '-updated_at'},
+        {text: 'Сначала старые', value: 'updated_at'},
+        {text: 'Сначала дешевые', value: 'price'},
+        {text: 'Сначала дорогие', value: '-price'},
+      ],
+      selectedOrdering: '-updated_at',
     }
   },
   methods: {
@@ -44,13 +92,24 @@ export default {
     },
     async loadData() {
       this.$store.commit('SET_IS_LOADING', true)
-      setTimeout(()=>{}, 1000)
       if (this.$route.params.cat_slug) {
         this.GET_CATEGORY_BREADCRUMB(this.$route.params.cat_slug)
-        this.GET_PRODUCTS_WITH_CATEGORY(this.$route.params.cat_slug)
+        let params = {
+          cat_slug: this.$route.params.cat_slug,
+          ordering: this.selectedOrdering
+        }
+        let co = this.selectedOrdering
+        this.GET_PRODUCTS_WITH_CATEGORY(params)
+        this.selectedOrdering = co
       } else {
         this.GET_BREADCRUMB()
-        this.GET_PRODUCTS_FROM_API()
+        let params = {
+          search: this.$route.query.search,
+          ordering: this.selectedOrdering,
+        }
+        let co = this.selectedOrdering
+        this.GET_PRODUCTS_FROM_API(params)
+        this.selectedOrdering = co
       }
       this.isFetching = true
 
@@ -61,9 +120,9 @@ export default {
     // следим за изменением параметров роутера (изменениями в URI)
     this.loadData()
   },
-  watch:{
-    '$route.params':{
-      handler(){
+  watch: {
+    '$route.params': {
+      handler() {
         this.loadData()
       }
     }

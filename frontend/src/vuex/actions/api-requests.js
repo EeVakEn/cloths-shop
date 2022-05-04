@@ -1,31 +1,31 @@
 import axios from "axios"
 
 export default {
-    async GET_PRODUCTS_FROM_API({commit}) { // метод для получение данных с API
+    async GET_PRODUCTS_FROM_API({commit}, params) { // метод для получение данных с API
         commit('SET_IS_LOADING', true)
-        return await axios('/api/catalog/products/', { // axios запрос
-            method: "GET"
-        }).then((products) => { // если запрос прошел (статус 200)
-            commit('SET_PRODUCTS_TO_STATE', products.data); // вызываем мутацию
-            commit('SET_IS_LOADING', false)
-            return products;
-        }).catch((error) => { // иначе
-            commit('SET_IS_LOADING', false)
-            return error;
-        })
+        return await axios.get(`/api/catalog/products/`, {params})
+            .then((products) => { // если запрос прошел (статус 200)
+                commit('SET_PRODUCTS_TO_STATE', products.data); // вызываем мутацию
+                commit('SET_IS_LOADING', false)
+                return products;
+            })
+            .catch((error) => { // иначе
+                commit('SET_IS_LOADING', false)
+                return error;
+            })
     },
-    async GET_PRODUCTS_WITH_CATEGORY({commit}, cat_slug) {
+    async GET_PRODUCTS_WITH_CATEGORY({commit}, params) {
         commit('SET_IS_LOADING', true)
-        return await axios(`/api/catalog/category/${cat_slug}/`, {
-            method: "GET"
-        }).then((products) => {
-            commit('SET_PRODUCTS_TO_STATE_WITH_CATEGORY', products.data);
-            commit('SET_IS_LOADING', false)
-            return products.data;
-        }).catch((error) => {
-            commit('SET_IS_LOADING', false)
-            return error
-        })
+        return await axios.get(`/api/catalog/category/${params.cat_slug}/`, {params: {ordering: params.ordering,}})
+            .then((products) => {
+                commit('SET_PRODUCTS_TO_STATE_WITH_CATEGORY', products.data);
+                commit('SET_IS_LOADING', false)
+                return products.data;
+            })
+            .catch((error) => {
+                commit('SET_IS_LOADING', false)
+                return error
+            })
     },
     GET_CATEGORIES_FROM_API({commit}) { // метод для получение данных с API
         return axios('/api/catalog/categories/', { // axios запрос
