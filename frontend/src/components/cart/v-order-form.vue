@@ -34,37 +34,88 @@
         <h3><i class="bi bi-truck"/> Доставка</h3>
         <hr/>
         <div class="row">
-          <div class="col-md-6 my-2">
-            <label for="region">Регион</label>
-            <dadata-suggestions
-                class="form-control"
-                id="region"
-                v-model="region"
-                :fullInfo.sync="addressfull"
-                field-value="value"
-                :options="regionOptions"
-            />
-            <small>Например: Омская обл</small>
-          </div>
 
-          <div class="col-md-6 my-2">
+          <div class="col-md-12 my-2">
             <label for="city">Город</label>
             <dadata-suggestions
                 class="form-control"
+                style="padding: 0.375rem 0.75rem !important;"
                 v-model="city"
                 id="city"
-                :fullInfo.sync="addressfull"
-                field-value="value"
+                fieldValue="value"
+                :fullInfo.sync="cityfull"
                 :options="cityOptions"
             />
             <small>Например: г Омск</small>
           </div>
 
+
+        </div>
+
+
+        <div v-if="city.length" class="delivery_select">
+          <h5>Выберите способ доставки</h5>
+          <div class="raw">
+            <label class="card-radio-btn">
+              <input type="radio" name="demo" class="card-input-element d-none" value="курьер" v-model="deliveryType">
+              <div class="card card-body">
+                <div class="content_head">Курьер СДЭК</div>
+                <div class="content_sub">Курьер доставит товар прям к двери. Только укажите корректный адрес.</div>
+              </div>
+            </label>
+            <label class="card-radio-btn">
+              <input type="radio" name="demo" class="card-input-element d-none" value="постамат"
+                     v-model="deliveryType">
+              <div class="card card-body">
+                <div class="content_head">Постамат СДЭК</div>
+                <div class="content_sub">Выберите ближайшую точку, откуда заберете товар.</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+
+        <div v-if="deliveryType==='постамат'">
+          <yandex-map
+              class="v-map__mapping"
+              zoom="13"
+              style="width: 100%; max-width: 100%; height: 50vh;"
+              :coords="coords"
+          >
+            <ymap-marker
+                v-for="(mark, index) in surfaces"
+                :key="index"
+                :marker-id="index"
+                marker-type="placemark"
+                :coords="[mark.coordY, mark.coordX]"
+                @balloonopen="bindListener(mark)"
+                @balloonclose="unbindListener"
+            >
+              <div slot="balloon">
+                <h4>{{ mark.code }}</h4>
+                <div class="row">
+                  <div v-if="mark.officeImageList" class="col">
+                    <img style="width: 100%;" :src="mark.officeImageList[0].url">
+                  </div>
+                  <div class="col">
+                    <div><strong>Название</strong>:{{ mark.name }}</div>
+                    <div><strong>Адрес</strong>: {{ mark.fullAddress }}</div>
+                    <div><strong>Время работы</strong>: {{ mark.workTime }}</div>
+                    <button type="button" class="dark-button" id="btn_choose">Выбрать</button>
+                  </div>
+                </div>
+              </div>
+            </ymap-marker>
+
+          </yandex-map>
+        </div>
+
+        <div v-if="deliveryType==='курьер'" class="row">
           <div class="col-md-6 my-2">
             <label for="street">Улица и дом</label>
             <dadata-suggestions
                 class="form-control"
-                v-model="street"
+                style="padding: 0.375rem 0.75rem !important;"
                 id="street"
                 :fullInfo.sync="addressfull"
                 field-value="value"
@@ -75,33 +126,62 @@
 
           <div class="col-md-6 my-2">
             <label for="room">Квартира</label>
-            <input class="form-control" v-model="room" id="room"/>
+            <input class="form-control" v-model.trim="room" id="room"/>
             <small>Оставьте пустым, если нет номера квартиры</small>
           </div>
         </div>
-        <div class="delivery_select">
-          <h5>Выберите способ доставки</h5>
-          <div class="raw">
-            <label class="card-radio-btn">
-              <input type="radio" name="demo" class="card-input-element d-none" id="demo1" checked="">
-              <div class="card card-body">
-                <div class="content_head">Курьер</div>
-                <div class="content_sub">250,00 руб.</div>
-              </div>
-            </label>
-            <label class="card-radio-btn">
-              <input type="radio" name="demo" class="card-input-element d-none" value="demo2">
-              <div class="card card-body">
-                <div class="content_head">Отделение Почта России 644105</div>
-                <div class="content_sub">200,00 руб.</div>
-              </div>
-            </label>
-          </div>
-        </div>
 
+        <div v-if="address_str">
+          <div class="card my-4">
+            <div class="card-body">
+              <h5 class="card-title">Информация о доставке</h5>
+              <h6 class="card-subtitle mt-3">Тип доставки</h6>
+              <p class="card-text">{{ deliveryType }}</p>
+              <h6 class="card-subtitle ">Адрес доставки</h6>
+              <p class="card-text text-justify">{{ address_str }}</p>
+              <p v-if="deliveryType==='курьер'" class="card-subtitle sticky-right text-muted"><b>Стоимость доставки</b>:
+                {{ courier_cost }} руб.</p>
+              <p v-else class="card-subtitle sticky-right text-muted"><b>Стоимость доставки</b>: <span
+                  style="color: #00cc66">бесплатно</span></p>
+            </div>
+          </div>
+
+        </div>
       </section>
       <section class="payment">
         <h3><i class="bi bi-credit-card"/> Оплата</h3>
+
+
+        <div class="mb-3">
+          <label for="v-card-number">Номер карты</label>
+          <input class="form-control" v-model="valueFields.cardNumber" id="v-card-number">
+        </div>
+        <div class="mb-3">
+          <label for="v-card-name">Держатель карты</label>
+          <input class="form-control" v-model="valueFields.cardName" id="v-card-name">
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-8">
+            <label for="v-card-date">Дата</label>
+            <input class="form-control" v-model="cardDate" @input="dateInput" id="v-card-date">
+          </div>
+          <div class="col-md-4">
+            <label for="v-card-cvv">CVV</label>
+            <input class="form-control" v-model="valueFields.cardCvv" title="CVV" id="v-card-cvv">
+          </div>
+        </div>
+        <vue-paycard
+            :value-fields="valueFields"
+            :input-fields="inputFields"
+            :labels="labels"
+            :has-random-backgrounds="false"
+            background-image="https://catherineasquithgallery.com/uploads/posts/2021-02/1614253330_88-p-krutoi-chernii-fon-105.png"
+            style="margin: 20px auto; box-shadow: 0 0 30px 11px rgba(0, 0, 0, 0.2); border-radius: 20px"
+            :is-card-number-masked="false"
+            class="mb-3"
+        />
+
+        <button class="dark-button" type="button" style="width: 100%">Оплатить</button>
         <hr/>
       </section>
     </form>
@@ -109,43 +189,148 @@
 </template>
 
 <script>
-import IMask from 'imask'
+import IMask from 'imask' // чтобы задать маску для номера телефона
+import {yandexMap, ymapMarker} from "vue-yandex-maps";
+import axios from "axios";
+import VuePaycard from "vue-paycard";
+
 export default {
   name: "v-order-form",
+  components: {yandexMap, ymapMarker, VuePaycard},
   data() {
     return {
+      inputFields: {
+        cardNumber: "v-card-number",
+        cardName: "v-card-name",
+        cardMonth: "v-card-month",
+        cardYear: "v-card-year",
+        cardCvv: "v-card-cvv",
+      },
+      cardDate: '',
+      valueFields: {
+        cardName: "",
+        cardNumber: "",
+        cardMonth: "",
+        cardYear: "",
+        cardCvv: "",
+      },
+      labels: {
+        cardName: "IVAN IVANOV",
+        cardHolder: "Держатель карты",
+        cardMonth: "MM",
+        cardYear: "YY",
+        cardExpires: "MOUTH/YEAR",
+        cardCvv: "CVV"
+      },
+      coords: [55.751244, 37.618423],
+      surfaces: [],
+
       firstname: "",
       lastname: "",
       phone: "",
       email: "",
-
-      region: "",
       city: "",
-      street: "",
-      house: "",
       room: "",
 
+      postamat: {},
+      courier_cost: 250,
+      dadata_city: {},
+      dadata_address: {},
+
+      deliveryType: '',
+
+      cityfull: {},
       addressfull: {},
-      regionOptions: {
-        bounds: "region-area",
-        count: 5,
-      },
+
       cityOptions: {
-        bounds: "city-settlement",
-        constraints: this.region,
+        bounds: "city",
+        floating: false,
         count: 5,
       },
       streetOptions: {
         bounds: "street-house",
-        constraints: this.city,
         count: 5,
       },
-      mask: ''
+      mask: '',
+      mark: {},
+      selectedMark: {},
     };
   },
-  mounted() {
-    this.mask = new IMask(document.getElementById('phone'), {mask:'+7(000)000-00-00'})
+  watch: {
+    cityfull: function (val) {
+      if (val) {
+        this.dadata_city = val.data
+        this.coords = [val.data.geo_lat, val.data.geo_lon]
+        this.getAllPoints()
+      }
+    },
+    addressfull: function (val) {
+      if (val) {
+        this.dadata_address = val
+      }
+    },
+
+
+  },
+  computed: {
+    address_str: function () {
+      if (this.deliveryType === 'курьер') {
+        if (this.dadata_address) {
+          let str = this.dadata_address.unrestricted_value
+          if (this.room !== '') {
+            str += ', кв. ' + this.room
+          }
+          return str
+        } else return ''
+      } else {
+        if (this.selectedMark)
+          return this.selectedMark.fullAddress
+        else
+          return ''
+      }
+    }
+  },
+  methods: {
+    bindListener(mark) {
+      this.mark = mark
+      document.getElementById('btn_choose').addEventListener('click', this.chooseMark);
+    },
+    unbindListener() {
+      this.mark = {}
+      document.getElementById('btn_choose').removeEventListener('click', this.chooseMark);
+    },
+
+    chooseMark() {
+      this.selectedMark = this.mark
+    },
+    dateInput() {
+      this.valueFields.cardMonth = this.cardDate.split(' / ')[0]
+      if (this.cardDate.includes(' / ')) {
+        this.valueFields.cardYear = '20' + this.cardDate.split(' / ')[1]
+      }
+
+    },
+    getAllPoints() {
+      axios
+          .get(`http://localhost:8080/pvzlist/v1/json?countryid=1&status=ACTIVE${'&fiasGuid=' + this.dadata_city.city_fias_id}`)
+          .then(resp => {
+            this.surfaces = resp.data.pvz
+          })
+          .catch(error => {
+            console.log(error)
+          })
+    }
+
   }
+  ,
+  async mounted() {
+    this.mask = new IMask(document.getElementById('phone'), {mask: '+7(000)000-00-00'});
+    this.mask = new IMask(document.getElementById('v-card-number'), {mask: '0000 0000 0000 0000'});
+    this.mask = new IMask(document.getElementById('v-card-date'), {mask: '00 / 00'});
+    this.mask = new IMask(document.getElementById('v-card-cvv'), {mask: '0000'});
+  }
+  ,
+
 }
 </script>
 
@@ -209,21 +394,10 @@ export default {
   font-size: 1rem;
   font-weight: 900;
   line-height: 1.32;
-  animation-name: fadeInCheckbox;
   animation-duration: 0.5s;
 }
 
-
-@keyframes fadeInCheckbox {
-  from {
-    opacity: 0;
-    transform: rotateZ(-20deg);
-  }
-
-  to {
-    opacity: 1;
-    transform: rotateZ(0deg);
-  }
+.v-map__mapping {
+  filter: saturate(130%);
 }
-
 </style>

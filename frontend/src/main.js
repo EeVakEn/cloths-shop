@@ -7,13 +7,12 @@ import axios from 'axios'
 import DadataSuggestions from "vue-dadata-suggestions";
 
 Vue.use(DadataSuggestions, {
-  token: "698bf101eea50d9aa4bce13d0672ccfb3365bc18",
+  token: process.env.VUE_APP_DADATA_TOKEN,
   type: "ADDRESS"
 });
 
 Vue.config.productionTip = false
 axios.defaults.baseURL = 'http://localhost:8000'
-
 new Vue({
     render: h => h(App),
     store,

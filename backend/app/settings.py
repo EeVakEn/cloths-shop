@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import datetime
 import os
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,15 +23,12 @@ MEDIA_URL = '/media/'
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-52gd8^=)$#9p0!ls_+3joyj%v7(f5&%vyeyqcuwjj_(sk=9&^p'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool, default=True)
 ALLOWED_HOSTS = [
     '127.0.0.1', 'localhost', '*'
-]
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8080'
 ]
 # Application definition
 
@@ -98,8 +96,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'cloths_shop',
-        'USER': 'eevaken',
-        'PASSWORD': 'Teliro46',
+        'USER': config('PG_USER'),
+        'PASSWORD': config('PG_PASSWORD'),
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -170,8 +168,8 @@ MPTT_ADMIN_LEVEL_IDENT = 20
 # smtp
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'eevakenn@gmail.com'
-EMAIL_HOST_PASSWORD = 'b8g-5pi-5gB-sbh'
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 # b8g-5pi-5gB-sbh
 DJOSER = {
@@ -183,3 +181,9 @@ DJOSER = {
 }
 
 CART_SESSION_ID = 'cart'
+
+CORS_ALLOWED_ORIGINS = [
+"http://127.0.0.1:8080",
+"http://localhost:8080",
+"http://integration.cdek.ru"
+]

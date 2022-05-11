@@ -56,4 +56,7 @@ export default {
 </script>
 
 <style lang="scss">
+.v-favorites{
+  margin: 30px;
+}
 </style>

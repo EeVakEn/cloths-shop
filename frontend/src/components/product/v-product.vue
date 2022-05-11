@@ -65,6 +65,19 @@
                 В корзину
                 <i class="bi bi-bag"/>
               </button>
+
+              <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+                <div ref="addToCartToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+                  <div v-if="quantity>1" class="toast-body">
+                    Товар добавлен в корзину
+                  </div>
+                  <div v-else class="toast-body">
+                    {{ quantity }}} товаров добавлены в корзину
+                  </div>
+                </div>
+              </div>
+
+
               <button class="dark-button" @click="addToFav">
                 <i class="bi bi-heart-fill" v-if="isFavorite"/>
                 <i class="bi bi-heart" v-else/>
@@ -285,6 +298,9 @@ export default {
               variant_id: variant_id,
               quantity: this.quantity
             }
+            // TODO
+            // this.bootstrap.Toast(this.$refs.addToCartToast.show())
+
             this.ADD_TO_CART(item)
           } else {
             this.isQntOverflow = true

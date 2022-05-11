@@ -8,6 +8,8 @@ import VSignUp from "../components/user/v-sign-up";
 import VLogin from "../components/user/v-login";
 import VAccount from "../components/user/v-account";
 import store from "../vuex/store";
+import Contacts from "@/components/page/contacts";
+import About from "@/components/page/about";
 
 Vue.use(Router)
 
@@ -60,6 +62,16 @@ let router = new Router(
                     requireLogin: true
                 }
             },
+            {
+                path:'/contacts',
+                name: 'contacts',
+                component: Contacts,
+            },
+            {
+                path: '/about',
+                name: 'about',
+                component: About,
+            }
         ]
     }
 )

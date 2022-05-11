@@ -1,6 +1,6 @@
 <template>
   <div class="my_navbar container-fluid">
-    <nav class="navbar navbar-expand-md my_nav">
+    <nav class="navbar navbar-expand-md my_nav mx-3">
 
 
       <button
@@ -21,19 +21,19 @@
       </span>
 
       <span class="d-md-none ">
-        <span class="cart_favorites__link" @click="$router.push('/favorites')">
+        <span class="cart_favorites__link" @click="$router.push('/favorites').catch(()=>{})">
           <i class="bi bi-heart" style="color: #F5F5F5"></i>
           <span class="cart_favorites__count">{{ FAVORITES.length }}</span>
         </span>
-        <span class="cart_favorites__link" @click="$router.push('/cart')">
+        <span class="cart_favorites__link" @click="$router.push('/cart').catch(()=>{})">
           <i class="bi bi-bag" style="color: #F5F5F5"></i>
           <span class="cart_favorites__count">{{ getCartQuantity }}</span>
         </span>
       </span>
 
       <div class="collapse navbar-collapse justify-content-end" id="navbar">
-        <ul class="navbar-nav  my-20">
-          <li class="nav-item">
+        <ul class="navbar-nav ">
+          <li class="nav-item mx-3">
             <span
                 class="nav-link link dropdown-toggle"
                 @click="isVisibleCatalog = !isVisibleCatalog"
@@ -43,20 +43,20 @@
 
           </li>
 
-          <li class="nav-item">
-            <span class="nav-link link" @click="$router.push('/').catch(()=>{})">
+          <li class="nav-item mx-2">
+            <span class="nav-link link" @click="$router.push('/about').catch(()=>{})">
               О нас
             </span>
           </li>
 
-          <li class="nav-item">
-            <span class="nav-link link" @click="$router.push('/').catch(()=>{})">
+          <li class="nav-item mx-2">
+            <span class="nav-link link" @click="$router.push('/contacts').catch(()=>{})">
               Контакты
             </span>
           </li>
 
 <!--          личный кабинет на маленьких экранах -->
-          <li class="nav-item d-md-none">
+          <li class="nav-item d-md-none mx-2">
             <div v-if="!$store.state.isAuthenticated">
               <span class="nav-link link" @click="$router.push('/log-in')">
                 Личный кабинет
@@ -70,7 +70,7 @@
           </li>
 
 <!--          личный кабинет на больших экранах-->
-          <li class="nav-item d-none d-md-block">
+          <li class="nav-item d-none d-md-block mx-2">
             <div v-if="!$store.state.isAuthenticated">
               <span class="nav-link link " @click="$router.push('/log-in')">
                 <i class="bi bi-person-plus"></i>
@@ -83,14 +83,14 @@
             </div>
           </li>
 
-          <li class="nav-item d-none d-md-block">
+          <li class="nav-item d-none d-md-block mx-1">
             <span class="nav-link link" @click="$router.push('/favorites')">
               <i class="bi bi-heart"></i>
               <span class="cart_favorites__count">{{ FAVORITES.length }}</span>
             </span>
           </li>
 
-          <li class="nav-item d-none d-md-block">
+          <li class="nav-item d-none d-md-block mx-1">
             <span class="nav-link link" @click="$router.push('/cart')">
               <i class="bi bi-bag"></i>
               <span class="cart_favorites__count">{{ getCartQuantity }}</span>

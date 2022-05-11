@@ -95,6 +95,9 @@ class SearchProductAPIList(generics.ListAPIView):
         products = Product.objects.filter(name__contains=search)
         return products
 
+# TODO: Страницы: Контакты О нас
+# TODO: Страница подтверидите почту
+# TODO: Страница почта подтверждена, залогиньтесь
 # TODO: Поправить удаление из корзины
 # TODO: Пагинация товаров с прогрузкой
 # TODO: Фильтр товаров по цене
@@ -104,6 +107,4 @@ class SearchProductAPIList(generics.ListAPIView):
 # TODO: Заказы user'a в ЛК
 # TODO: Добавление информации о пользователе
 # TODO: Сброс пароля по почте
-# TODO: Страница подтверидите почту
-# TODO: Страница почта подтверждена, залогиньтесь
 # TODO: Оплата товара
