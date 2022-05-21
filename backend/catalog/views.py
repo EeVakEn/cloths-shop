@@ -95,6 +95,9 @@ class SearchProductAPIList(generics.ListAPIView):
         products = Product.objects.filter(name__contains=search)
         return products
 
+
+
+
 # TODO: Страницы: Контакты О нас
 # TODO: Страница подтверидите почту
 # TODO: Страница почта подтверждена, залогиньтесь

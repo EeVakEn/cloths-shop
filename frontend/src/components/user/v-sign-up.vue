@@ -4,7 +4,7 @@
       <div>
         <h1>Регистрация</h1>
         <form class="reg_form" @submit.prevent="checkForm">
-          <div class="form-group">
+          <div class="form-group mb-3">
             <label for="email">Почта</label>
             <input
                 class="form-control"
@@ -22,7 +22,7 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group mb-3">
             <label for="username">Имя пользователя</label>
             <input
                 class="form-control"
@@ -42,7 +42,7 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group mb-3">
             <label for="password1">Пароль</label>
             <input
                 class="form-control"
@@ -81,7 +81,10 @@
               Пароль должен совпадать.
             </div>
           </div>
-          <button type="submit" class="dark-button">Зарегистрироваться</button>
+          <button type="submit" class="dark-button mb-2 mt-4">Зарегистрироваться</button>
+          <div style="text-align: center">
+            <p class="mb-5">Если есть аккаунт, <router-link class="link" to="log-in">войдите</router-link></p>
+          </div>
         </form>
       </div>
     </div>

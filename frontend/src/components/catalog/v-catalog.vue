@@ -1,7 +1,7 @@
 <template>
   <div class="v-catalog">
     <h2>Каталог</h2>
-    <div class="row g-3 my-3 ">
+    <div class="row g-3 my-3">
       <div class="form-group col-md-9">
         <label for="search">Поиск</label>
         <input
@@ -147,7 +147,7 @@ export default {
 
 <style lang="scss">
 .v-catalog {
-  margin: 30px;
+  margin: 30px 60px;
 
   &__list {
     display: grid;

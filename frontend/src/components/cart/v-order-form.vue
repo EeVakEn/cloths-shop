@@ -1,6 +1,6 @@
 <template>
   <div class="order-form container-fluid">
-    <form class="row g-3">
+    <form class="row g-3" @submit.prevent="checkout">
       <h2>Оформление</h2>
       <section class="customer">
         <h3><i class="bi bi-person"/> Покупатель </h3>
@@ -10,21 +10,33 @@
           <div class="col-md-6 my-2">
             <label for="firstname" class="form-label">Имя</label>
             <input type="text" v-model="firstname" class="form-control" id="firstname" required>
-            <div class="invalid-feedback"></div>
+            <div v-if="$v.firstname.$dirty && !$v.firstname.required" class="invalid-feedback">
+              Обязательное поле
+            </div>
           </div>
           <div class="col-md-6 my-2">
             <label for="lastname" class="form-label">Фамилия</label>
             <input type="text" v-model="lastname" class="form-control" id="lastname" required>
-            <div class="invalid-feedback"></div>
+            <div v-if="$v.lastname.$dirty && !$v.lastname.required" class="invalid-feedback">
+              Обязательное поле
+            </div>
           </div>
           <div class="col-md-6 my-2">
             <label for="phone" class="form-label">Телефон</label>
-            <input type="text" v-model="phone" class="form-control" id="phone" required>
-            <small>Например: +7(999)999-99-99</small>
+            <input type="text" v-model="phone" class="form-control" id="phone" maxlength="16" required>
+            <div v-if="$v.phone.$dirty && !$v.phone.required && !$v.phone.minLength" class="invalid-feedback">
+              Некорректный номер
+            </div>
           </div>
           <div class="col-md-6 my-2">
             <label for="email" class="form-label">Email</label>
             <input type="email" v-model="email" class="form-control" id="email" required>
+            <div v-if="$v.email.$dirty && !$v.email.required" class="invalid-feedback">
+              Обязательное поле.
+            </div>
+            <div v-if="$v.email.$dirty && !$v.email.email" class="invalid-feedback">
+              Некорректный адрес электронной почты.
+            </div>
             <small>Для получения информации о заказе и связи</small>
           </div>
         </div>
@@ -130,6 +142,9 @@
             <small>Оставьте пустым, если нет номера квартиры</small>
           </div>
         </div>
+        <div v-if="$v.address_str.$dirty && !$v.address_str" class="invalid-feedback">
+          Задайте корректный адрес доставки
+        </div>
 
         <div v-if="address_str">
           <div class="card my-4">
@@ -145,16 +160,23 @@
                   style="color: #00cc66">бесплатно</span></p>
             </div>
           </div>
-
         </div>
       </section>
       <section class="payment">
         <h3><i class="bi bi-credit-card"/> Оплата</h3>
-
-
+        <hr/>
+        <vue-paycard
+            :value-fields="valueFields"
+            :input-fields="inputFields"
+            :labels="labels"
+            :has-random-backgrounds="false"
+            background-image="https://catherineasquithgallery.com/uploads/posts/2021-02/1614253330_88-p-krutoi-chernii-fon-105.png"
+            :is-card-number-masked="false"
+            class="my-4"
+        />
         <div class="mb-3">
           <label for="v-card-number">Номер карты</label>
-          <input class="form-control" v-model="valueFields.cardNumber" id="v-card-number">
+          <input class="form-control" v-model="valueFields.cardNumber" maxlength="19" id="v-card-number">
         </div>
         <div class="mb-3">
           <label for="v-card-name">Держатель карты</label>
@@ -163,27 +185,15 @@
         <div class="row mb-3">
           <div class="col-md-8">
             <label for="v-card-date">Дата</label>
-            <input class="form-control" v-model="cardDate" @input="dateInput" id="v-card-date">
+            <input class="form-control" v-model="cardDate" @input="dateInput" maxlength="7" id="v-card-date">
           </div>
           <div class="col-md-4">
             <label for="v-card-cvv">CVV</label>
-            <input class="form-control" v-model="valueFields.cardCvv" title="CVV" id="v-card-cvv">
+            <input class="form-control" v-model="valueFields.cardCvv" maxlength="3" title="CVV" id="v-card-cvv">
           </div>
         </div>
-        <vue-paycard
-            :value-fields="valueFields"
-            :input-fields="inputFields"
-            :labels="labels"
-            :has-random-backgrounds="false"
-            background-image="https://catherineasquithgallery.com/uploads/posts/2021-02/1614253330_88-p-krutoi-chernii-fon-105.png"
-            style="margin: 20px auto; box-shadow: 0 0 30px 11px rgba(0, 0, 0, 0.2); border-radius: 20px"
-            :is-card-number-masked="false"
-            class="mb-3"
-        />
-
-        <button class="dark-button" type="button" style="width: 100%">Оплатить</button>
-        <hr/>
       </section>
+      <button class="dark-button mb-5" type="submit" style="width: 100%">Оплатить</button>
     </form>
   </div>
 </template>
@@ -193,10 +203,13 @@ import IMask from 'imask' // чтобы задать маску для номе�
 import {yandexMap, ymapMarker} from "vue-yandex-maps";
 import axios from "axios";
 import VuePaycard from "vue-paycard";
+import {validationMixin} from 'vuelidate'
+import {required, email, minLength} from 'vuelidate/lib/validators'
 
 export default {
   name: "v-order-form",
   components: {yandexMap, ymapMarker, VuePaycard},
+  mixins: [validationMixin],
   data() {
     return {
       inputFields: {
@@ -230,6 +243,7 @@ export default {
       phone: "",
       email: "",
       city: "",
+
       room: "",
 
       postamat: {},
@@ -254,6 +268,7 @@ export default {
       mask: '',
       mark: {},
       selectedMark: {},
+
     };
   },
   watch: {
@@ -291,6 +306,11 @@ export default {
     }
   },
   methods: {
+
+    async checkout() {
+      this.$v.$touch()
+    },
+
     bindListener(mark) {
       this.mark = mark
       document.getElementById('btn_choose').addEventListener('click', this.chooseMark);
@@ -321,15 +341,21 @@ export default {
           })
     }
 
-  }
-  ,
+  },
   async mounted() {
     this.mask = new IMask(document.getElementById('phone'), {mask: '+7(000)000-00-00'});
     this.mask = new IMask(document.getElementById('v-card-number'), {mask: '0000 0000 0000 0000'});
     this.mask = new IMask(document.getElementById('v-card-date'), {mask: '00 / 00'});
-    this.mask = new IMask(document.getElementById('v-card-cvv'), {mask: '0000'});
-  }
-  ,
+    this.mask = new IMask(document.getElementById('v-card-cvv'), {mask: '000'});
+  },
+  validations: {
+    email: {required, email},
+    firstname: {required},
+    lastname: {required,},
+    phone: {required, minLength: minLength(16)},
+    address_str: {required}
+  },
+
 
 }
 </script>

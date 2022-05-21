@@ -1,10 +1,10 @@
 <template>
   <div class="container-fluid">
     <div class="d-flex flex-nowrap justify-content-center">
-      <div >
+      <div style="margin: 63px">
         <h2>Вход</h2>
         <form class="reg_form" @submit.prevent="checkForm">
-          <div class="form-group">
+          <div class="form-group mb-3">
             <label for="username">Имя пользователя</label>
             <input
                 class="form-control"
@@ -18,7 +18,7 @@
               Обязательное поле.
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group mb-3">
             <label for="password">Пароль</label>
             <input
                 class="form-control"
@@ -35,9 +35,13 @@
             <div v-if="errors.non_field_errors" class="alert alert-danger">
               {{ errors.non_field_errors[0] }}
             </div>
-          <button type="submit" class="dark-button">Войти</button>
+          <div class="mt-4 mb-3">
+            <button type="submit" class="dark-button">Войти</button>
+          </div>
         </form>
-        <span class="link" @click="$router.push('/sign-up')">Зарегистрироваться</span>
+        <div  class="mb-5"  style="text-align: center" >
+          <a class="link" @click="$router.push('/sign-up')">Зарегистрироваться</a>
+        </div>
       </div>
     </div>
   </div>

@@ -41,4 +41,15 @@ export default {
 <style lang="scss">
 @import url(https://fonts.googleapis.com/css?family=Montserrat:400,500,80);
 #app {font-family: Montserrat, sans-serif;}
+::-webkit-scrollbar{
+  width: 8px;
+}
+::-webkit-scrollbar-track{
+  background-color: rgba(0,0,0,0.2);
+}
+::-webkit-scrollbar-thumb{
+  background-color: $dark-color;
+  //border-radius: 5px;
+}
+
 </style>

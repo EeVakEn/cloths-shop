@@ -6,6 +6,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 
+
 class Category(MPTTModel):
     class MPTTMeta:
         order_insertion_by = ['name']
@@ -93,8 +94,7 @@ class Product(models.Model):
             sum = 0
             for i in reviews:
                 sum += i.raiting
-            return sum/len(reviews)
-
+            return sum / len(reviews)
 
     def get_category_url(self):
         return self.category.get_full_url()
@@ -131,6 +131,7 @@ class Review(models.Model):
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
         ordering = ['-updated_at']
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     review_author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -140,3 +141,35 @@ class Review(models.Model):
 
     def __str__(self):
         return str(self.raiting)
+
+
+class Order(models.Model):
+    user = models.ForeignKey(User, related_name='users', on_delete=models.CASCADE, blank=True, null=True)
+    firstname = models.CharField(max_length=100)
+    lastname = models.CharField(max_length=100)
+    email = models.EmailField()
+    phone = models.CharField(max_length=14)
+    address = models.CharField(max_length=250)
+    cardNumber = models.CharField(max_length=16)
+    cardName = models.CharField(max_length=50)
+    cardMouth = models.CharField(max_length=2)
+    cardYear = models.CharField(max_length=4)
+    cardCvv = models.CharField(max_length=4)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+
+    def __str__(self):
+        return self.email
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey(ProductVariant, related_name='items', on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return '%s' % self.id

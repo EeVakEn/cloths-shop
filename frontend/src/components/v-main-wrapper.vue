@@ -6,6 +6,7 @@
 
     <router-view></router-view>
     <v-is-loading></v-is-loading>
+    <v-footer/>
   </div>
 
 </template>
@@ -15,10 +16,11 @@ import {mapGetters} from "vuex";
 // import VSidebar from "./sidebar/v-sidebar";
 import VNavbar from "./v-navbar";
 import VIsLoading from "@/components/v-is-loading";
+import VFooter from "@/components/v-footer";
 
 export default {
   name: 'v-main-wrapper',
-  components: {VIsLoading, VNavbar, /*VSidebar*/},
+  components: {VFooter, VIsLoading, VNavbar, /*VSidebar*/},
   data() {
     return {
       isSidebarOpen: false,
