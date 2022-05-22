@@ -17,14 +17,18 @@
         <i v-else class="bi bi-caret-down link"></i>
       </span>
     </div>
-    <div v-if="expanded">
-      <v-categories-tree
-          v-for="child in node.children"
-          :key="child.name"
-          :node="child"
-          :depth="depth+1"
-      />
-    </div>
+    <Transition>
+      <div v-if="expanded">
+        <v-categories-tree
+            v-for="child in node.children"
+            :key="child.name"
+            :node="child"
+            :depth="depth+1"
+            :expanded="expanded"
+        />
+      </div>
+    </Transition>
+
 
   </div>
 
@@ -36,15 +40,11 @@
 export default {
   name: "v-categories-tree",
   props: {
+    expanded: Boolean,
     node: Object,
     depth: {
       type: Number,
       default: 0,
-    }
-  },
-  data() {
-    return {
-      expanded: false,
     }
   },
   computed: {
@@ -62,10 +62,18 @@ export default {
   display: flex;
   justify-content: space-between;
   border-bottom: solid 1px grey;
-  z-index: 0;
+  line-height: 3;
 }
 .link{
   color: $second-color !important;
-  z-index: 200;
+}
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

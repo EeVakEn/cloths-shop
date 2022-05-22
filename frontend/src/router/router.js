@@ -10,7 +10,8 @@ import VAccount from "../components/user/v-account";
 import store from "../vuex/store";
 import Contacts from "@/components/page/contacts";
 import About from "@/components/page/about";
-
+import ConfirmEmail from "@/components/page/confirm-email";
+import NotFound from "@/components/page/NotFound";
 Vue.use(Router)
 
 let router = new Router(
@@ -71,6 +72,16 @@ let router = new Router(
                 path: '/about',
                 name: 'about',
                 component: About,
+            },
+            {
+                path: '/email-confirm',
+                name: 'confirm-email',
+                component: ConfirmEmail,
+            },
+            {
+                path: '/:pathMatch(.*)*',
+                name: '404',
+                component:  NotFound,
             }
         ]
     }

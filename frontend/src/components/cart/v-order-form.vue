@@ -162,37 +162,6 @@
           </div>
         </div>
       </section>
-      <section class="payment">
-        <h3><i class="bi bi-credit-card"/> Оплата</h3>
-        <hr/>
-        <vue-paycard
-            :value-fields="valueFields"
-            :input-fields="inputFields"
-            :labels="labels"
-            :has-random-backgrounds="false"
-            background-image="https://catherineasquithgallery.com/uploads/posts/2021-02/1614253330_88-p-krutoi-chernii-fon-105.png"
-            :is-card-number-masked="false"
-            class="my-4"
-        />
-        <div class="mb-3">
-          <label for="v-card-number">Номер карты</label>
-          <input class="form-control" v-model="valueFields.cardNumber" maxlength="19" id="v-card-number">
-        </div>
-        <div class="mb-3">
-          <label for="v-card-name">Держатель карты</label>
-          <input class="form-control" v-model="valueFields.cardName" id="v-card-name">
-        </div>
-        <div class="row mb-3">
-          <div class="col-md-8">
-            <label for="v-card-date">Дата</label>
-            <input class="form-control" v-model="cardDate" @input="dateInput" maxlength="7" id="v-card-date">
-          </div>
-          <div class="col-md-4">
-            <label for="v-card-cvv">CVV</label>
-            <input class="form-control" v-model="valueFields.cardCvv" maxlength="3" title="CVV" id="v-card-cvv">
-          </div>
-        </div>
-      </section>
       <button class="dark-button mb-5" type="submit" style="width: 100%">Оплатить</button>
     </form>
   </div>
@@ -202,39 +171,16 @@
 import IMask from 'imask' // чтобы задать маску для номера телефона
 import {yandexMap, ymapMarker} from "vue-yandex-maps";
 import axios from "axios";
-import VuePaycard from "vue-paycard";
 import {validationMixin} from 'vuelidate'
 import {required, email, minLength} from 'vuelidate/lib/validators'
 
 export default {
   name: "v-order-form",
-  components: {yandexMap, ymapMarker, VuePaycard},
+  components: {yandexMap, ymapMarker},
   mixins: [validationMixin],
   data() {
     return {
-      inputFields: {
-        cardNumber: "v-card-number",
-        cardName: "v-card-name",
-        cardMonth: "v-card-month",
-        cardYear: "v-card-year",
-        cardCvv: "v-card-cvv",
-      },
-      cardDate: '',
-      valueFields: {
-        cardName: "",
-        cardNumber: "",
-        cardMonth: "",
-        cardYear: "",
-        cardCvv: "",
-      },
-      labels: {
-        cardName: "IVAN IVANOV",
-        cardHolder: "Держатель карты",
-        cardMonth: "MM",
-        cardYear: "YY",
-        cardExpires: "MOUTH/YEAR",
-        cardCvv: "CVV"
-      },
+
       coords: [55.751244, 37.618423],
       surfaces: [],
 
@@ -309,6 +255,29 @@ export default {
 
     async checkout() {
       this.$v.$touch()
+      // if (!this.$v.form.$error) {
+      //   this.$store.commit('SET_IS_LOADING', true)
+      //   console.log('Валидация прошла успешно')
+      //   let items=this.store.cart.map(item =>
+      //   {
+      //       'product': item.variant_id,
+      //       'quantity': item.quantity
+      //   })
+      //   const formData = {
+      //   }
+      //   await axios
+      //       .post('/api/catalog/checkout', formData)
+      //       .then(() => {
+      //         this.$router.push({name: 'confirm-email'})
+      //       })
+      //       .catch(error => {
+      //         if (error.response) {
+      //           this.errors = error.response.data
+      //         }
+      //       })
+      //
+      //   this.$store.commit('SET_IS_LOADING', false)
+      // }
     },
 
     bindListener(mark) {
@@ -343,10 +312,12 @@ export default {
 
   },
   async mounted() {
+    let items = []
+    this.$store.state.cart.forEach(item =>
+          items.push({'product': item.variant_id, 'quantity': item.quantity})
+    );
+    console.log(items)
     this.mask = new IMask(document.getElementById('phone'), {mask: '+7(000)000-00-00'});
-    this.mask = new IMask(document.getElementById('v-card-number'), {mask: '0000 0000 0000 0000'});
-    this.mask = new IMask(document.getElementById('v-card-date'), {mask: '00 / 00'});
-    this.mask = new IMask(document.getElementById('v-card-cvv'), {mask: '000'});
   },
   validations: {
     email: {required, email},

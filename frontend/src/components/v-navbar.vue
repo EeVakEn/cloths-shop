@@ -16,6 +16,7 @@
         <i class="bi bi-list" style="color: #F5F5F5"></i>
       </button>
 
+      <v-sidebar class="d-none d-md-block "></v-sidebar>
       <span class="navbar-brand link brand-link " @click="$router.push('/').catch(()=>{})">
         yourwear
       </span>
@@ -33,15 +34,27 @@
 
       <div class="collapse navbar-collapse justify-content-end" id="navbar">
         <ul class="navbar-nav ">
-          <li class="nav-item mx-3">
+          <li class="nav-item d-md-none  mx-3">
             <span
                 class="nav-link link dropdown-toggle"
                 @click="isVisibleCatalog = !isVisibleCatalog"
-            >
-              Каталог
+            >Каталог
             </span>
-
+            <div v-if="isVisibleCatalog"  class="nav-link" id="catalog">
+              <v-categories-tree
+                  class="d-md-none"
+                  v-for="node in CATEGORIES"
+                  :key="node.name"
+                  :node="node"
+                  :expanded="false"
+                  @clicked="onCategoryClick"
+              />
+            </div>
           </li>
+          <li class="nav-item d-none d-md-block   mx-3">
+            <span class="nav-link link" @click="$router.push('/').catch(()=>{})">Каталог</span>
+          </li>
+
 
           <li class="nav-item mx-2">
             <span class="nav-link link" @click="$router.push('/about').catch(()=>{})">
@@ -103,24 +116,18 @@
       </div>
 
     </nav>
-    <div v-if="isVisibleCatalog" id="catalog">
-      <v-categories-tree
-          v-for="node in CATEGORIES"
-          :key="node.name"
-          :node="node"
-          @clicked="onCategoryClick"
-      />
-    </div>
+
   </div>
 </template>
 
 <script>
 import VCategoriesTree from "@/components/sidebar/v-categories-tree";
 import {mapActions, mapGetters} from "vuex";
+import VSidebar from "@/components/sidebar/v-sidebar";
 
 export default {
   name: "v-navbar",
-  components: {VCategoriesTree},
+  components: {VSidebar, VCategoriesTree},
   data() {
     return {
       isVisibleCatalog: false

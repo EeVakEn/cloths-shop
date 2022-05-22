@@ -19,6 +19,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('is_available', 'created_at', 'updated_at')
     inlines = [VariantInline]
 
+    date_hierarchy = 'updated_at'
     def get_img(self, obj):
         if obj.image:
             return mark_safe(f'<img src="{obj.image.url}" height="75" />')
@@ -34,10 +35,19 @@ class CategoryAdmin(MPTTModelAdmin):
     mpt_indent_field = 'name'  # эта штука задает поле где рисовать табы
 
 
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('id', 'review_author', 'product', 'review', 'raiting', 'created_at')
+    list_display_links = ('product', 'review_author')
+    list_editable = ['review']
+    list_filter = ('created_at', 'updated_at', 'product', 'review_author')
+    search_fields = ['product__article', 'review_author__username']
+    date_hierarchy = 'updated_at'
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
+admin.site.register(Review, ReviewAdmin)
 admin.site.register(Color)
 admin.site.register(Size)
-admin.site.register(Review)
 
 # Register your models here.

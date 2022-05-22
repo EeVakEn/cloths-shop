@@ -1,12 +1,13 @@
 <template>
 
   <div class="v-main-wrapper" :class="{'sidebar__open': isSidebarOpen}">
-    <v-navbar/>
-<!--    <v-sidebar @isOpenSidebar="isOpenSidebar"/>-->
+    <div style="flex: 1 0 auto">
+      <v-navbar/>
+      <router-view></router-view>
+      <v-is-loading></v-is-loading>
+    </div>
 
-    <router-view></router-view>
-    <v-is-loading></v-is-loading>
-    <v-footer/>
+    <v-footer style="flex: 0 0 auto"/>
   </div>
 
 </template>
@@ -40,11 +41,21 @@ export default {
 </script>
 
 <style lang="scss">
-.v-main-wrapper {
-  transition: .4s;
-
+html,
+body {
+  height: 100%;
 }
-
+.v-main-wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: .4s;
+}
+@media (min-width: 768px){
+  .v-main-wrapper {
+    margin-left: 60px;
+  }
+}
 .sidebar__open {
   margin-left: 350px;
 }

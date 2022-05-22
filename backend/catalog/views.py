@@ -96,6 +96,9 @@ class SearchProductAPIList(generics.ListAPIView):
         return products
 
 
+class OrderCreateAPIView(generics.CreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
 
 
 # TODO: Страницы: Контакты О нас

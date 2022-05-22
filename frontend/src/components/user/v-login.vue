@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
     <div class="d-flex flex-nowrap justify-content-center">
-      <div style="margin: 63px">
+      <div style="margin: 50px 0">
         <h2>Вход</h2>
         <form class="reg_form" @submit.prevent="checkForm">
           <div class="form-group mb-3">

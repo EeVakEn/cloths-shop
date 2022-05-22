@@ -143,6 +143,7 @@ export default {
   }
 
   &__no_items {
+    margin: 50px 0;
     text-align: center;
   }
 

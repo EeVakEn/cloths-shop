@@ -33,6 +33,8 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'admin_interface',
+    'colorfield',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,7 +56,6 @@ INSTALLED_APPS = [
 
     # apps
     'customer',
-    'cart',
     'catalog',
 ]
 
@@ -183,7 +184,7 @@ DJOSER = {
 CART_SESSION_ID = 'cart'
 
 CORS_ALLOWED_ORIGINS = [
-"http://127.0.0.1:8080",
-"http://localhost:8080",
-"http://integration.cdek.ru"
+    "http://127.0.0.1:8080",
+    "http://localhost:8080",
+    "http://integration.cdek.ru"
 ]

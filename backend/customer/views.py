@@ -1,18 +1,6 @@
-from rest_framework import generics, permissions, status
-from rest_framework.permissions import IsAuthenticated
-from .models import Customer
-from .serializers import CustomerSerializer
-
-
-class CustomerAPIList(generics.ListAPIView):
-    queryset = Customer.objects.all()
-    serializer_class = CustomerSerializer
-    permission_classes = [permissions.IsAdminUser]
-
-
+from django.http import HttpResponseRedirect
 # EMAIL ACTIVATION
 from djoser.views import UserViewSet
-from rest_framework.response import Response
 
 
 class ActivateUser(UserViewSet):
@@ -27,4 +15,5 @@ class ActivateUser(UserViewSet):
 
     def activation(self, request, uid, token, *args, **kwargs):
         super().activation(request, *args, **kwargs)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return HttpResponseRedirect(redirect_to='http://localhost:8080/log-in')
+        # TODO: redirect to login page

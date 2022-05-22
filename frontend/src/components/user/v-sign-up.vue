@@ -129,7 +129,7 @@ export default {
         await axios
             .post('/api/users/', formData)
             .then(() => {
-              this.$router.push({name: 'login'})
+              this.$router.push({name: 'confirm-email'})
             })
             .catch(error => {
               if (error.response) {

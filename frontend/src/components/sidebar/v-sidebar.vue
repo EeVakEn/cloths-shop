@@ -6,16 +6,23 @@
         <i v-else class="bi bi-x"/>
       </div>
       <div v-if="isOpen">
-        <span class="v-sidebar_catalog_link" @click=" $router.push('/').catch(()=>{})">
-          Каталог
-        </span>
-        <v-categories-tree
-            v-for="node in CATEGORIES"
-            :key="node.name"
-            :node="node"
-            :isSidebarOpen="isOpen"
-        />
+        <div class="sidebar_content">
+          <p class="v-sidebar_catalog_link link" @click=" $router.push('/').catch(()=>{})">
+            Каталог
+          </p>
+          <v-categories-tree
+              class="v-sidebar_tree"
+              v-for="node in CATEGORIES"
+              :key="node.name"
+              :node="node"
+              :isSidebarOpen="isOpen"
+              :expanded="true"
+          />
+
+        </div>
+        <div class="sidebar_layout" @click="isOpen=false"></div>
       </div>
+
     </div>
   </div>
 
@@ -50,6 +57,13 @@ export default {
       'CATEGORIES',
     ])
   },
+  watch: {
+    '$route'(to, from) {
+      if (to !== from) {
+        this.isOpen = false;
+      }
+    }
+  },
 }
 </script>
 
@@ -68,7 +82,7 @@ export default {
   top: 0;
   left: 0;
   height: 100%;
-  width: 70px;
+  width: 60px;
   cursor: pointer;
   transition: .5s;
 }
@@ -80,7 +94,7 @@ export default {
 .v-sidebar {
   height: 100%;
   position: fixed;
-  z-index: 1;
+  display: block;
   top: 0;
   left: 0;
   background-color: $dark-color;
@@ -93,17 +107,29 @@ export default {
 
 .v-sidebar__visible {
   width: 350px;
+  box-shadow: 16px 0 21px -6px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar_content {
+  padding-left: 70px;
 }
 
 .v-sidebar__invisible {
-  width: 70px;
+  width: 60px;
 }
 
 .v-sidebar_catalog_link {
-  text-align: left;
-  margin-left: 100px;
+
   font-size: 24px;
   color: white !important;
-  cursor: pointer;
+}
+.sidebar_layout{
+  position: fixed; /* Stay in place */
+  left: 350px;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 </style>

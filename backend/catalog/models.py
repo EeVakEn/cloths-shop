@@ -132,12 +132,12 @@ class Review(models.Model):
         verbose_name_plural = 'Отзывы'
         ordering = ['-updated_at']
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    review_author = models.ForeignKey(User, on_delete=models.CASCADE)
-    review = models.TextField(blank=True, null=True)
-    raiting = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Создано')
+    updated_at = models.DateTimeField(auto_now=True,verbose_name='Изменено')
+    review_author = models.ForeignKey(User, on_delete=models.CASCADE,verbose_name='Автор')
+    review = models.TextField(blank=True, null=True,verbose_name='Отзыв')
+    raiting = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)],verbose_name='Оценка')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews', verbose_name='Товар')
 
     def __str__(self):
         return str(self.raiting)
@@ -148,13 +148,8 @@ class Order(models.Model):
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
     email = models.EmailField()
-    phone = models.CharField(max_length=14)
+    phone = models.CharField(max_length=16)
     address = models.CharField(max_length=250)
-    cardNumber = models.CharField(max_length=16)
-    cardName = models.CharField(max_length=50)
-    cardMouth = models.CharField(max_length=2)
-    cardYear = models.CharField(max_length=4)
-    cardCvv = models.CharField(max_length=4)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
