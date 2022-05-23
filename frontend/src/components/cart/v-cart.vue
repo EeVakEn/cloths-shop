@@ -39,7 +39,8 @@
         class="v-cart__no_items"
     >
       <h2>Корзина пуста</h2>
-      <img class="link-img" src="@/assets/images/shopping-cart-svgrepo-com.svg" alt="" style="max-width: 400px"/>
+      <i style="font-size: 25vw ; padding: 30px 0" class="fa fa-basket-shopping"></i>
+<!--      <img class="link-img" src="@/assets/images/shopping-cart-svgrepo-com.svg" alt="" style="max-width: 400px"/>-->
       <p>Но ты всегда можешь ее наполнить :) <br/> Кликай на кнопочку </p>
       <button class="dark-button" @click="$router.push('/')">Перейти в каталог</button>
     </div>

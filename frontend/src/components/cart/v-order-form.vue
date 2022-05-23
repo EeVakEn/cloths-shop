@@ -10,31 +10,28 @@
           <div class="col-md-6 my-2">
             <label for="firstname" class="form-label">Имя</label>
             <input type="text" v-model="firstname" class="form-control" id="firstname" required>
-            <div v-if="$v.firstname.$dirty && !$v.firstname.required" class="invalid-feedback">
+            <div v-if="$v.firstname.$dirty && $v.firstname.$invalid" class="invalid_feedback">
               Обязательное поле
             </div>
           </div>
           <div class="col-md-6 my-2">
             <label for="lastname" class="form-label">Фамилия</label>
             <input type="text" v-model="lastname" class="form-control" id="lastname" required>
-            <div v-if="$v.lastname.$dirty && !$v.lastname.required" class="invalid-feedback">
+            <div v-if="$v.lastname.$dirty && $v.lastname.$invalid" class="invalid_feedback">
               Обязательное поле
             </div>
           </div>
           <div class="col-md-6 my-2">
             <label for="phone" class="form-label">Телефон</label>
             <input type="text" v-model="phone" class="form-control" id="phone" maxlength="16" required>
-            <div v-if="$v.phone.$dirty && !$v.phone.required && !$v.phone.minLength" class="invalid-feedback">
+            <div v-if="$v.phone.$dirty && $v.phone.$invalid" class="invalid_feedback">
               Некорректный номер
             </div>
           </div>
           <div class="col-md-6 my-2">
             <label for="email" class="form-label">Email</label>
             <input type="email" v-model="email" class="form-control" id="email" required>
-            <div v-if="$v.email.$dirty && !$v.email.required" class="invalid-feedback">
-              Обязательное поле.
-            </div>
-            <div v-if="$v.email.$dirty && !$v.email.email" class="invalid-feedback">
+            <div v-if="$v.email.$dirty && $v.email.$invalid" class="invalid_feedback">
               Некорректный адрес электронной почты.
             </div>
             <small>Для получения информации о заказе и связи</small>
@@ -142,7 +139,7 @@
             <small>Оставьте пустым, если нет номера квартиры</small>
           </div>
         </div>
-        <div v-if="$v.address_str.$dirty && !$v.address_str" class="invalid-feedback">
+        <div v-if="$v.address_str.$dirty && $v.address_str.$invalid" class="invalid_feedback">
           Задайте корректный адрес доставки
         </div>
 
@@ -162,7 +159,7 @@
           </div>
         </div>
       </section>
-      <button class="dark-button mb-5" type="submit" style="width: 100%">Оплатить</button>
+      <button class="dark-button mb-5" type="submit" style="width: 100%">Оформить заказ</button>
     </form>
   </div>
 </template>
@@ -183,11 +180,11 @@ export default {
 
       coords: [55.751244, 37.618423],
       surfaces: [],
-
       firstname: "",
       lastname: "",
       phone: "",
       email: "",
+
       city: "",
 
       room: "",
@@ -255,29 +252,39 @@ export default {
 
     async checkout() {
       this.$v.$touch()
-      // if (!this.$v.form.$error) {
-      //   this.$store.commit('SET_IS_LOADING', true)
-      //   console.log('Валидация прошла успешно')
-      //   let items=this.store.cart.map(item =>
-      //   {
-      //       'product': item.variant_id,
-      //       'quantity': item.quantity
-      //   })
-      //   const formData = {
-      //   }
-      //   await axios
-      //       .post('/api/catalog/checkout', formData)
-      //       .then(() => {
-      //         this.$router.push({name: 'confirm-email'})
-      //       })
-      //       .catch(error => {
-      //         if (error.response) {
-      //           this.errors = error.response.data
-      //         }
-      //       })
-      //
-      //   this.$store.commit('SET_IS_LOADING', false)
-      // }
+      if (!this.$v.$error) {
+        this.$store.commit('SET_IS_LOADING', true)
+        console.log('Валидация прошла успешно')
+        let items = []
+        this.$store.state.cart.forEach(item =>
+            items.push({'product': item.variant_id, 'quantity': item.quantity})
+        );
+        const formData = {
+          'firstname': this.firstname,
+          'lastname': this.lastname,
+          'email': this.email,
+          'phone': this.phone,
+          'address': this.address_str,
+          'items': items,
+        }
+        console.log(formData)
+        await axios
+            .post('/api/catalog/checkout/', formData)
+            .then(() => {
+              this.$store.state.isAuthenticated?
+                  this.$router.push({name: 'account'}):
+                  this.$router.push({name: 'confirm-email'})
+              this.$store.state.cart = []
+              localStorage.setItem('cart', [])
+            })
+            .catch(error => {
+              if (error.response) {
+                this.errors = error.response.data
+              }
+            })
+
+        this.$store.commit('SET_IS_LOADING', false)
+      }
     },
 
     bindListener(mark) {
@@ -292,13 +299,6 @@ export default {
     chooseMark() {
       this.selectedMark = this.mark
     },
-    dateInput() {
-      this.valueFields.cardMonth = this.cardDate.split(' / ')[0]
-      if (this.cardDate.includes(' / ')) {
-        this.valueFields.cardYear = '20' + this.cardDate.split(' / ')[1]
-      }
-
-    },
     getAllPoints() {
       axios
           .get(`http://localhost:8080/pvzlist/v1/json?countryid=1&status=ACTIVE${'&fiasGuid=' + this.dadata_city.city_fias_id}`)
@@ -312,19 +312,14 @@ export default {
 
   },
   async mounted() {
-    let items = []
-    this.$store.state.cart.forEach(item =>
-          items.push({'product': item.variant_id, 'quantity': item.quantity})
-    );
-    console.log(items)
     this.mask = new IMask(document.getElementById('phone'), {mask: '+7(000)000-00-00'});
   },
   validations: {
-    email: {required, email},
-    firstname: {required},
+    email: {required, email,},
+    firstname: {required,},
     lastname: {required,},
-    phone: {required, minLength: minLength(16)},
-    address_str: {required}
+    phone: {required, minLength: minLength(16),},
+    address_str: {required,}
   },
 
 
@@ -336,7 +331,6 @@ export default {
   border: 2px solid rgba(0, 0, 0, 0.1);
   border-radius: 0.65rem;
 }
-
 
 /*Card Button CSS*/
 .card-radio-btn {
@@ -396,5 +390,10 @@ export default {
 
 .v-map__mapping {
   filter: saturate(130%);
+}
+
+.invalid_feedback {
+  color: red;
+  font-size: 15px;
 }
 </style>

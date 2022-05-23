@@ -14,47 +14,49 @@
       />
     </transition>
     <!--MODAL END-->
-
-    <div class="v-catalog-cart">
-      <div class="v-catalog-item__image-wrapper">
-        <img
-            class="link-img v-catalog-item__image"
-            @click="$router.push(`/product/${product_data.article}`)"
-            :src="product_data.image"
-            :alt="product_data.image"/>
-      </div>
-
-      <div class="v-catalog-item__info">
-        <div class="v-catalog-item__name">{{ product_data.name }}</div>
-
-        <div class="v-catalog-item__colors-wrapper">
-          <b>Цвет: </b>
-          <div
-              v-for="(color,index) in getColorStack"
-              :key="index"
-              :class="[color, 'v-catalog-item__color']"
-              :data-microtip="colorToRu(color)"
-          />
+    <transition name="fade">
+      <div class="v-catalog-cart">
+        <div class="v-catalog-item__image-wrapper">
+          <img
+              class="link-img v-catalog-item__image"
+              @click="$router.push(`/product/${product_data.article}`)"
+              :src="product_data.image"
+              :alt="product_data.image"/>
         </div>
 
-        <div class="v-catalog-item__bottom">
-          <div class="v-catalog-item__price">{{ product_data.price.toLocaleString() }} ₽</div>
-          <div>
-            <button class="dark-button" @click="showModal">
-              В корзину
-              <i class="bi bi-bag"/>
-            </button>
+        <div class="v-catalog-item__info">
+          <div class="v-catalog-item__name">{{ product_data.name }}</div>
 
-            <button class="dark-button" @click="addToFavorites">
-              <i class="bi bi-heart-fill" v-if="this.isFavorite"/>
-              <i class="bi bi-heart" v-else/>
-            </button>
+          <div class="v-catalog-item__colors-wrapper">
+            <b>Цвет: </b>
+            <div
+                v-for="(color,index) in getColorStack"
+                :key="index"
+                :class="[color, 'v-catalog-item__color']"
+                :data-microtip="colorToRu(color)"
+            />
           </div>
 
+          <div class="v-catalog-item__bottom">
+            <div class="v-catalog-item__price">{{ product_data.price.toLocaleString() }} ₽</div>
+            <div>
+              <button class="dark-button" @click="showModal">
+                В корзину
+                <i class="bi bi-bag"/>
+              </button>
+
+              <button class="dark-button" @click="addToFavorites">
+                <i class="bi bi-heart-fill" v-if="this.isFavorite"/>
+                <i class="bi bi-heart" v-else/>
+              </button>
+            </div>
+
+          </div>
         </div>
       </div>
-    </div>
+    </transition>
   </div>
+
 
 </template>
 
@@ -162,6 +164,11 @@ export default {
       })
       return Array.from(colorSet)
     }
+  },
+  watch: {
+    isFavorite: function (val) {
+      this.$toasted.show(val ? 'Товар добавлен в избранное' : 'Товар удален из избранного')
+    }
   }
 }
 </script>
@@ -243,7 +250,7 @@ export default {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.2s;
+  transition: opacity 1s;
 }
 
 .fade-enter,

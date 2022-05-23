@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-if="isFetching">
-    <div class="row">
+    <div class="row" style="margin: 50px 0" >
       <div class="col-md-6 image_wrapper">
         <img class="image" :src="PRODUCT.image" alt="Картинка товара отсутствует"/>
       </div>
@@ -165,11 +165,12 @@ import {mapActions, mapGetters} from "vuex";
 import StarRating from 'vue-star-rating'
 import axios from "axios";
 import router from "@/router/router";
+import "vuex-toast/dist/vuex-toast.css";
 
 export default {
   name: "v-product",
   components: {
-    StarRating
+    StarRating,
   },
   data() {
     return {
@@ -195,7 +196,7 @@ export default {
     ...mapActions([
       'ADD_TO_CART',
       'GET_DETAIL_PRODUCT',
-      'ADD_TO_FAVORITES'
+      'ADD_TO_FAVORITES',
     ]),
     async addReview() {
       if (this.$store.state.isAuthenticated) {
@@ -232,8 +233,9 @@ export default {
           exists = true
         }
       })
-      if (exists === false)
+      if (exists === false){
         this.isFavorite = false
+      }
     },
     selectSize(selectedSize) {
       this.selectedSize = selectedSize
@@ -298,10 +300,18 @@ export default {
               variant_id: variant_id,
               quantity: this.quantity
             }
-            // TODO
-            // this.bootstrap.Toast(this.$refs.addToCartToast.show())
-
             this.ADD_TO_CART(item)
+            // TODO
+            this.$toasted.show(
+                this.quantity % 10 === 0 || this.quantity % 10 >= 5 ?
+                this.quantity.toLocaleString() + ' товаров добавлено в корзину' :
+                (this.quantity === 1 ? 'Товар добавлен в корзину' :
+                    this.quantity.toLocaleString() + ' товара добавлено в корзину'),
+                {
+                  icon: 'cart-shopping'
+                }
+            )
+
           } else {
             this.isQntOverflow = true
             this.varQnt = selectedVariant.quantity
@@ -400,6 +410,26 @@ export default {
       }
     }
   },
+  watch: {
+    isFavorite: function (val){
+      if (val)
+        this.$toasted.success('Товар добавлен в избранное',
+          {
+            iconPack:  'fontawesome',
+            icon: 'heart',
+            closeOnSwipe: true,
+            position:  'bottom-right',
+          })
+      else
+        this.$toasted.error('Товар удален из избранного',
+            {
+              iconPack:  'fontawesome',
+              icon: 'heart-crack',
+              closeOnSwipe: true,
+              position:  'bottom-right',
+            })
+    }
+  }
 
 }
 </script>

@@ -7,10 +7,6 @@ import getters from "./getters/getters";
 
 Vue.use(Vuex)
 
-// чтобы создать API из json файла нужно прописать команду
-// Например 'http://localhost:3000/products'
-// json-server --watch file.json
-
 let store = new Vuex.Store({ //Центральное хранилище наших данных
     state: {
         products: [], // записываем пустой массив

@@ -133,10 +133,11 @@ class Review(models.Model):
         ordering = ['-updated_at']
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Создано')
-    updated_at = models.DateTimeField(auto_now=True,verbose_name='Изменено')
-    review_author = models.ForeignKey(User, on_delete=models.CASCADE,verbose_name='Автор')
-    review = models.TextField(blank=True, null=True,verbose_name='Отзыв')
-    raiting = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)],verbose_name='Оценка')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='Изменено')
+    review_author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
+    review = models.TextField(blank=True, null=True, verbose_name='Отзыв')
+    raiting = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)],
+                                          verbose_name='Оценка')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews', verbose_name='Товар')
 
     def __str__(self):
@@ -144,13 +145,22 @@ class Review(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(User, related_name='users', on_delete=models.CASCADE, blank=True, null=True)
-    firstname = models.CharField(max_length=100)
-    lastname = models.CharField(max_length=100)
-    email = models.EmailField()
-    phone = models.CharField(max_length=16)
-    address = models.CharField(max_length=250)
-    created_at = models.DateTimeField(auto_now_add=True)
+    TRACK_STATUSES = (
+        ('Создан', 'Создан'),
+        ('В обработке', 'В обработке'),
+        ('Отправлен', 'Отправлен'),
+        ('Доставлен', 'Доставлен'),
+        ('Отменен', 'Отменен'),
+    )
+    user = models.ForeignKey(User, related_name='users', on_delete=models.CASCADE, blank=True, null=True,
+                             verbose_name='Пользователь')
+    firstname = models.CharField(max_length=100, verbose_name='Имя')
+    lastname = models.CharField(max_length=100, verbose_name='Фамилия')
+    email = models.EmailField(verbose_name='Email')
+    phone = models.CharField(max_length=16, verbose_name='Телефон')
+    address = models.CharField(max_length=250, verbose_name='Адрес доставки')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата заказа')
+    track_status = models.CharField(max_length=100, choices=TRACK_STATUSES, verbose_name='Статус заказа', default=TRACK_STATUSES[0])
 
     class Meta:
         ordering = ['-created_at']
@@ -162,9 +172,13 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
-    product = models.ForeignKey(ProductVariant, related_name='items', on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE, verbose_name='Заказ')
+    product = models.ForeignKey(ProductVariant, related_name='items', on_delete=models.CASCADE, verbose_name='Продукт')
+    quantity = models.IntegerField(default=1, verbose_name='Количество')
+
+    class Meta:
+        verbose_name = 'Заказанный товар'
+        verbose_name_plural = 'Заказанные товары'
 
     def __str__(self):
         return '%s' % self.id

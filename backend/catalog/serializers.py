@@ -1,6 +1,8 @@
-import json
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import serializers, authentication, status, permissions
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 
-from rest_framework import serializers
 from .models import Category, Product, ProductVariant, Review, OrderItem, Order
 import locale
 
@@ -82,8 +84,28 @@ class OrderItemSerializer(serializers.ModelSerializer):
         model = OrderItem
         fields = (
             "product",
-            "quantity"
+            "quantity",
         )
+
+
+class OrderItemDetailSerializer(serializers.ModelSerializer):
+    product = VariantDetailSerializer()
+
+    class Meta:
+        model = OrderItem
+        fields = (
+            "product",
+            "quantity",
+        )
+
+
+class OrderDetailSerializer(serializers.ModelSerializer):
+    items = OrderItemDetailSerializer(many=True)
+    created_at = serializers.DateTimeField(format="%d %B %Y, %H:%M", read_only=True)
+
+    class Meta:
+        model = Order
+        fields = '__all__'
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -108,3 +130,17 @@ class OrderSerializer(serializers.ModelSerializer):
         for item_data in items_data:
             OrderItem.objects.create(order=order, **item_data)
         return order
+
+
+@api_view(['POST'])
+@authentication_classes([authentication.TokenAuthentication])
+def checkout(request):
+    serializer = OrderSerializer(data=request.data)
+    if serializer.is_valid():
+        try:
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except Exception:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'PIL',
     'simplejson',
     'ckeditor',
+    'nested_admin',
 
     # apps
     'customer',

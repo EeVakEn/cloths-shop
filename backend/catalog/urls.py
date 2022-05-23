@@ -15,5 +15,6 @@ urlpatterns = [
     path('products/<int:product_id>/reviewlist/', ReviewListAPIView.as_view()),
     path('reviews/<int:pk>/', ReviewDetailAPIView.as_view()),
     path('variants/<int:pk>/', VariantDetailAPIView.as_view()),
-    path('checkout/', OrderCreateAPIView.as_view())
+    path('checkout/', checkout),
+    path('orders/', OrdersList.as_view())
 ]

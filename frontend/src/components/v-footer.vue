@@ -55,6 +55,7 @@ export default {
 <style lang="scss" scoped>
 .site-footer {
   background-color: $dark-color;
+  margin-top: 30px;
   padding: 45px 0 20px;
   font-size: 15px;
   line-height: 24px;

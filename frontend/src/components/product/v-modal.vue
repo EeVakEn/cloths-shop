@@ -207,6 +207,11 @@ export default {
               quantity: this.quantity
             }
             this.ADD_TO_CART(item)
+            this.$toasted.show(
+                this.quantity % 10 === 0 || this.quantity % 10 >= 5 ?
+                    this.quantity.toLocaleString() + ' товаров добавлено в корзину' :
+                    (this.quantity === 1 ? 'Товар добавлен в корзину' :
+                        this.quantity.toLocaleString() + ' товара добавлено в корзину'))
           } else {
             this.isQntOverflow = true
             this.varQnt = selectedVariant.quantity
@@ -295,7 +300,11 @@ export default {
       if (item.target === this.$refs['modal_wrapper']) this.closeModal()
     })
   },
-
+  watch: {
+    isFavorite: function (val){
+       this.$toasted.show(val?'Товар добавлен в избранное':'Товар удален из избранного')
+    }
+  }
 }
 </script>
 

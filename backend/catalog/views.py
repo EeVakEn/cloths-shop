@@ -34,6 +34,7 @@ class ProductListByCategoryAPIView(generics.ListAPIView):
     serializer_class = ProductSerializer
     filter_backends = (filters.OrderingFilter,)
     ordering_fields = ('price', 'updated_at')
+
     def get_queryset(self):
         descendants = Category.objects.get(slug=self.kwargs.get('cat_slug')).get_descendants(include_self=True)
         descendants_ids = [item.id for item in descendants]
@@ -101,16 +102,17 @@ class OrderCreateAPIView(generics.CreateAPIView):
     serializer_class = OrderSerializer
 
 
-# TODO: Страницы: Контакты О нас
-# TODO: Страница подтверидите почту
-# TODO: Страница почта подтверждена, залогиньтесь
-# TODO: Поправить удаление из корзины
-# TODO: Пагинация товаров с прогрузкой
-# TODO: Фильтр товаров по цене
-# TODO: Фильтр товаров по цвету
-# TODO: Доставка (курьер, постамат) СДЭК
-# TODO: ввод адреса, выбор постамата соответственно
-# TODO: Заказы user'a в ЛК
+class OrdersList(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, format=None):
+        orders = Order.objects.filter(user=request.user)
+        serializers = OrderDetailSerializer(orders, many=True)
+        return Response(serializers.data)
+
+
+
 # TODO: Добавление информации о пользователе
 # TODO: Сброс пароля по почте
 # TODO: Оплата товара
