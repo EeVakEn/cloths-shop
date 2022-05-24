@@ -16,7 +16,7 @@
           />
           <div class="v-cart__total">
             <div>Итого</div>
-            <div><b>{{ totalPrice }} ₽</b></div>
+            <div><b>{{ totalPrice.toLocaleString() }} ₽</b></div>
             <a
                 class="v-cart__total__delete"
                 @click="deleteAllFromCart"
@@ -29,7 +29,7 @@
 
         </div>
         <div class="v-cart__delivery col-lg-6">
-          <v-order-form></v-order-form>
+          <v-order-form :cost="totalPrice"></v-order-form>
         </div>
       </div>
 
@@ -88,7 +88,7 @@ export default {
               .then(response => response.data.product.price)
               .catch(error => error) * item.quantity
         }
-        this.totalPrice = res.toLocaleString()
+        this.totalPrice = res
     }
   },
   mounted() {

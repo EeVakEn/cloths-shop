@@ -166,8 +166,11 @@ export default {
     }
   },
   watch: {
-    isFavorite: function (val) {
-      this.$toasted.show(val ? 'Товар добавлен в избранное' : 'Товар удален из избранного')
+    isFavorite: function (val){
+      if (val)
+        this.$toasted.success('Товар добавлен в избранное', {icon: 'heart',})
+      else
+        this.$toasted.error('Товар удален из избранного', {icon: 'heart-crack',})
     }
   }
 }

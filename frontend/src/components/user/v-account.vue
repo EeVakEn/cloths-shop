@@ -19,15 +19,16 @@
     <div v-else style="margin: 30px 0">
       <h4>Ваши заказы</h4>
       <div
-          class="card"
+          class="order_card"
           style="margin: 0 0 50px 0; box-shadow: 4px 4px 8px 0 rgba(34, 60, 80, 0.2);"
           v-for="order in orders"
           :key="order.id"
       >
-        <div class="card-body">
+        <div class="order_card_body">
 
           <div>Номер заказа: {{ order.id }}</div>
           <div>Адрес доставки: {{ order.address }}</div>
+          <div>Тип доставки: {{ order.delivery_type }}</div>
           <div>Статус: <b
               :class="order.track_status === 'Отменен'?'text-danger': 'text-success'">{{ order.track_status }}</b></div>
 
@@ -80,7 +81,12 @@
             </tr>
             </tbody>
           </table>
-          <span style="float: right" class="badge bg-light text-dark">{{ order.created_at }}</span>
+          <div class="order_itogo">
+            <div>Стоимость заказа: <b>{{order.cost}} ₽</b></div>
+            <div>Стоимость доставки: <b>{{order.delivery_cost?order.delivery_cost.toLocaleString()+' ₽':'бесплатно'}}</b></div>
+            <div>Итого: <b>{{order.total_cost}} ₽</b></div>
+            <span style="align-self: flex-end" class="badge bg-dark">{{ order.created_at }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -129,6 +135,19 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.order_card{
+  background-color: #F5F5F5;
+  padding: 20px;
+}
+.order_card_body{
+  display: flex;
+  flex-flow: column;
+}
+.order_itogo{
+  display: flex;
+  flex-direction: column;
+  align-self: flex-end;
+}
 
 </style>

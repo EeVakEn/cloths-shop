@@ -112,6 +112,7 @@ export default {
 
 .sidebar_content {
   padding-left: 70px;
+  z-index: 5000 !important;
 }
 
 .v-sidebar__invisible {

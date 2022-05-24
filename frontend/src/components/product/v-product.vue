@@ -301,7 +301,6 @@ export default {
               quantity: this.quantity
             }
             this.ADD_TO_CART(item)
-            // TODO
             this.$toasted.show(
                 this.quantity % 10 === 0 || this.quantity % 10 >= 5 ?
                 this.quantity.toLocaleString() + ' товаров добавлено в корзину' :
@@ -413,21 +412,9 @@ export default {
   watch: {
     isFavorite: function (val){
       if (val)
-        this.$toasted.success('Товар добавлен в избранное',
-          {
-            iconPack:  'fontawesome',
-            icon: 'heart',
-            closeOnSwipe: true,
-            position:  'bottom-right',
-          })
+        this.$toasted.success('Товар добавлен в избранное', {icon: 'heart',})
       else
-        this.$toasted.error('Товар удален из избранного',
-            {
-              iconPack:  'fontawesome',
-              icon: 'heart-crack',
-              closeOnSwipe: true,
-              position:  'bottom-right',
-            })
+        this.$toasted.error('Товар удален из избранного', {icon: 'heart-crack',})
     }
   }
 

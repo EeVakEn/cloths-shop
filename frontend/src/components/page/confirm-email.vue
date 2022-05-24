@@ -2,7 +2,8 @@
 <div class="container">
   <div class="email-confirm">
     <h2>Подтверждение Email</h2>
-    <img src="@/assets/images/mailbox.png" alt="Проверьтк почту" class="image_confirm_mail link-img"/>
+    <i  style="font-size: 20vw; padding: 30px 0" class="fa fa-envelope-circle-check"></i>
+<!--    <img src="@/assets/images/mailbox.png" alt="Проверьтк почту" class="image_confirm_mail link-img"/>-->
     <p>Пожалуйста, проверьте свою почту</p>
     <small>Это необходимо для активации аккаунта</small>
   </div>

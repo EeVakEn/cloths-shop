@@ -120,7 +120,11 @@ class OrderSerializer(serializers.ModelSerializer):
             "email",
             "phone",
             "address",
-            "items"
+            "items",
+            'delivery_type',
+            'cost',
+            'delivery_cost',
+            'total_cost',
         )
 
     def create(self, validated_data):
@@ -133,12 +137,12 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 @api_view(['POST'])
-@authentication_classes([authentication.TokenAuthentication])
 def checkout(request):
     serializer = OrderSerializer(data=request.data)
     if serializer.is_valid():
         try:
-            serializer.save(user=request.user)
+            if request.user:
+                serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

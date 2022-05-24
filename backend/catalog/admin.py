@@ -84,7 +84,7 @@ class OrderItemsInline(admin.TabularInline):
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'track_status', 'user', 'firstname', 'lastname', 'email', 'phone', 'address', 'created_at')
+    list_display = ('id', 'track_status', 'user', 'firstname', 'lastname', 'email', 'phone', 'delivery_type', 'address', 'total_cost', 'created_at')
     list_editable = ('track_status',)
     date_hierarchy = "created_at"
     list_filter = ('created_at', 'email', 'track_status')

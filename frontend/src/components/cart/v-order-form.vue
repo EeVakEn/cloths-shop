@@ -175,6 +175,7 @@ export default {
   name: "v-order-form",
   components: {yandexMap, ymapMarker},
   mixins: [validationMixin],
+  props: ['cost'],
   data() {
     return {
 
@@ -265,6 +266,10 @@ export default {
           'email': this.email,
           'phone': this.phone,
           'address': this.address_str,
+          'delivery_type': this.deliveryType,
+          'cost': this.cost,
+          'delivery_cost': this.deliveryType==='курьер'?this.courier_cost:0,
+          'total_cost':  this.deliveryType==='курьер'?this.courier_cost+this.cost:this.cost,
           'items': items,
         }
         console.log(formData)
@@ -273,7 +278,8 @@ export default {
             .then(() => {
               this.$store.state.isAuthenticated?
                   this.$router.push({name: 'account'}):
-                  this.$router.push({name: 'confirm-email'})
+                  this.$router.push({name: 'catalog'})
+              this.$toasted.success('Заказ оформлен', {icon: 'truck-fast'})
               this.$store.state.cart = []
               localStorage.setItem('cart', [])
             })
@@ -298,6 +304,7 @@ export default {
 
     chooseMark() {
       this.selectedMark = this.mark
+      this.$toasted.show('Постамат выбран', {icon:'house'})
     },
     getAllPoints() {
       axios

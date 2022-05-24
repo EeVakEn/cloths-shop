@@ -12,6 +12,7 @@ Vue.use(Toasted,{
     position: 'bottom-right',
     iconPack: "fontawesome",
     theme: "outline",
+    type: 'info',
     keepOnHover:true
 })
 Vue.use(DadataSuggestions, {

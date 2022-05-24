@@ -150,7 +150,7 @@ class Order(models.Model):
         ('В обработке', 'В обработке'),
         ('Отправлен', 'Отправлен'),
         ('Доставлен', 'Доставлен'),
-        ('Отменен', 'Отменен'),
+        ('Отменен', 'Отменен')
     )
     user = models.ForeignKey(User, related_name='users', on_delete=models.CASCADE, blank=True, null=True,
                              verbose_name='Пользователь')
@@ -159,8 +159,13 @@ class Order(models.Model):
     email = models.EmailField(verbose_name='Email')
     phone = models.CharField(max_length=16, verbose_name='Телефон')
     address = models.CharField(max_length=250, verbose_name='Адрес доставки')
+    delivery_type = models.CharField(default='курьер', max_length=100, verbose_name="Тип доставки")
+    cost = models.IntegerField(default=0, verbose_name='Сумма заказа')
+    delivery_cost = models.IntegerField(default=0, verbose_name='Сумма доставки')
+    total_cost = models.IntegerField(verbose_name='Сумма к оплате')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата заказа')
-    track_status = models.CharField(max_length=100, choices=TRACK_STATUSES, verbose_name='Статус заказа', default=TRACK_STATUSES[0])
+    track_status = models.CharField(max_length=100, choices=TRACK_STATUSES, verbose_name='Статус заказа',
+                                    default='Создан')
 
     class Meta:
         ordering = ['-created_at']
