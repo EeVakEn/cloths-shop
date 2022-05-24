@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     'PIL',
     'simplejson',
     'ckeditor',
-    'nested_admin',
 
     # apps
     'customer',
@@ -97,7 +96,7 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'yourwear',
+        'NAME': config('PG_DB_NAME'),
         'USER': config('PG_USER'),
         'PASSWORD': config('PG_PASSWORD'),
         'HOST': 'localhost',
